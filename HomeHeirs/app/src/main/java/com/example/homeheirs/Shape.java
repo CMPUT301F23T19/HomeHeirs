@@ -3,7 +3,7 @@ package com.example.homeheirs;
 public abstract class Shape {
     public int x, y;
 
-    String color = "Magenta";
+    String color = "Purple";
 
     public Shape(int x, int y){
          this.x = x;
