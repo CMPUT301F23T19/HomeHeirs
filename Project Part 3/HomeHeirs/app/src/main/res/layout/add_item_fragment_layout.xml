@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Item Name"
+        android:id="@+id/item_name_edit_text"
+        android:maxLength="15"
+        android:inputType="textPersonName">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Purchase Year"
+        android:maxLength="4"
+        android:id="@+id/purchase_year_edit_text"
+        android:inputType="number">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Purchase Month"
+        android:maxLength="2"
+        android:id="@+id/purchase_month_edit_text"
+        android:inputType="number">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Description"
+        android:id="@+id/description_edit_text"
+        android:maxLength="15"
+        android:inputType="textPersonName">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Make"
+        android:id="@+id/make_edit_text"
+        android:maxLength="15"
+        android:inputType="textPersonName">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Model"
+        android:id="@+id/model_edit_text"
+        android:maxLength="15"
+        android:inputType="textPersonName">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Serial Number"
+        android:id="@+id/serial_number_edit_text"
+        android:inputType="number">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Estimated value"
+        android:id="@+id/estimated_value_edit_text"
+        android:inputType="numberDecimal">
+
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="Comment"
+        android:maxLength="20"
+        android:id="@+id/comment_edit_text"
+        android:inputType="textPersonName">
+
+    </EditText>
+
+</LinearLayout>
