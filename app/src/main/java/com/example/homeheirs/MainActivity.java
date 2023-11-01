@@ -1,16 +1,23 @@
 package com.example.homeheirs;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements AddItemFragment.OnFragmentInteractionListener {
@@ -19,45 +26,50 @@ public class MainActivity extends AppCompatActivity implements AddItemFragment.O
     private ListView itemList;
     private ArrayAdapter<Item> itemAdapter;
     private TextView total_estimated_value;
+    private FirebaseFirestore db;
+    private CollectionReference itemsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        String[] items = {
-        };
+//        String[] items = {
+//        };
+//
+//        int[] purchaseMonth = {
+//        };
+//
+//        int[] purchaseYear = {
+//        };
+//
+//        String[] description = {
+//        };
+//
+//        String[] make = {
+//        };
+//
+//        String[] model = {
+//        };
+//
+//        int[] serialNumber = {
+//        };
+//
+//        double[] estimatedValue = {
+//        };
+//
+//        String[] comment = {
+//        };
 
-        int[] purchaseMonth = {
-        };
-
-        int[] purchaseYear = {
-        };
-
-        String[] description = {
-        };
-
-        String[] make = {
-        };
-
-        String[] model = {
-        };
-
-        int[] serialNumber = {
-        };
-
-        double[] estimatedValue = {
-        };
-
-        String[] comment = {
-        };
+        db = FirebaseFirestore.getInstance();
+        itemsRef = db.collection("items");
 
         dataList = new ArrayList<Item>();
 
-        for (int i = 0; i < items.length; i++) {
-            Item item = new Item(items[i], purchaseMonth[i], purchaseYear[i], description[i], make[i], model[i], serialNumber[i], estimatedValue[i], comment[i]);
-            dataList.add(item);
-        }
+//        for (int i = 0; i < items.length; i++) {
+//            Item item = new Item(items[i], purchaseMonth[i], purchaseYear[i], description[i], make[i], model[i], serialNumber[i], estimatedValue[i], comment[i]);
+//            dataList.add(item);
+//        }
 
         itemList = findViewById(R.id.item_list);
         total_estimated_value = findViewById(R.id.total_value);
