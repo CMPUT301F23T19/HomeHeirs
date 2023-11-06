@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
 
 
-        total_estimated_value = findViewById(R.id.total_value);
+        total_estimated_value = findViewById(R.id.total_value_amount);
 
         // Implement the swipe feature that will launch dialog box
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(itemList);
 
-        Button addButton = findViewById(R.id.add_item_button);
+        FloatingActionButton addButton = findViewById(R.id.add_item_button);
         addButton.setOnClickListener( v -> {
             new AddItemFragment().show(getSupportFragmentManager(), "ADD_EXPENSE");
         });
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             total_estimated_value += dataList.get(i).getEstimated_value();
         }
 
-        this.total_estimated_value.setText(String.format(Locale.getDefault(), "Total total estimated value: %.2f", total_estimated_value));
+        this.total_estimated_value.setText(String.format(Locale.getDefault(), " %.2f", total_estimated_value));
     }
 
 }

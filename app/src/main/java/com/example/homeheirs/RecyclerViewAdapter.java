@@ -38,16 +38,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        //commented out code is due to the a change in the content displayed
         Item item = item_data.get(position);
         holder.name.setText(item.getName());
-        holder.purchase_month.setText(String.valueOf(item.getPurchase_month()));
+       // holder.purchase_month.setText(String.valueOf(item.getPurchase_month()));
         holder.purchase_year.setText(String.valueOf(item.getPurchase_year()));
         holder.description.setText(item.getDescription());
-        holder.make.setText(item.getMake());
-        holder.model.setText(item.getModel());
-        holder.serial_number.setText(String.valueOf(item.getSerial_number()));
+        //holder.make.setText(item.getMake());
+        //holder.model.setText(item.getModel());
+        //holder.serial_number.setText(String.valueOf(item.getSerial_number()));
         holder.estimated_value.setText(String.valueOf(item.getEstimated_value()));
-        holder.comment.setText(item.getComment());
+        //holder.comment.setText(item.getComment());
     }
 
     // total number of rows
@@ -72,35 +74,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder(View itemView) {
             super(itemView);
              name = itemView.findViewById(R.id.name);
-             purchase_month = itemView.findViewById(R.id.purchase_month);
-             purchase_year = itemView.findViewById(R.id.purchase_year);
+             //purchase_month = itemView.findViewById(R.id.purchase_month);
+             purchase_year = itemView.findViewById(R.id.purchase_date);
              description = itemView.findViewById(R.id.description);
-             make = itemView.findViewById(R.id.make);
-             model = itemView.findViewById(R.id.model);
-             serial_number = itemView.findViewById(R.id.serial_number);
+             //make = itemView.findViewById(R.id.make);
+             //model = itemView.findViewById(R.id.model);
+             //serial_number = itemView.findViewById(R.id.serial_number);
              estimated_value = itemView.findViewById(R.id.estimated_value);
-             comment = itemView.findViewById(R.id.comment);
+             //comment = itemView.findViewById(R.id.comment);
             itemView.setOnClickListener(this);
         }
 
-//        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView,  RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped( RecyclerView.ViewHolder viewHolder, int direction) {
-//                //implement what happens when we have a swipe
-//                int position = viewHolder.getAdapterPosition();
-//                //City cityToDelete = dataList.get(position);
-//                //deleteCity(cityToDelete.getName());
-//                //dataList.remove(cityToDelete);
-//                //cityAdapter.notifyDataSetChanged();
-//            }
-//        };
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-//        itemTouchHelper.attachToRecyclerView(cityList);
+
 
 
         @Override

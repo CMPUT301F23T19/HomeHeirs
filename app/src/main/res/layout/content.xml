@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/name"
@@ -68,66 +68,66 @@
         app:layout_constraintTop_toBottomOf="@+id/description">
     </View>
 
-<!--    <TextView-->
-<!--        android:id="@+id/purchase_month"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Month">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/purchase_month"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Month">-->
+    <!--    </TextView>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/purchase_year"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Year">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/purchase_year"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Year">-->
+    <!--    </TextView>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/make"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Make">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/make"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Make">-->
+    <!--    </TextView>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/model"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Model">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/model"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Model">-->
+    <!--    </TextView>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/serial_number"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Serial Number">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/serial_number"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Serial Number">-->
+    <!--    </TextView>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/estimated_value"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Estimated Value">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/estimated_value"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Estimated Value">-->
+    <!--    </TextView>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/comment"-->
-<!--        android:padding="5dp"-->
-<!--        android:textSize="15sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Comment">-->
-<!--    </TextView>-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/comment"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Comment">-->
+    <!--    </TextView>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
