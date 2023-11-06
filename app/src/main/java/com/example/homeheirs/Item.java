@@ -1,5 +1,8 @@
 package com.example.homeheirs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Item {
     private String name;
     private int purchase_month;
@@ -11,6 +14,17 @@ public class Item {
     private double estimated_value;
     private String comment;
 
+    public List<Tag> getTag_list() {
+        return tag_list;
+    }
+
+    public void add_tag(Tag new_tag) {
+        tag_list.add(new_tag);
+    }
+
+    //taglist is not necessary to define a class
+    private List<Tag> tag_list;
+
     public Item(String name, int purchase_month, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
         this.name = name;
         this.purchase_month = purchase_month;
@@ -21,7 +35,12 @@ public class Item {
         this.serial_number = serial_number;
         this.estimated_value = estimated_value;
         this.comment = comment;
+        //initialize our list on creation in case tags need to be added
+        this.tag_list = new ArrayList<>();
     }
+
+
+
 
     public String getName() {
         return name;
@@ -86,6 +105,7 @@ public class Item {
     public void setEstimated_value(double estimated_value) {
         this.estimated_value = estimated_value;
     }
+
 
     public String getComment() {
         return comment;

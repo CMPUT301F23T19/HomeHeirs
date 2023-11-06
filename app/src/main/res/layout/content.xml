@@ -70,12 +70,11 @@
 
     <TextView
         android:id="@+id/estimated_value"
-        android:padding="5dp"
-        android:textSize="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Estimated Value">
-    </TextView>
+        android:padding="5dp"
+        android:text="Estimated Value"
+        android:textSize="15sp"></TextView>
 
     <TextView
         android:id="@+id/comment"
