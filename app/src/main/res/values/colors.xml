@@ -7,4 +7,9 @@
     <color name="teal_700">#047E7D</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Custom theme colours -->
+    <color name="bg_colour">#F2F4F4</color>
+    <color name="bg_toolbar">#132900</color>
+    <color name="bg_yellow">#FCD029</color>
 </resources>

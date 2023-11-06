@@ -1,89 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/name"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item">
-    </TextView>
-
-    <TextView
-        android:id="@+id/purchase_month"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Month">
-    </TextView>
-
-    <TextView
-        android:id="@+id/purchase_year"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Year">
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:text="Item Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     </TextView>
 
     <TextView
         android:id="@+id/description"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description">
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="Description"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name">
     </TextView>
 
     <TextView
-        android:id="@+id/make"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Make">
-    </TextView>
-
-    <TextView
-        android:id="@+id/model"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Model">
-    </TextView>
-
-    <TextView
-        android:id="@+id/serial_number"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Serial Number">
+        android:id="@+id/purchase_date"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="5dp"
+        android:gravity="end|center_vertical"
+        android:text="Purchase Date"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
     </TextView>
 
     <TextView
         android:id="@+id/estimated_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="end|center_vertical"
         android:text="Estimated Value"
-        android:textSize="15sp"></TextView>
-
-    <TextView
-        android:id="@+id/comment"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comment">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider">
     </TextView>
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description">
+    </View>
 
-</LinearLayout>
+<!--    <TextView-->
+<!--        android:id="@+id/purchase_month"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Month">-->
+<!--    </TextView>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/purchase_year"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Year">-->
+<!--    </TextView>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/make"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Make">-->
+<!--    </TextView>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/model"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Model">-->
+<!--    </TextView>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/serial_number"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Serial Number">-->
+<!--    </TextView>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/estimated_value"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Estimated Value">-->
+<!--    </TextView>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/comment"-->
+<!--        android:padding="5dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Comment">-->
+<!--    </TextView>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
