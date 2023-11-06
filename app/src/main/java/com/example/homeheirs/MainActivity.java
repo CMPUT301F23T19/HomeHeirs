@@ -136,13 +136,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 //    };
 
     private void updateFullCost(){
-        double total_estimated_value = 0.00;
+        double total_estimated_value = 0;
 
         for (int i = 0; i < dataList.size(); i++) {
             total_estimated_value += dataList.get(i).getEstimated_value();
         }
 
-        this.total_estimated_value.setText(String.format(Locale.getDefault(), " %.2f", total_estimated_value));
+        this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", total_estimated_value));
     }
 
 }

@@ -13,6 +13,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -41,14 +42,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //commented out code is due to the a change in the content displayed
         Item item = item_data.get(position);
+
         holder.name.setText(item.getName());
-       // holder.purchase_month.setText(String.valueOf(item.getPurchase_month()));
-        holder.purchase_year.setText(String.valueOf(item.getPurchase_year()));
+        holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
         holder.description.setText(item.getDescription());
         //holder.make.setText(item.getMake());
         //holder.model.setText(item.getModel());
         //holder.serial_number.setText(String.valueOf(item.getSerial_number()));
-        holder.estimated_value.setText(String.valueOf(item.getEstimated_value()));
+        holder.estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", item.getEstimated_value()));
         //holder.comment.setText(item.getComment());
     }
 
@@ -62,8 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         TextView name ;
-        TextView purchase_month ;
-        TextView purchase_year ;
+        TextView purchase_date ;
         TextView description ;
         TextView make ;
         TextView model ;
@@ -74,8 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder(View itemView) {
             super(itemView);
              name = itemView.findViewById(R.id.name);
-             //purchase_month = itemView.findViewById(R.id.purchase_month);
-             purchase_year = itemView.findViewById(R.id.purchase_date);
+             purchase_date = itemView.findViewById(R.id.purchase_date);
              description = itemView.findViewById(R.id.description);
              //make = itemView.findViewById(R.id.make);
              //model = itemView.findViewById(R.id.model);

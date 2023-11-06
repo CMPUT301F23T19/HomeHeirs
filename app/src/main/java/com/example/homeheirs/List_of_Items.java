@@ -37,20 +37,12 @@ public class List_of_Items extends ArrayAdapter<Item> {
         TextView name = view.findViewById(R.id.name);
         TextView purchase_date = view.findViewById(R.id.purchase_date);
         TextView description = view.findViewById(R.id.description);
-        // TextView make = view.findViewById(R.id.make);
-        // TextView model = view.findViewById(R.id.model);
-        // TextView serial_number = view.findViewById(R.id.serial_number);
         TextView estimated_value = view.findViewById(R.id.estimated_value);
-        // TextView comment = view.findViewById(R.id.comment);
 
         name.setText(item.getName());
         purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
         description.setText(item.getDescription());
-        // make.setText(item.getMake());
-        // model.setText(item.getModel());
-        // serial_number.setText(String.valueOf(item.getSerial_number()));
         estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", item.getEstimated_value()));
-        // comment.setText(item.getComment());
 
         return view;
     }
