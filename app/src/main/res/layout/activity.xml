@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -74,29 +74,74 @@
 <!--        </LinearLayout>-->
 <!--    </LinearLayout>-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_item_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:clickable="true"
-        android:focusable="true"
-        app:srcCompat="@android:drawable/ic_input_add" />
+    <LinearLayout
+        android:id="@+id/custom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/bg_toolbar"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="HomeHeirs"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white">
+        </TextView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_item_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:backgroundTint="@color/bg_yellow"
+            app:srcCompat="@android:drawable/ic_input_add">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    </LinearLayout>
 
     <ListView
+        android:id="@+id/item_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/item_list">
+        app:layout_constraintBottom_toTopOf="@+id/total_value_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
     </ListView>
 
     <TextView
-        android:id="@+id/total_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:textSize="30dp">
-
+        android:id="@+id/total_value_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:gravity="start|center"
+        android:text="Total Value (CAD$):"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/total_value_amount"
+        app:layout_constraintStart_toStartOf="parent">
     </TextView>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/total_value_amount"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="end|center"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    </TextView>
+</androidx.constraintlayout.widget.ConstraintLayout>

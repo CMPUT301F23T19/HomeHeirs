@@ -66,26 +66,28 @@ public class MainActivity extends AppCompatActivity implements AddItemFragment.O
 
         dataList = new ArrayList<Item>();
 
-//        for (int i = 0; i < items.length; i++) {
-//            Item item = new Item(items[i], purchaseMonth[i], purchaseYear[i], description[i], make[i], model[i], serialNumber[i], estimatedValue[i], comment[i]);
-//            dataList.add(item);
-//        }
+        // for (int i = 0; i < items.length; i++) {
+        //     Item item = new Item(items[i], purchaseMonth[i], purchaseYear[i], description[i], make[i], model[i], serialNumber[i], estimatedValue[i], comment[i]);
+        //     dataList.add(item);
+        // }
 
         itemList = findViewById(R.id.item_list);
-        total_estimated_value = findViewById(R.id.total_value);
+        total_estimated_value = findViewById(R.id.total_value_amount);
+        updateFullCost();
 
         itemAdapter = new List_of_Items(this, dataList);
         itemList.setAdapter(itemAdapter);
 
-//      Once u click on an item of the list it calls the itemClickedHandler func
+      // Clicking on an item calls the itemClickedHandler function
         itemList.setOnItemClickListener(itemClickedHandler);
 
         final FloatingActionButton addButton = findViewById(R.id.add_item_button);
         addButton.setOnClickListener( v -> {
-            new AddItemFragment().show(getSupportFragmentManager(), "ADD_EXPENSE");
+            new AddItemFragment().show(getSupportFragmentManager(), "ADD_ITEM");
         });
     }
 
+    // Adds a new item to the list, then updates the total value
     @Override
     public void onOKPressed(Item item) {
         dataList.add(item);
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements AddItemFragment.O
         updateFullCost();
     }
 
-    //  When u press ok upon editing the expense and province it sets the name and province to what is in the edit text
+    // Edits the selected item in the list, then updates the total value
     @Override
     public void onOkPressedEdit(Item item, String newName, String newPurchase_month, String newPurchase_year, String newDescription, String newMake, String newModel, String newSerial_number, String newEstimated_value, String newComment) {
         item.setName(newName);
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements AddItemFragment.O
         updateFullCost();
     }
 
+    // Deletes the selected item from the list, then updates the total value
     @Override
     public void onDelete(Item item) {
         dataList.remove(item);
@@ -117,22 +120,24 @@ public class MainActivity extends AppCompatActivity implements AddItemFragment.O
         updateFullCost();
     }
 
-    //  Upon clicking a city in the list, see what city it is and edit
+    //  Upon clicking an item in the list, allow user to edit the item
     private AdapterView.OnItemClickListener itemClickedHandler = (parent, view, position, id) -> {
         Item item = dataList.get(position);
         AddItemFragment addItemFragment = new AddItemFragment(item);
-        addItemFragment.setTitle("Edit item");
+        addItemFragment.setTitle("Edit Item");
         addItemFragment.show(getSupportFragmentManager(), "EDIT_ITEM");
     };
 
+    // Updates the total value of user's item list
     private void updateFullCost(){
-        double total_estimated_value = 0.00;
+        double total_estimated_value = 0;
 
+        // Iterates through the existing list to get the total value
         for (int i = 0; i < dataList.size(); i++) {
             total_estimated_value += dataList.get(i).getEstimated_value();
         }
 
-        this.total_estimated_value.setText(String.format(Locale.getDefault(), "Total total estimated value: %.2f", total_estimated_value));
+        this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", total_estimated_value));
     }
 
 }
