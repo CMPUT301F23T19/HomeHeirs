@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -91,25 +92,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    int position = getAdapterPosition();
                     is_long_clicked = true;
                     //implement showcustomtool in main activity
                     ((MainActivity) context).showcustomtool(is_long_clicked);
-                    if(selected_items.contains(item_data.get(getAdapterPosition()))){
+                    if (position != RecyclerView.NO_POSITION){
+
+                    if (selected_items.contains(item_data.get(getAdapterPosition()))) {
                         // change color back to original if it has already been selected
+                        v.setSelected(false);
                         itemView.setBackgroundColor(Color.TRANSPARENT);
                         selected_items.remove(item_data.get(getAdapterPosition()));
-                    }else{ // if item is selected , add it's position to selected_items list
+
+                    } else { // if item is selected , add it's position to selected_items list
+                        itemView.setSelected(true);
+                        //int position = getAdapterPosition();
                         itemView.setBackgroundResource((R.color.selected_color));
                         selected_items.add(item_data.get(getAdapterPosition()));
                     }
                     // if no items selected, we show the original toolbox
-                    if (selected_items.size()==0){
-                        is_long_clicked=false;
+                    if (selected_items.size() == 0) {
+                        is_long_clicked = false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
 
                     }
                     return true;
                 }
+
+                    return false;
+            }
             });
 
 
@@ -173,5 +184,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+
 
 }

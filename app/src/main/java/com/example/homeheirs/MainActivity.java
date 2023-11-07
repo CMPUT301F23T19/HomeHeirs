@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, AddItemFragment.OnFragmentInteractionListener {
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private TextView total_estimated_value;
     private FirebaseFirestore db;
     private CollectionReference itemsRef;
+
+    private Button delete_button;
 
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
@@ -86,6 +89,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         addButton.setOnClickListener( v -> {
             new AddItemFragment().show(getSupportFragmentManager(), "ADD_EXPENSE");
         });
+
+
+        // skeleton of delete button implementation
+        delete_button = findViewById(R.id.delete_button);
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                deleteSelectedItem(dataList);
+                recycleAdapter.notifyDataSetChanged();
+            }
+
+
+            });
+
+
+
     }
 
 
@@ -102,11 +122,36 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     // function to notify longclick - for longclick--delete functionality
-    public boolean onItemLongClick(View view,int position){
-        Item item = dataList.get(position);
+    //public void onItemLongClick(View view,int position){
+        //Item item = dataList.get(position);
+        //recycleAdapter.getItem(item);
+        //recycleAdapter.getItem();
+        //handleItemLongClick(item);
+    //}
 
-        return true;
+
+
+    // call this function to delete the selected items from dataList.
+    public void deleteSelectedItem(ArrayList<Item> dataList){
+        List<Item> selectedItems = new ArrayList<>();
+
+        for ( Item item: dataList){
+            if(item.isSelected()){
+                selectedItems.add(item);
+            }
+        }
+        dataList.removeAll(selectedItems);
+        recycleAdapter.notifyDataSetChanged();
     }
+
+    //private void handleItemLongClick(Item item){
+      //  return null;
+
+
+        //}
+
+
+
 
 
 
