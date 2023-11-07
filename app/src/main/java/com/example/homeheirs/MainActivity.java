@@ -38,10 +38,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private FirebaseFirestore db;
     private CollectionReference itemsRef;
 
+    private LinearLayout custom_bar ;
+    private LinearLayout original_bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
+
+        custom_bar = findViewById(R.id.hidden_toolbar);
+        original_bar=findViewById(R.id.custom_toolbar   );
 
 
 
@@ -145,4 +150,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", total_estimated_value));
     }
 
+
+    //method changes visibility of the toolbox to switch bewteen the orginial toolbox,
+    //and one showing the add and delete fuctionality
+    public void showcustomtool(boolean replace) {
+
+        if(replace){
+            //if item is long clicked, we set the make our custom bar visible to show the delete and add multiple tags
+            original_bar.setVisibility(View.INVISIBLE);
+
+            custom_bar.setVisibility(View.VISIBLE);
+
+        }
+        else{
+            // When we are done with selecting, we revert to original settings
+            original_bar.setVisibility(View.VISIBLE);
+            custom_bar.setVisibility(View.INVISIBLE);
+        }
+    }
 }

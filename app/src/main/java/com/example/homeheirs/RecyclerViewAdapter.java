@@ -1,9 +1,11 @@
 package com.example.homeheirs;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -19,13 +21,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<Item> item_data;
 
+
+
+
+    private ArrayList<Item> selected_items= new ArrayList<>();
+
     private Context context;
+
     private ItemClickListener ClickListener;
+
+    private Boolean is_long_clicked = false;
 
     // data is passed into the constructor and we initialize our list of items
     RecyclerViewAdapter(Context context, ArrayList<Item> data) {
         this.context = context;
         this.item_data = data;
+
     }
 
     // inflates the content.xml file as that represents each row
@@ -33,6 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.content, parent, false);
+
         return new ViewHolder(view);
     }
 
@@ -69,11 +81,39 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView model ;
         TextView serial_number;
         TextView estimated_value;
-        TextView comment ;
+      TextView comment ;
 
         ViewHolder(View itemView) {
             super(itemView);
-             name = itemView.findViewById(R.id.name);
+            //will make a method for this later
+
+            //Long click listener will detect long holds, and will allow for implementation of adding/deleting multiple items
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    is_long_clicked = true;
+                    //implement showcustomtool in main activity
+                    ((MainActivity) context).showcustomtool(is_long_clicked);
+                    if(selected_items.contains(item_data.get(getAdapterPosition()))){
+                        // change color back to original if it has already been selected
+                        itemView.setBackgroundColor(Color.TRANSPARENT);
+                        selected_items.remove(item_data.get(getAdapterPosition()));
+                    }else{
+                        itemView.setBackgroundResource((R.color.selected_color));
+                        selected_items.add(item_data.get(getAdapterPosition()));
+                    }
+                    // if no items selected, we show the original toolbox
+                    if (selected_items.size()==0){
+                        is_long_clicked=false;
+                        ((MainActivity) context).showcustomtool(is_long_clicked);
+
+                    }
+                    return true;
+                }
+            });
+
+
+             name= itemView.findViewById(R.id.name);
              purchase_date = itemView.findViewById(R.id.purchase_date);
              description = itemView.findViewById(R.id.description);
              //make = itemView.findViewById(R.id.make);
@@ -90,7 +130,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view) {
 
-            if (ClickListener != null) ClickListener.onItemClick(view, getAdapterPosition());
+            if (ClickListener != null) {
+                // implement what happens if we are in selection mode, will try to condense this class later on
+                if(is_long_clicked){
+                    if(selected_items.contains(item_data.get(getAdapterPosition()))){
+                        itemView.setBackgroundColor(Color.TRANSPARENT);
+                        selected_items.remove(item_data.get(getAdapterPosition()));
+                    }else{
+                        itemView.setBackgroundResource((R.color.selected_color));
+                        selected_items.add(item_data.get(getAdapterPosition()));
+
+                    }
+                    if (selected_items.size()==0){
+                        is_long_clicked=false;
+                        ((MainActivity) context).showcustomtool(is_long_clicked);
+
+
+                    }
+                }else{
+                    // calls on itemclick method in Main Activity if not in selection mode- ie to display item details
+                    ClickListener.onItemClick(view, getAdapterPosition());
+                }
+
+            }
+
         }
 
 
