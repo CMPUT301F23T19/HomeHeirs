@@ -98,7 +98,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         // change color back to original if it has already been selected
                         itemView.setBackgroundColor(Color.TRANSPARENT);
                         selected_items.remove(item_data.get(getAdapterPosition()));
-                    }else{
+                    }else{ // if item is selected , add it's position to selected_items list
                         itemView.setBackgroundResource((R.color.selected_color));
                         selected_items.add(item_data.get(getAdapterPosition()));
                     }

@@ -101,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         addItemFragment.show(getSupportFragmentManager(), "EDIT_ITEM");
     }
 
+    // function to notify longclick - for longclick--delete functionality
+    public boolean onItemLongClick(View view,int position){
+        Item item = dataList.get(position);
+
+        return true;
+    }
+
+
 
     public void onOKPressed(Item item) {
         dataList.add(item);

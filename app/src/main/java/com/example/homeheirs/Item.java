@@ -14,6 +14,8 @@ public class Item {
     private double estimated_value;
     private String comment;
 
+    private boolean isSelected = false;
+
     public List<Tag> getTag_list() {
         return tag_list;
     }
@@ -114,4 +116,11 @@ public class Item {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {isSelected = selected;}
+
 }
