@@ -31,20 +31,18 @@ public class AddItemFragment extends DialogFragment {
     private Item item;
     private Boolean isEdit = false;
 
-    //    if edit item will be passed to instance so u want to edit so turn bool on
+    // If item exists, set isEdit to true to allow user to edit item
     public AddItemFragment(Item item) {
         this.item = item;
         this.isEdit = true;
     }
 
     public AddItemFragment() {
-
         super();
     }
 
-    //
+    // Sets the title of the Dialog Box
     public void setTitle(String title) {
-
         this.title = title;
     }
 
@@ -62,7 +60,6 @@ public class AddItemFragment extends DialogFragment {
     public interface OnFragmentInteractionListener {
         void onOKPressed(Item item);
 
-        //        if edit:
         void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
 
         void onDelete(Item item);
@@ -83,7 +80,7 @@ public class AddItemFragment extends DialogFragment {
         estimatedValue = view.findViewById(R.id.estimated_value_edit_text);
         itemComment = view.findViewById(R.id.comment_edit_text);
 
-//        edit set to new names
+        // If item is being edited, fill in Dialog Box entries with existing information
         if (isEdit) {
             itemName.setText(item.getName());
             purchaseMonth.setText(String.valueOf(item.getPurchase_month()));
@@ -115,7 +112,7 @@ public class AddItemFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        save depending on if it is edit
+                        // Save depending on if it is edit
                         if (isEdit) {
                             String name = itemName.getText().toString();
                             String month = purchaseMonth.getText().toString();
@@ -128,8 +125,11 @@ public class AddItemFragment extends DialogFragment {
                             String detail = itemComment.getText().toString();
 
                             listener.onOkPressedEdit(item, name, month, year, description, make, model, serialNumber, value, detail);
-                            builder.setTitle("Edit item");
-                        } else {
+                            builder.setTitle("Edit Item");
+                        }
+
+                        // Otherwise, add new item to Item List
+                        else {
                             String name = itemName.getText().toString();
                             int month = Integer.parseInt(purchaseMonth.getText().toString());
                             int year = Integer.parseInt(purchaseYear.getText().toString());

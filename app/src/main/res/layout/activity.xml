@@ -118,7 +118,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/custom_toolbar"
-        app:layout_constraintVertical_bias="1.0"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintVertical_bias="1.0">
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/total_value_text"
@@ -144,5 +145,6 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_list"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/item_list">
+    </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>
