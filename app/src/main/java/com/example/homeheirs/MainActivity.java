@@ -1,32 +1,22 @@
 package com.example.homeheirs;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, AddItemFragment.OnFragmentInteractionListener {
@@ -38,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private TextView total_estimated_value;
     private FirebaseFirestore db;
     private CollectionReference itemsRef;
-
-    private Button delete_button;
+    // will use to have a conditional button listener
+    private boolean multiple_selection = false;
 
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
@@ -61,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         dataList = new ArrayList<>();
         itemList = findViewById(R.id.item_list);
         itemList.setLayoutManager(new LinearLayoutManager(this));
-        recycleAdapter = new RecyclerViewAdapter(this,dataList);
+        recycleAdapter = new RecyclerViewAdapter(this,itemList,dataList);
         recycleAdapter.setClickListener( this);
         itemList.setAdapter(recycleAdapter);
 
@@ -69,43 +59,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         total_estimated_value = findViewById(R.id.total_value_amount);
 
         // Implement the swipe feature that will launch dialog box
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
+        //Create listener for the add tag button
+        Button addTagButton = findViewById(R.id.mutliple_tag_button);
+        addTagButton.setOnClickListener(v -> {
+            new AddTagFragment().show(getSupportFragmentManager(), "ADD_TAG");
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
+        });
 
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(itemList);
 
         FloatingActionButton addButton = findViewById(R.id.add_item_button);
         addButton.setOnClickListener( v -> {
             new AddItemFragment().show(getSupportFragmentManager(), "ADD_EXPENSE");
         });
-
-
-        // skeleton of delete button implementation
-        delete_button = findViewById(R.id.delete_button);
-        delete_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                deleteSelectedItem(dataList);
-                recycleAdapter.notifyDataSetChanged();
-            }
-
-
-            });
-
-
-
     }
 
 
@@ -122,36 +87,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     // function to notify longclick - for longclick--delete functionality
-    //public void onItemLongClick(View view,int position){
-        //Item item = dataList.get(position);
-        //recycleAdapter.getItem(item);
-        //recycleAdapter.getItem();
-        //handleItemLongClick(item);
-    //}
+    public boolean onItemLongClick(View view,int position){
+        Item item = dataList.get(position);
 
-
-
-    // call this function to delete the selected items from dataList.
-    public void deleteSelectedItem(ArrayList<Item> dataList){
-        List<Item> selectedItems = new ArrayList<>();
-
-        for ( Item item: dataList){
-            if(item.isSelected()){
-                selectedItems.add(item);
-            }
-        }
-        dataList.removeAll(selectedItems);
-        recycleAdapter.notifyDataSetChanged();
+        return true;
     }
-
-    //private void handleItemLongClick(Item item){
-      //  return null;
-
-
-        //}
-
-
-
 
 
 
@@ -185,13 +125,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         updateFullCost();
     }
 
-    //  Upon clicking a city in the list, see what city it is and edit
-//    private AdapterView.OnItemClickListener itemClickedHandler = (parent, view, position, id) -> {
-//        Item item = dataList.get(position);
-//        AddItemFragment addItemFragment = new AddItemFragment(item);
-//        addItemFragment.setTitle("Edit item");
-//        addItemFragment.show(getSupportFragmentManager(), "EDIT_ITEM");
-//    };
+    // We should have a list of the items to edit-make this change
+    @Override
+    public void onTagOKPressed( Tag tag) {
+        // double check the interface of this method, its keeps goinginto the wrong class for some reason
+
+        // Retreieve selected items and append the tag object to the item
+        ArrayList<Item> selectedItems = recycleAdapter.getSelected_items();
+        for (int i=0;i<selectedItems.size();i++){
+            selectedItems.get(i).add_tag(tag);
+        }
+        // Unselect everything once we press ok
+        recycleAdapter.resetSelected_items();
+
+
+        // Also need to reset the selected items
+
+    }
+
+
 
     private void updateFullCost(){
         double total_estimated_value = 0;
@@ -208,7 +160,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     //and one showing the add and delete fuctionality
     public void showcustomtool(boolean replace) {
 
+
+
         if(replace){
+
+           //
             //if item is long clicked, we set the make our custom bar visible to show the delete and add multiple tags
             original_bar.setVisibility(View.INVISIBLE);
 
@@ -216,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         }
         else{
+           // multiple_selection=false;
             // When we are done with selecting, we revert to original settings
             original_bar.setVisibility(View.VISIBLE);
             custom_bar.setVisibility(View.INVISIBLE);

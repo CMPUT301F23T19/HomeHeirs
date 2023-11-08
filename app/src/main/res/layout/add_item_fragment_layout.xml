@@ -99,7 +99,16 @@
         android:maxLength="20"
         android:id="@+id/comment_edit_text"
         android:inputType="textPersonName">
-
     </EditText>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="tags"
+        android:textSize="30dp"
+        android:maxLength="20"
+        android:id="@+id/tags_textview">
+
+    </TextView>
 
 </LinearLayout>
