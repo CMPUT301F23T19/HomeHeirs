@@ -1,5 +1,6 @@
 package com.example.homeheirs;
 
+import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -32,10 +33,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Boolean is_long_clicked = false;
 
+    // Required for resetting selected items
+    private RecyclerView recyclerView;
+
+
+
     // data is passed into the constructor and we initialize our list of items
-    RecyclerViewAdapter(Context context, ArrayList<Item> data) {
+    RecyclerViewAdapter(Context context,RecyclerView recyclerView1, ArrayList<Item> data) {
         this.context = context;
         this.item_data = data;
+        this.recyclerView = recyclerView1;
 
     }
 
@@ -63,6 +70,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //holder.serial_number.setText(String.valueOf(item.getSerial_number()));
         holder.estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", item.getEstimated_value()));
         //holder.comment.setText(item.getComment());
+
+
     }
 
     // total number of rows
@@ -121,6 +130,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
              //serial_number = itemView.findViewById(R.id.serial_number);
              estimated_value = itemView.findViewById(R.id.estimated_value);
              //comment = itemView.findViewById(R.id.comment);
+
             itemView.setOnClickListener(this);
         }
 
@@ -133,6 +143,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (ClickListener != null) {
                 // implement what happens if we are in selection mode, will try to condense this class later on
                 if(is_long_clicked){
+
                     if(selected_items.contains(item_data.get(getAdapterPosition()))){
                         itemView.setBackgroundColor(Color.TRANSPARENT);
                         selected_items.remove(item_data.get(getAdapterPosition()));
@@ -174,4 +185,41 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onItemClick(View view, int position);
     }
 
+    public ArrayList<Item> getSelected_items(){
+        // use this method to retrieve all current selected items
+        // Use for deleting items and adding tags to items
+
+
+        return selected_items;
+
+
+        }
+
+
+
+    public void resetSelected_items(){
+        // use this to reset all selected items on the screen
+        for (int i=0;i<selected_items.size();i++){
+            //get the actual object then we find the position of that object withing the recycle view
+            Item selectedItems = selected_items.get(i);
+            int recycle_position = item_data.indexOf(selectedItems);
+            // if the item is not found, it will return -1
+            if (recycle_position != -1) {
+
+                View itemView = recyclerView.getChildAt(recycle_position);
+                if (itemView != null) {
+                    itemView.setBackgroundColor(Color.TRANSPARENT);
+                }
+            }
+        }
+
+        //clear and set the long clicked to false- and show original toolbar
+        selected_items.clear();
+        is_long_clicked=false;
+        ((MainActivity) context).showcustomtool(is_long_clicked);
+
+    }
+
 }
+
+

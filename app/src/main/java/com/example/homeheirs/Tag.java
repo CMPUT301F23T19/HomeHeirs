@@ -1,6 +1,8 @@
 package com.example.homeheirs;
 
-public class Tag {
+import java.io.Serializable;
+
+public class Tag  {
     //The class will descrive the tag object that each item will have-weak has a relationship
     //where in we will be able to
     private String tag_name;

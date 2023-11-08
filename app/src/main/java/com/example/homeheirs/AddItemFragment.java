@@ -26,6 +26,8 @@ public class AddItemFragment extends DialogFragment {
     private EditText itemSerialNumber;
     private EditText estimatedValue;
     private EditText itemComment;
+    // For test purposes
+    private TextView itemTag;
     private OnFragmentInteractionListener listener;
     private String title = "Add Item";
     private Item item;
@@ -63,6 +65,8 @@ public class AddItemFragment extends DialogFragment {
         void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
 
         void onDelete(Item item);
+
+        void onTagOKPressed( Tag tag);
     }
 
     @NonNull
@@ -79,6 +83,7 @@ public class AddItemFragment extends DialogFragment {
         itemSerialNumber = view.findViewById(R.id.serial_number_edit_text);
         estimatedValue = view.findViewById(R.id.estimated_value_edit_text);
         itemComment = view.findViewById(R.id.comment_edit_text);
+        itemTag = view.findViewById(R.id.tags_textview);
 
         // If item is being edited, fill in Dialog Box entries with existing information
         if (isEdit) {
@@ -91,6 +96,14 @@ public class AddItemFragment extends DialogFragment {
             itemSerialNumber.setText(String.valueOf(item.getSerial_number()));
             estimatedValue.setText(String.format(Locale.getDefault(), "%.2f", item.getEstimated_value()));
             itemComment.setText(item.getComment());
+
+            // code adapted from https://stackoverflow.com/questions/44863723/how-to-show-list-of-string-in-textview-on-android- temporary test
+            StringBuilder builder = new StringBuilder();
+            for (Tag star: item.getTag_list()) {
+                builder.append(star.getTag_name());
+                builder.append(", ");
+            }
+            itemTag.setText(builder.toString());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
