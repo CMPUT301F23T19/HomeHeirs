@@ -64,7 +64,7 @@ public class AddItemFragment extends DialogFragment {
 
         void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
 
-        void onDelete(Item item);
+        //void onDelete(Item item);
 
         void onTagOKPressed( Tag tag);
     }
@@ -112,15 +112,9 @@ public class AddItemFragment extends DialogFragment {
                 .setView(view)
                 .setTitle("Add Item")
                 .setNeutralButton("Cancel", null)
-                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        if(isEdit) {
-                            listener.onDelete(item);
-                        }
+                .setNegativeButton("Delete", null)
 
-                    }
-                })
+
 
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             recycleAdapter.notifyDataSetChanged();
         }
 
+        firebaseOperations.deleteData(selectedItems);
+
         // Unselect everything once we press ok
         recycleAdapter.resetSelected_items();
         //recycleAdapter.notifyDataSetChanged();
@@ -195,12 +197,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
 
-    public void onDelete(Item item) {
-        firebaseOperations.deleteData(item);
-       // double estimated_value = firebaseOperations.updateFullCost();
-        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
-        //updateFullCost();
-    }
+//    public void onDelete(Item item) {
+//        firebaseOperations.deleteData(item);
+//       // double estimated_value = firebaseOperations.updateFullCost();
+//        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
+//        //updateFullCost();
+//    }
 
     // We should have a list of the items to edit-make this change
     @Override
