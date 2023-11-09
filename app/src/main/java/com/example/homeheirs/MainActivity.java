@@ -71,6 +71,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         addButton.setOnClickListener( v -> {
             new AddItemFragment().show(getSupportFragmentManager(), "ADD_EXPENSE");
         });
+
+        Button delSelButton = findViewById(R.id.delete_button);
+        delSelButton.setOnClickListener(v -> {
+
+            delSelectedItems(dataList);
+
+
+
+
+
+        });
+
     }
 
 
@@ -92,6 +104,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         return true;
     }
+
+    public void delSelectedItems(ArrayList<Item> dataList){
+
+
+        ArrayList<Item> selectedItems = recycleAdapter.getSelected_items();
+        for (int i=0;i<selectedItems.size();i++){
+
+            dataList.remove(selectedItems.get(i));
+        }
+
+        // Unselect everything once we press ok
+        recycleAdapter.resetSelected_items();
+        recycleAdapter.notifyDataSetChanged();
+    }
+
+
+
+
+
 
 
 
