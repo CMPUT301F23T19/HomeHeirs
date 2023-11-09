@@ -101,15 +101,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public boolean onLongClick(View v) {
                     is_long_clicked = true;
-                    //implement showcustomtool in main activity
-                    ((MainActivity) context).showcustomtool(is_long_clicked);
-                    if(selected_items.contains(item_data.get(getAdapterPosition()))){
-                        // change color back to original if it has already been selected
-                        itemView.setBackgroundColor(Color.TRANSPARENT);
-                        selected_items.remove(item_data.get(getAdapterPosition()));
-                    }else{ // if item is selected , add it's position to selected_items list
-                        itemView.setBackgroundResource((R.color.selected_color));
-                        selected_items.add(item_data.get(getAdapterPosition()));
+
+                    if(is_long_clicked) {
+                        //implement showcustomtool in main activity
+                        ((MainActivity) context).showcustomtool(is_long_clicked);
+                        if (selected_items.contains(item_data.get(getAdapterPosition()))) {
+                            // change color back to original if it has already been selected
+                            itemView.setBackgroundColor(Color.TRANSPARENT);
+                            selected_items.remove(item_data.get(getAdapterPosition()));
+                        } else { // if item is selected , add it's position to selected_items list
+                            itemView.setBackgroundResource((R.color.selected_color));
+                            selected_items.add(item_data.get(getAdapterPosition()));
+                        }
                     }
                     // if no items selected, we show the original toolbox
                     if (selected_items.size()==0){
@@ -119,6 +122,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                     return true;
                 }
+
             });
 
 

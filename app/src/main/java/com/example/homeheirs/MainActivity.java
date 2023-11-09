@@ -112,11 +112,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         for (int i=0;i<selectedItems.size();i++){
 
             dataList.remove(selectedItems.get(i));
+            recycleAdapter.notifyDataSetChanged();
         }
 
         // Unselect everything once we press ok
         recycleAdapter.resetSelected_items();
-        recycleAdapter.notifyDataSetChanged();
+        //recycleAdapter.notifyDataSetChanged();
     }
 
 
