@@ -95,34 +95,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             //will make a method for this later
 
+
             //Long click listener will detect long holds, and will allow for implementation of adding/deleting multiple items
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    //is_long_clicked = true;
-
-                    if(!is_long_clicked) {
-                        is_long_clicked= true;
-                        //((MainActivity) context).showcustomtool(is_long_clicked);
 
 
-                        //implement showcustomtool in main activity
+
+
+                    if (!is_long_clicked) {
+                        is_long_clicked = true;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
-                        if (selected_items.contains(item_data.get(getAdapterPosition()))) {
-                            // change color back to original if it has already been selected
+
+                        int position = getAdapterPosition();
+
+                        if (selected_items.contains(item_data.get(position))) {
+                            // Change color back to original if it has already been selected
                             itemView.setBackgroundColor(Color.TRANSPARENT);
-                            selected_items.remove(item_data.get(getAdapterPosition()));
-                        } else { // if item is selected , add it's position to selected_items list
-                            itemView.setBackgroundResource((R.color.selected_color));
-                            selected_items.add(item_data.get(getAdapterPosition()));
+                            selected_items.remove(item_data.get(position));
+                        } else {
+                            // If the item is not selected, update its long-click state
+                            itemView.setBackgroundResource(R.color.selected_color);
+                            selected_items.add(item_data.get(position));
                         }
-                    }
-                    // if no items selected, we show the original toolbox
-                    if (selected_items.size()==0){
-                        is_long_clicked=false;
-                        ((MainActivity) context).showcustomtool(is_long_clicked);
+
+                        // Notify the adapter to update the view for the clicked item
+                        //notifyItemChanged(position);
 
                     }
+
+                    // If no items selected, show the original toolbox
+                    if (selected_items.size() == 0) {
+                        is_long_clicked = false;
+                        ((MainActivity) context).showcustomtool(is_long_clicked);
+                    }
+
                     return true;
                 }
 
@@ -228,7 +236,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //clear and set the long clicked to false- and show original toolbar
         selected_items.clear();
+        //notifyDataSetChanged();
         is_long_clicked=false;
+        //notifyDataSetChanged();
         ((MainActivity) context).showcustomtool(is_long_clicked);
 
     }
