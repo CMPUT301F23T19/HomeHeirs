@@ -1,10 +1,13 @@
 package com.example.homeheirs;
 
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,7 +32,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private FirebaseFirestore db;
     private CollectionReference itemsRef;
     // will use to have a conditional button listener
-    private boolean multiple_selection = false;
+
+
+    // Class through which database interactions should be handled
+    private FirebaseOperations firebaseOperations;
 
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
@@ -45,18 +51,50 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         db = FirebaseFirestore.getInstance();
         itemsRef = db.collection("items");
+        total_estimated_value = findViewById(R.id.total_value_amount);
+
+        firebaseOperations = new FirebaseOperations(total_estimated_value);
+        dataList= firebaseOperations.get_dataList();
+
 
 
         // initialize the array and set up the Array Adapter with recycle view
-        dataList = new ArrayList<>();
+       // dataList = new ArrayList<>();
         itemList = findViewById(R.id.item_list);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         recycleAdapter = new RecyclerViewAdapter(this,itemList,dataList);
         recycleAdapter.setClickListener( this);
         itemList.setAdapter(recycleAdapter);
 
+        firebaseOperations.setAdapter(recycleAdapter);
 
-        total_estimated_value = findViewById(R.id.total_value_amount);
+        //firebaseOperations = new FirebaseOperations(recycleAdapter);
+
+
+
+
+
+
+
+        firebaseOperations.listenForDataChanges();
+        dataList = firebaseOperations.get_dataList();
+        recycleAdapter.notifyDataSetChanged();
+
+
+
+       //dataList = firebaseOperations.get_dataList();
+        Log.i("what the fuck","boi"+ dataList);
+       updateFullCost();
+        //double estimated_value = firebaseOperations.updateFullCost();
+        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
+       // updateFullCost();
+
+
+
+
+
+
+
 
         // Implement the swipe feature that will launch dialog box
         //Create listener for the add tag button
@@ -128,9 +166,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     public void onOKPressed(Item item) {
-        dataList.add(item);
-        recycleAdapter.notifyDataSetChanged();
-        updateFullCost();
+        //dataList.add(item);
+        //recycleAdapter.notifyDataSetChanged();
+        //updateFullCost();
+
+        firebaseOperations.addData(item);
+        //double estimated_value = firebaseOperations.updateFullCost();
+        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
+       // firebaseOperations.listenForDataChanges();
+        //recycleAdapter.notifyDataSetChanged();
     }
 
     //  When u press ok upon editing the expense and province it sets the name and province to what is in the edit text
@@ -147,26 +191,33 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         item.setComment(newComment);
 
         recycleAdapter.notifyDataSetChanged();
-        updateFullCost();
+        //updateFullCost();
     }
 
 
     public void onDelete(Item item) {
-        dataList.remove(item);
-        recycleAdapter.notifyDataSetChanged();
-        updateFullCost();
+        firebaseOperations.deleteData(item);
+       // double estimated_value = firebaseOperations.updateFullCost();
+        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
+        //updateFullCost();
     }
 
     // We should have a list of the items to edit-make this change
     @Override
     public void onTagOKPressed( Tag tag) {
-        // double check the interface of this method, its keeps goinginto the wrong class for some reason
+        // Method iterates through selected items and adds the tag
+        // Method does not update dataList which should be checked!
 
         // Retreieve selected items and append the tag object to the item
         ArrayList<Item> selectedItems = recycleAdapter.getSelected_items();
         for (int i=0;i<selectedItems.size();i++){
+
             selectedItems.get(i).add_tag(tag);
+            // Also want to update the database
+
+
         }
+        firebaseOperations.addtag(selectedItems);
         // Unselect everything once we press ok
         recycleAdapter.resetSelected_items();
 
@@ -179,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private void updateFullCost(){
         double total_estimated_value = 0;
+
 
         for (int i = 0; i < dataList.size(); i++) {
             total_estimated_value += dataList.get(i).getEstimated_value();

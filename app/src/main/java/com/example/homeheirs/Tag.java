@@ -7,6 +7,10 @@ public class Tag  {
     //where in we will be able to
     private String tag_name;
 
+    public Tag(){
+
+    }
+
     public Tag(String tag_name) {
         this.tag_name = tag_name;
     }

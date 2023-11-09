@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "403266360150",
-    "project_id": "listycity-41755",
-    "storage_bucket": "listycity-41755.appspot.com"
+    "project_number": "408904120157",
+    "project_id": "homeheirs-8ea2c",
+    "storage_bucket": "homeheirs-8ea2c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:403266360150:android:d9c735d5858a90cf353cf7",
+        "mobilesdk_app_id": "1:408904120157:android:b75df8c12e041040f75ab4",
         "android_client_info": {
           "package_name": "com.example.homeheirs"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDwPyUj7_aMfkHXWjCqDCRBnsy7v7QFWik"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:403266360150:android:42337fea84eb992e353cf7",
-        "android_client_info": {
-          "package_name": "com.example.listycity"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDwPyUj7_aMfkHXWjCqDCRBnsy7v7QFWik"
+          "current_key": "AIzaSyB5mtnT2sMTQ0DJhrWlf2wgQRxnGGe0NII"
         }
       ],
       "services": {

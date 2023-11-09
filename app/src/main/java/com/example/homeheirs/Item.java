@@ -27,6 +27,11 @@ public class Item {
     //taglist is not necessary to define a class
     private List<Tag> tag_list;
 
+    public Item(){
+        //required for firebase
+
+    }
+
     public Item(String name, int purchase_month, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
         this.name = name;
         this.purchase_month = purchase_month;

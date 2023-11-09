@@ -65,11 +65,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.name.setText(item.getName());
         holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
         holder.description.setText(item.getDescription());
-        //holder.make.setText(item.getMake());
-        //holder.model.setText(item.getModel());
-        //holder.serial_number.setText(String.valueOf(item.getSerial_number()));
+
+
         holder.estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", item.getEstimated_value()));
-        //holder.comment.setText(item.getComment());
+
 
 
     }
