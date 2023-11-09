@@ -115,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
             delSelectedItems(dataList);
 
+            //recycleAdapter.resetLongClickState();
+
 
 
 
@@ -157,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Unselect everything once we press ok
         recycleAdapter.resetSelected_items();
+
+        recycleAdapter.resetLongClickState();
+        recycleAdapter.notifyDataSetChanged();
         //recycleAdapter.notifyDataSetChanged();
     }
 

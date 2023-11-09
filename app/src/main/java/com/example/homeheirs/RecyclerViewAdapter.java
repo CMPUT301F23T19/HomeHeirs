@@ -99,9 +99,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    is_long_clicked = true;
+                    //is_long_clicked = true;
 
-                    if(is_long_clicked) {
+                    if(!is_long_clicked) {
+                        is_long_clicked= true;
+                        //((MainActivity) context).showcustomtool(is_long_clicked);
+
+
                         //implement showcustomtool in main activity
                         ((MainActivity) context).showcustomtool(is_long_clicked);
                         if (selected_items.contains(item_data.get(getAdapterPosition()))) {
@@ -199,7 +203,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
 
-
+    // prolly bug with resetselected items
+    // itemview is colored right after deletion ( is_long_clicked is always true in onLongClick )
     public void resetSelected_items(){
         // use this to reset all selected items on the screen
         for (int i=0;i<selected_items.size();i++){
@@ -210,9 +215,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (recycle_position != -1) {
 
                 View itemView = recyclerView.getChildAt(recycle_position);
-                if (itemView != null) {
-                    itemView.setBackgroundColor(Color.TRANSPARENT);
+                if (itemView!=null){// != null) {
+                    //if (!is_long_clicked) {
+
+                        itemView.setBackgroundColor(Color.TRANSPARENT);
+
+                    //}
                 }
+
             }
         }
 
@@ -222,6 +232,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ((MainActivity) context).showcustomtool(is_long_clicked);
 
     }
+
+
+    // resets longClickState to avoid bugs - needed after deletion of an item
+    public void resetLongClickState(){ is_long_clicked = false; }
+
 
 }
 
