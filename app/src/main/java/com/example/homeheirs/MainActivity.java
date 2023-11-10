@@ -114,12 +114,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         delSelButton.setOnClickListener(v -> {
 
 
-            recycleAdapter.deleteSelectedItems();
+            //recycleAdapter.deleteSelectedItems();
 
-            // this is not working
+            //fixed bug for delte fuctionality
             firebaseOperations.deleteData(recycleAdapter.getSelected_items());
 
-            //recycleAdapter.resetLongClickState();
+            recycleAdapter.resetSelected_items();
 
 
 
