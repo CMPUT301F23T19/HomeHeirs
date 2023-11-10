@@ -25,6 +25,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
+
+/**
+ * MainActivity serves as the main entry point for the Home Heirs apps.
+ * It displays a list of items in the item list using a RecyclerView and provides options to add, edit, delete, and view details of items.
+ * haven't implemented the onclick filter
+ */
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, AddItemFragment.OnFragmentInteractionListener {
 
     private ArrayList<Item> dataList;
@@ -42,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
+
+    /**
+     * Called when the activity is first created. Also setup the navigation menu and firestore
+     *
+     * @param savedInstanceState The saved instance state of the activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +179,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         startActivity(intent);
     }
 
-    // function to notify longclick - for longclick--delete functionality
+    /**
+     * Handles the long item click event in the RecyclerView.
+     *
+     * When an item is long-clicked, this method is invoked to perform actions such as
+     * enabling multi-selection mode or showing additional options.
+     *
+     * @param view The View that was long-clicked within the RecyclerView.
+     * @param position The position of the long-clicked item in the RecyclerView's data set.
+     * @return True if the long click is consumed, false otherwise.
+     */
     public boolean onItemLongClick(View view,int position){
         Item item = dataList.get(position);
 
@@ -200,45 +221,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
 
-
+    /**
+     * Called when the "OK" button is pressed in the AddItemFragment.
+     *
+     * @param item The item to be added.
+     */
     public void onOKPressed(Item item) {
-        //dataList.add(item);
-        //recycleAdapter.notifyDataSetChanged();
-        //updateFullCost();
+
 
         firebaseOperations.addData(item);
-        //double estimated_value = firebaseOperations.updateFullCost();
-        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
-       // firebaseOperations.listenForDataChanges();
-        //recycleAdapter.notifyDataSetChanged();
+
     }
 
     //  When u press ok upon editing the expense and province it sets the name and province to what is in the edit text
 
-//    public void onOkPressedEdit(Item item, String newName, String newPurchase_month, String newPurchase_year, String newDescription, String newMake, String newModel, String newSerial_number, String newEstimated_value, String newComment) {
-//        item.setName(newName);
-//        item.setPurchase_month(Integer.parseInt(newPurchase_month));
-//        item.setPurchase_year(Integer.parseInt(newPurchase_year));
-//        item.setDescription(newDescription);
-//        item.setMake(newMake);
-//        item.setModel(newModel);
-//        item.setSerial_number(Integer.parseInt(newSerial_number));
-//        item.setEstimated_value(Double.parseDouble(newEstimated_value));
-//        item.setComment(newComment);
-//
-//        recycleAdapter.notifyDataSetChanged();
-//        //updateFullCost();
-//    }
 
-
-//    public void onDelete(Item item) {
-//        firebaseOperations.deleteData(item);
-//       // double estimated_value = firebaseOperations.updateFullCost();
-//        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
-//        //updateFullCost();
-//    }
 
     // We should have a list of the items to edit-make this change
+    /**
+     * Called when the "OK" button is pressed in the AddTagFragment.
+     *
+     * @param tag The tag to be added to selected items.
+     */
     @Override
     public void onTagOKPressed( Tag tag) {
         // Method iterates through selected items and adds the tag
@@ -263,7 +267,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
 
-
+    /**
+     * Updates the total estimated value displayed on the UI.
+     */
     private void updateFullCost(){
         double total_estimated_value = 0;
 
@@ -276,12 +282,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
 
-    //method changes visibility of the toolbox to switch bewteen the orginial toolbox,
-    //and one showing the add and delete fuctionality
 
-//    private void filter(){
-//
-//    }
+    /**
+     * Changes the visibility of the toolbox to switch between the original toolbox and one showing
+     * the delete and add multiple tags functionality.
+     *
+     * @param replace True to show the custom toolbox, false to revert to the original toolbox.
+     */
     public void showcustomtool(boolean replace) {
 
 
