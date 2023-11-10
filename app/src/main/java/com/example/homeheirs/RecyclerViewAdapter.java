@@ -99,7 +99,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    // stores and recycles views as they are scrolled off screen
+
+
+    /**
+     * method that stores and recycles views as they are scrolled off screen
+     * The method also contains code that helps with getting selected items and adding them to
+     * the selecteditems array. It also plays a part in changing the selected items colors
+     * @return A viewholder containing view of each row
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         TextView name ;
         TextView purchase_date ;
@@ -119,8 +126,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-
-
 
 
                     if (!is_long_clicked) {
@@ -159,16 +164,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
              name= itemView.findViewById(R.id.name);
              purchase_date = itemView.findViewById(R.id.purchase_date);
              description = itemView.findViewById(R.id.description);
-             //make = itemView.findViewById(R.id.make);
-             //model = itemView.findViewById(R.id.model);
-             //serial_number = itemView.findViewById(R.id.serial_number);
+
              estimated_value = itemView.findViewById(R.id.estimated_value);
-             //comment = itemView.findViewById(R.id.comment);
+
 
             itemView.setOnClickListener(this);
         }
 
-
+        /**
+         * method that implements what happens when item is clicked
+         * Depending on if the long_clciked is true (ie we are in selection mode), it
+         * will add clicked items to the selected items list.
+         * Also plays role in changing rows color to dark when selected or normal when unselected
+         *
+         * @param view- the actual list row
+         */
         @Override
         public void onClick(View view) {
 
@@ -212,11 +222,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.ClickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
+    /**
+     * Interface implemented in main, allows to get the position of object
+     */
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 
+    /**
+     * method that retrieves list of selected items, called in mainactivity
+     * @return selected_items- An ArrayList of items
+     */
     public ArrayList<Item> getSelected_items(){
         // use this method to retrieve all current selected items
         // Use for deleting items and adding tags to items
@@ -229,6 +245,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
 
+    /**
+     * Method that plays role in removing each selected item from datalist by iterating through
+     * Also changes the customtool to hide when things deleted
+     */
     public void deleteSelectedItems() {
         // Remove items from the end to avoid index shifting
         for (int i = selected_items.size() - 1; i >= 0; i--) {
@@ -247,8 +267,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    // prolly bug with resetselected items
-    // itemview is colored right after deletion ( is_long_clicked is always true in onLongClick )
+    /**
+     * Resets all the selected items background color to normal and exists out of long clciked mode,
+     * ie lonclicked is set to false
+     */
     public void resetSelected_items(){
         // use this to reset all selected items on the screen
         //int position = getAdapterPosition();
