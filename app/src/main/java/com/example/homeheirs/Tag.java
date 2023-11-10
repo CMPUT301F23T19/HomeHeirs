@@ -3,11 +3,13 @@ package com.example.homeheirs;
 
 import android.app.Activity;
 
+import java.io.Serializable;
+
 /**
  * This is a class that keeps track of all tags created
  * @author : Arsalan
  */
-public class Tag extends Activity {
+public class Tag  implements Serializable {
     //The class will descrive the tag object that each item will have-weak has a relationship
     //where in we will be able to
     private String tag_name;
@@ -41,7 +43,7 @@ public class Tag extends Activity {
     /**
      * Method that changes tag name
      * @param tag_name - String of the new name of the tag
-     * @deprecated - Currently not in Use but may be used in future
+     *
      */
     public void setTag_name(String tag_name) {
         this.tag_name = tag_name;

@@ -62,7 +62,7 @@ public class AddItemFragment extends DialogFragment {
     public interface OnFragmentInteractionListener {
         void onOKPressed(Item item);
 
-        void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
+        //void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
 
         //void onDelete(Item item);
 
@@ -132,25 +132,10 @@ public class AddItemFragment extends DialogFragment {
                                 validate(itemModel, model_str) && validate(estimatedValue, est_val_str));
 
 
-                        if (check) {
-                            // Save depending on if it is edit
-                            if (isEdit) {
-                                String name = itemName.getText().toString();
-                                String month = purchaseMonth.getText().toString();
-                                String year = purchaseYear.getText().toString();
-                                String description = itemDescription.getText().toString();
-                                String make = itemMake.getText().toString();
-                                String model = itemModel.getText().toString();
-                                String serialNumber = itemSerialNumber.getText().toString();
-                                String value = estimatedValue.getText().toString();
-                                String detail = itemComment.getText().toString();
 
-                                listener.onOkPressedEdit(item, name, month, year, description, make, model, serialNumber, value, detail);
-                                builder.setTitle("Edit Item");
-                            }
 
                             // Otherwise, add new item to Item List
-                            else {
+
                                 String name = itemName.getText().toString();
                                 int month = Integer.parseInt(purchaseMonth.getText().toString());
                                 int year = Integer.parseInt(purchaseYear.getText().toString());
@@ -161,11 +146,14 @@ public class AddItemFragment extends DialogFragment {
                                 double value = Double.parseDouble(estimatedValue.getText().toString());
                                 String detail = itemComment.getText().toString();
 
+
                                 listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
-                            }
-                        }
                         dialog.dismiss();
+
                     }
+
+
+
                 }).create();
     }
 

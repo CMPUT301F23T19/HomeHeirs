@@ -29,15 +29,13 @@ public class ShowItemActivityTest {
     public ActivityScenarioRule<MainActivity> scenario = new
             ActivityScenarioRule<MainActivity>(MainActivity.class);
 
-<<<<<<< Updated upstream
-=======
     @Test
     public void testAddItem() {
         // Click on Add Item Button
         onView(withId(R.id.add_item_button)).perform(click());
     }
 
->>>>>>> Stashed changes
+
 //    @Test
 //    public void testAddItem() {
 //        // Click on Add Item Button

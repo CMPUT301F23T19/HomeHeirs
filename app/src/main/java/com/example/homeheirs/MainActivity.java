@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
        //dataList = firebaseOperations.get_dataList();
-        Log.i("what the fuck","boi"+ dataList);
+
        updateFullCost();
         //double estimated_value = firebaseOperations.updateFullCost();
         //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
@@ -195,20 +195,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     //  When u press ok upon editing the expense and province it sets the name and province to what is in the edit text
 
-    public void onOkPressedEdit(Item item, String newName, String newPurchase_month, String newPurchase_year, String newDescription, String newMake, String newModel, String newSerial_number, String newEstimated_value, String newComment) {
-        item.setName(newName);
-        item.setPurchase_month(Integer.parseInt(newPurchase_month));
-        item.setPurchase_year(Integer.parseInt(newPurchase_year));
-        item.setDescription(newDescription);
-        item.setMake(newMake);
-        item.setModel(newModel);
-        item.setSerial_number(Integer.parseInt(newSerial_number));
-        item.setEstimated_value(Double.parseDouble(newEstimated_value));
-        item.setComment(newComment);
-
-        recycleAdapter.notifyDataSetChanged();
-        //updateFullCost();
-    }
+//    public void onOkPressedEdit(Item item, String newName, String newPurchase_month, String newPurchase_year, String newDescription, String newMake, String newModel, String newSerial_number, String newEstimated_value, String newComment) {
+//        item.setName(newName);
+//        item.setPurchase_month(Integer.parseInt(newPurchase_month));
+//        item.setPurchase_year(Integer.parseInt(newPurchase_year));
+//        item.setDescription(newDescription);
+//        item.setMake(newMake);
+//        item.setModel(newModel);
+//        item.setSerial_number(Integer.parseInt(newSerial_number));
+//        item.setEstimated_value(Double.parseDouble(newEstimated_value));
+//        item.setComment(newComment);
+//
+//        recycleAdapter.notifyDataSetChanged();
+//        //updateFullCost();
+//    }
 
 
 //    public void onDelete(Item item) {
