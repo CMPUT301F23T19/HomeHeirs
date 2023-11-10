@@ -83,7 +83,7 @@ public class AddItemFragment extends DialogFragment {
         itemSerialNumber = view.findViewById(R.id.serial_number_edit_text);
         estimatedValue = view.findViewById(R.id.estimated_value_edit_text);
         itemComment = view.findViewById(R.id.comment_edit_text);
-        itemTag = view.findViewById(R.id.tags_textview);
+        //itemTag = view.findViewById(R.id.tags_textview);
 
         // If item is being edited, fill in Dialog Box entries with existing information
         if (isEdit) {

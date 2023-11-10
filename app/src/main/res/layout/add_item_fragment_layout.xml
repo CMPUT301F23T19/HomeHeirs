@@ -16,33 +16,41 @@
 
     </EditText>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="YYYY"
+            android:maxLength="4"
+            android:id="@+id/purchase_year_edit_text"
+            android:inputType="number">
+
+        </EditText>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="MM"
+            android:maxLength="2"
+            android:id="@+id/purchase_month_edit_text"
+            android:inputType="number">
+
+        </EditText>
+
+    </LinearLayout>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Purchase Year"
-        android:maxLength="4"
-        android:id="@+id/purchase_year_edit_text"
-        android:inputType="number">
-
-    </EditText>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="Purchase Month"
-        android:maxLength="2"
-        android:id="@+id/purchase_month_edit_text"
-        android:inputType="number">
-
-    </EditText>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="Description"
+        android:hint="Description (Optional)"
         android:id="@+id/description_edit_text"
         android:maxLength="15"
         android:inputType="textPersonName">
@@ -75,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Serial Number"
+        android:hint="Serial Number (Optional)"
         android:id="@+id/serial_number_edit_text"
         android:inputType="number">
 
@@ -85,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Estimated value"
+        android:hint="Estimated Value"
         android:id="@+id/estimated_value_edit_text"
         android:inputType="numberDecimal">
 
@@ -95,20 +103,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Comment"
+        android:hint="Comment (Optional)"
         android:maxLength="20"
         android:id="@+id/comment_edit_text"
         android:inputType="textPersonName">
     </EditText>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="tags"
-        android:textSize="30dp"
-        android:maxLength="20"
-        android:id="@+id/tags_textview">
-
-    </TextView>
 
 </LinearLayout>

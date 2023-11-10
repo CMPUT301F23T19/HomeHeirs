@@ -1,11 +1,10 @@
 package com.example.homeheirs;
 
-
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,10 +32,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private CollectionReference itemsRef;
     // will use to have a conditional button listener
 
-
     // Class through which database interactions should be handled
     private FirebaseOperations firebaseOperations;
-
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
     @Override
@@ -45,9 +42,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         setContentView(R.layout.activity);
 
         custom_bar = findViewById(R.id.hidden_toolbar);
-        original_bar=findViewById(R.id.custom_toolbar   );
-
-
+        original_bar=findViewById(R.id.custom_toolbar);
 
         db = FirebaseFirestore.getInstance();
         itemsRef = db.collection("items");
@@ -55,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         firebaseOperations = new FirebaseOperations(total_estimated_value);
         dataList= firebaseOperations.get_dataList();
-
-
 
         // initialize the array and set up the Array Adapter with recycle view
        // dataList = new ArrayList<>();
@@ -69,18 +62,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         firebaseOperations.setAdapter(recycleAdapter);
 
         //firebaseOperations = new FirebaseOperations(recycleAdapter);
-
-
-
-
-
-
-
         firebaseOperations.listenForDataChanges();
         dataList = firebaseOperations.get_dataList();
         recycleAdapter.notifyDataSetChanged();
-
-
 
        //dataList = firebaseOperations.get_dataList();
         Log.i("what the fuck","boi"+ dataList);
@@ -89,13 +73,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
        // updateFullCost();
 
-
-
-
-
-
-
-
         // Implement the swipe feature that will launch dialog box
         //Create listener for the add tag button
         Button addTagButton = findViewById(R.id.mutliple_tag_button);
@@ -103,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             new AddTagFragment().show(getSupportFragmentManager(), "ADD_TAG");
 
         });
-
 
         FloatingActionButton addButton = findViewById(R.id.add_item_button);
         addButton.setOnClickListener( v -> {
@@ -121,25 +97,26 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
             recycleAdapter.resetSelected_items();
 
-
-
-
-
         });
 
     }
 
-
-
-
-
-
+    /**
+     * Handles the item click event in the RecyclerView.
+     *
+     * When an item is clicked, this method is invoked to open the details of the selected item
+     * in the {@link ShowItemActivity}.
+     *
+     * @param view The View that was clicked within the RecyclerView.
+     * @param position The position of the clicked item in the RecyclerView's data set.
+     */
     @Override
     public void onItemClick(View view, int position) {
         Item item = dataList.get(position);
-        AddItemFragment addItemFragment = new AddItemFragment(item);
-        addItemFragment.setTitle("Edit item");
-        addItemFragment.show(getSupportFragmentManager(), "EDIT_ITEM");
+        Intent intent = new Intent(MainActivity.this, ShowItemActivity.class);
+        intent.putExtra("ITEM", item);
+        startActivity(intent);
+
     }
 
     // function to notify longclick - for longclick--delete functionality
@@ -168,13 +145,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         recycleAdapter.notifyDataSetChanged();
         //recycleAdapter.notifyDataSetChanged();
     }*/
-
-
-
-
-
-
-
 
     public void onOKPressed(Item item) {
         //dataList.add(item);
@@ -205,12 +175,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         //updateFullCost();
     }
 
-
 //    public void onDelete(Item item) {
 //        firebaseOperations.deleteData(item);
-//       // double estimated_value = firebaseOperations.updateFullCost();
-//        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
-//        //updateFullCost();
+//        double estimated_value = firebaseOperations.updateFullCost();
+//        this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
+//        updateFullCost();
 //    }
 
     // We should have a list of the items to edit-make this change
@@ -237,8 +206,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     }
 
-
-
     private void updateFullCost(){
         double total_estimated_value = 0;
 
@@ -254,8 +221,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     //method changes visibility of the toolbox to switch bewteen the orginial toolbox,
     //and one showing the add and delete fuctionality
     public void showcustomtool(boolean replace) {
-
-
 
         if(replace){
 
