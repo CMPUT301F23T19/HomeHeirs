@@ -17,6 +17,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ShowItemActivity displays the details of an item and allows the user to edit and save the changes.
@@ -90,6 +91,9 @@ public class ShowItemActivity extends AppCompatActivity {
 
             EditText commentTextView = findViewById(R.id.show_comments);
             commentTextView.setText(item.getComment());
+
+            TextView tagsTextView = findViewById(R.id.show_tags);
+            tagsTextView.setText(formatTags(item.getTag_list()));
         }
 
         Button saveButton = findViewById(R.id.save_button);
@@ -153,6 +157,20 @@ public class ShowItemActivity extends AppCompatActivity {
          * Navigates back to the previous screen or finishes the current activity.
          */
         backButton.setOnClickListener(view -> onBackPressed());
+    }
+
+    private String formatTags(List<Tag> tagList) {
+
+        StringBuilder tagStringBuilder = new StringBuilder();
+        for (Tag tag : tagList) {
+            tagStringBuilder.append(tag.getTag_name()).append(", ");
+        }
+
+        if (tagStringBuilder.length() > 2) {
+            tagStringBuilder.setLength(tagStringBuilder.length() - 2);
+        }
+
+        return tagStringBuilder.toString();
     }
 
 }
