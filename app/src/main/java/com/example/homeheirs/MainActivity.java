@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -129,17 +130,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     }
 
-
-
-
-
-
+    /**
+     * Handles the item click event in the RecyclerView.
+     *
+     * When an item is clicked, this method is invoked to open the details of the selected item
+     * in the {@link ShowItemActivity}.
+     *
+     * @param view The View that was clicked within the RecyclerView.
+     * @param position The position of the clicked item in the RecyclerView's data set.
+     */
     @Override
     public void onItemClick(View view, int position) {
         Item item = dataList.get(position);
-        AddItemFragment addItemFragment = new AddItemFragment(item);
-        addItemFragment.setTitle("Edit item");
-        addItemFragment.show(getSupportFragmentManager(), "EDIT_ITEM");
+        Intent intent = new Intent(MainActivity.this, ShowItemActivity.class);
+        intent.putExtra("ITEM", item);
+        startActivity(intent);
     }
 
     // function to notify longclick - for longclick--delete functionality
