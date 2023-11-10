@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,6 +47,26 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
+//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.navigation_filter:
+//                        filter();
+
+//                    case R.id.navigation_home:
+//                        return true;
+//
+//                    case R.id.navigation_logout:
+//                        return true;
+//
+//                    default:
+//                        return true;
+//                }
+//            }
+//        });
+
         custom_bar = findViewById(R.id.hidden_toolbar);
         original_bar=findViewById(R.id.custom_toolbar   );
 
@@ -57,10 +79,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         firebaseOperations = new FirebaseOperations(total_estimated_value);
         dataList= firebaseOperations.get_dataList();
 
-
-
         // initialize the array and set up the Array Adapter with recycle view
-       // dataList = new ArrayList<>();
+        // dataList = new ArrayList<>();
         itemList = findViewById(R.id.item_list);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         recycleAdapter = new RecyclerViewAdapter(this,itemList,dataList);
@@ -258,6 +278,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     //method changes visibility of the toolbox to switch bewteen the orginial toolbox,
     //and one showing the add and delete fuctionality
+
+//    private void filter(){
+//
+//    }
     public void showcustomtool(boolean replace) {
 
 
