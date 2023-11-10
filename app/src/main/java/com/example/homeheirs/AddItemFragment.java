@@ -62,10 +62,6 @@ public class AddItemFragment extends DialogFragment {
     public interface OnFragmentInteractionListener {
         void onOKPressed(Item item);
 
-        //void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
-
-        //void onDelete(Item item);
-
         void onTagOKPressed(Tag tag);
     }
 
@@ -112,10 +108,6 @@ public class AddItemFragment extends DialogFragment {
                 .setView(view)
                 .setTitle("Add Item")
                 .setNeutralButton("Cancel", null)
-                .setNegativeButton("Delete", null)
-
-
-
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -128,63 +120,32 @@ public class AddItemFragment extends DialogFragment {
                         String est_val_str = estimatedValue.getText().toString();
 
                         boolean check = (validate(itemName, item_str) && validate(purchaseMonth, month_str) &&
-                                validate(purchaseYear, year_str) && validate(itemMake, make_str) &&
-                                validate(itemModel, model_str) && validate(estimatedValue, est_val_str));
+                            validate(purchaseYear, year_str) && validate(itemMake, make_str) &&
+                            validate(itemModel, model_str) && validate(estimatedValue, est_val_str));
 
+                        // Otherwise, add new item to Item List
+                        String name = itemName.getText().toString();
+                        int month = Integer.parseInt(purchaseMonth.getText().toString());
+                        int year = Integer.parseInt(purchaseYear.getText().toString());
+                        String description = itemDescription.getText().toString();
+                        String make = itemMake.getText().toString();
+                        String model = itemModel.getText().toString();
+                        int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
+                        double value = Double.parseDouble(estimatedValue.getText().toString());
+                        String detail = itemComment.getText().toString();
 
-
-
-                            // Otherwise, add new item to Item List
-
-                                String name = itemName.getText().toString();
-                                int month = Integer.parseInt(purchaseMonth.getText().toString());
-                                int year = Integer.parseInt(purchaseYear.getText().toString());
-                                String description = itemDescription.getText().toString();
-                                String make = itemMake.getText().toString();
-                                String model = itemModel.getText().toString();
-                                int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
-                                double value = Double.parseDouble(estimatedValue.getText().toString());
-                                String detail = itemComment.getText().toString();
-
-
-                                listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
+                        listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
                         dialog.dismiss();
-
                     }
-
-
-
                 }).create();
     }
-
 
     private boolean validate(EditText editText, String text) {
         if (text.isEmpty()) {
             editText.requestFocus();
-            editText.setError("Field Can't be Empty");
+            editText.setError("Field can't be empty");
             return false;
         }
         return true;
     }
-
-
-
-
-    // Validate that the EditText field is not empty
-    /*
-    private boolean validate(EditText editText) {
-
-        String string = editText.getText().toString();
-        if (string.isEmpty()) {
-
-            editText.setError("Field cannot be empty");
-            editText.requestFocus();
-
-            return false;
-        }
-        return true;
-
-    }*/
-
-
 }
