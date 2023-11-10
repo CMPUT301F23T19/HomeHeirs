@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an item in the item list.
+ * Each item has a name, purchase date, description, make, model, serial number, estimated value, additional comments, and an optional list of tags.
+ * Implements Serializable to support serialization, and can be used for data storage or communication between activities.
+ * @author Archi Patel
+ */
+
+
 public class Item implements Serializable {
     private String name;
     private int purchase_month;
@@ -17,22 +25,49 @@ public class Item implements Serializable {
 
     private boolean isSelected = false;
 
+    /**
+     * Gets the list of tags associated with the item.
+     *
+     * @return The list of tags.
+     */
     public List<Tag> getTag_list() {
         return tag_list;
     }
 
+    /**
+     * Adds a new tag to the item's tag list.
+     *
+     * @param new_tag The tag to be added.
+     */
     public void add_tag(Tag new_tag) {
         tag_list.add(new_tag);
     }
 
-    //taglist is not necessary to define a class
+    /**
+     * List of tags associated with the item.
+     */
     private List<Tag> tag_list;
 
+    /**
+     * Default constructor required for Firebase.
+     */
     public Item(){
         //required for firebase
-
     }
 
+    /**
+     * Constructs an Item with the specified details.
+     *
+     * @param name            The name of the item.
+     * @param purchase_month  The month of purchase.
+     * @param purchase_year   The year of purchase.
+     * @param description     The description of the item.
+     * @param make            The make of the item.
+     * @param model           The model of the item.
+     * @param serial_number   The serial number of the item.
+     * @param estimated_value The estimated value of the item.
+     * @param comment         Additional comments about the item.
+     */
     public Item(String name, int purchase_month, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
         this.name = name;
         this.purchase_month = purchase_month;
@@ -123,10 +158,20 @@ public class Item implements Serializable {
         this.comment = comment;
     }
 
+    /**
+     * Checks if the item is selected.
+     *
+     * @return True if the item is selected, false otherwise.
+     */
     public boolean isSelected() {
         return isSelected;
     }
 
+    /**
+     * Sets the selection status of the item.
+     *
+     * @param selected True to mark the item as selected, false otherwise.
+     */
     public void setSelected(boolean selected) {isSelected = selected;}
 
 }
