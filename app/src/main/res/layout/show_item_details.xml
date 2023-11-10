@@ -40,35 +40,68 @@
         android:id="@+id/show_item_details"
         app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/show_item_name"
-            android:text="Item Name"
-            android:ems="10"
-            android:layout_marginTop="16dp"
-            android:maxLength="15"
-            android:inputType="textPersonName"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Name:"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_item_name"
+                android:text="Item Name"
+                android:ems="15"
+                android:layout_marginTop="16dp"
+                android:maxLength="15"
+                android:inputType="textPersonName"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Year Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Year:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <!-- Year EditText -->
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:ems="10"
+                android:ems="4"
                 android:hint="YYYY"
                 android:maxLength="4"
                 android:id="@+id/show_purchase_year"
                 android:inputType="number">
             </EditText>
 
+            <!-- Month Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Month:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <!-- Month EditText -->
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:ems="10"
+                android:ems="2"
                 android:hint="MM"
                 android:maxLength="2"
                 android:id="@+id/show_purchase_month"
@@ -77,52 +110,135 @@
 
         </LinearLayout>
 
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/show_description"
-            android:ems="10"
-            android:text="Description"/>
+            android:orientation="horizontal">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/show_make"
-            android:ems="10"
-            android:text="Item Make"
-            android:inputType="textPersonName"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Description:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/show_model"
-            android:ems="10"
-            android:text="Item Model"
-            android:inputType="textPersonName"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_description"
+                android:ems="10"
+                android:text="Description"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/show_serial_no"
-            android:ems="10"
-            android:text="Serial No."
-            android:inputType="number"/>
+        </LinearLayout>
 
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/show_value"
-            android:ems="10"
-            android:text="Item Value"
-            android:inputType="numberDecimal"/>
+            android:orientation="horizontal">
 
-        <EditText
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Make:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_make"
+                android:ems="10"
+                android:text="Item Make"
+                android:inputType="textPersonName"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/show_comments"
-            android:ems="10"
-            android:text="Item Comments"
-            android:inputType="textPersonName"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Model:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_model"
+                android:ems="10"
+                android:text="Item Model"
+                android:inputType="textPersonName"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Serial No:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_serial_no"
+                android:ems="10"
+                android:text="Serial No."
+                android:inputType="number"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Estimated Value (CAD$):"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_value"
+                android:ems="10"
+                android:text="Item Value"
+                android:inputType="numberDecimal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Comments:"
+                android:textSize="16sp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/show_comments"
+                android:ems="10"
+                android:text="Item Comments"
+                android:inputType="textPersonName"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/button_layout"
