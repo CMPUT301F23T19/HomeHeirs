@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -53,8 +54,7 @@ public class AddItemFragment extends DialogFragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             listener = (OnFragmentInteractionListener) context;
-        }
-        else {
+        } else {
             throw new RuntimeException(context.toString() + "OnFragmentInteractionListener is not implemented");
         }
     }
@@ -66,7 +66,7 @@ public class AddItemFragment extends DialogFragment {
 
         //void onDelete(Item item);
 
-        void onTagOKPressed( Tag tag);
+        void onTagOKPressed(Tag tag);
     }
 
     @NonNull
@@ -119,38 +119,84 @@ public class AddItemFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Save depending on if it is edit
-                        if (isEdit) {
-                            String name = itemName.getText().toString();
-                            String month = purchaseMonth.getText().toString();
-                            String year = purchaseYear.getText().toString();
-                            String description = itemDescription.getText().toString();
-                            String make = itemMake.getText().toString();
-                            String model = itemModel.getText().toString();
-                            String serialNumber = itemSerialNumber.getText().toString();
-                            String value = estimatedValue.getText().toString();
-                            String detail = itemComment.getText().toString();
 
-                            listener.onOkPressedEdit(item, name, month, year, description, make, model, serialNumber, value, detail);
-                            builder.setTitle("Edit Item");
+                        String item_str = itemName.getText().toString();
+                        String month_str = purchaseMonth.getText().toString();
+                        String year_str = purchaseYear.getText().toString();
+                        String make_str = itemMake.getText().toString();
+                        String model_str = itemModel.getText().toString();
+                        String est_val_str = estimatedValue.getText().toString();
+
+                        boolean check = (validate(itemName, item_str) && validate(purchaseMonth, month_str) &&
+                                validate(purchaseYear, year_str) && validate(itemMake, make_str) &&
+                                validate(itemModel, model_str) && validate(estimatedValue, est_val_str));
+
+
+                        if (check) {
+                            // Save depending on if it is edit
+                            if (isEdit) {
+                                String name = itemName.getText().toString();
+                                String month = purchaseMonth.getText().toString();
+                                String year = purchaseYear.getText().toString();
+                                String description = itemDescription.getText().toString();
+                                String make = itemMake.getText().toString();
+                                String model = itemModel.getText().toString();
+                                String serialNumber = itemSerialNumber.getText().toString();
+                                String value = estimatedValue.getText().toString();
+                                String detail = itemComment.getText().toString();
+
+                                listener.onOkPressedEdit(item, name, month, year, description, make, model, serialNumber, value, detail);
+                                builder.setTitle("Edit Item");
+                            }
+
+                            // Otherwise, add new item to Item List
+                            else {
+                                String name = itemName.getText().toString();
+                                int month = Integer.parseInt(purchaseMonth.getText().toString());
+                                int year = Integer.parseInt(purchaseYear.getText().toString());
+                                String description = itemDescription.getText().toString();
+                                String make = itemMake.getText().toString();
+                                String model = itemModel.getText().toString();
+                                int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
+                                double value = Double.parseDouble(estimatedValue.getText().toString());
+                                String detail = itemComment.getText().toString();
+
+                                listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
+                            }
                         }
-
-                        // Otherwise, add new item to Item List
-                        else {
-                            String name = itemName.getText().toString();
-                            int month = Integer.parseInt(purchaseMonth.getText().toString());
-                            int year = Integer.parseInt(purchaseYear.getText().toString());
-                            String description = itemDescription.getText().toString();
-                            String make = itemMake.getText().toString();
-                            String model = itemModel.getText().toString();
-                            int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
-                            double value = Double.parseDouble(estimatedValue.getText().toString());
-                            String detail = itemComment.getText().toString();
-
-                            listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
-                        }
+                        dialog.dismiss();
                     }
                 }).create();
     }
+
+
+    private boolean validate(EditText editText, String text) {
+        if (text.isEmpty()) {
+            editText.requestFocus();
+            editText.setError("Field Can't be Empty");
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+    // Validate that the EditText field is not empty
+    /*
+    private boolean validate(EditText editText) {
+
+        String string = editText.getText().toString();
+        if (string.isEmpty()) {
+
+            editText.setError("Field cannot be empty");
+            editText.requestFocus();
+
+            return false;
+        }
+        return true;
+
+    }*/
+
 
 }
