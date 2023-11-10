@@ -1,10 +1,9 @@
 package com.example.homeheirs;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Item implements Serializable {
+public class Item {
     private String name;
     private int purchase_month;
     private int purchase_year;

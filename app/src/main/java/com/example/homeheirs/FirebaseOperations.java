@@ -17,9 +17,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
+
+
 
 /**
  * This is a class that is reposible for all database interactions
@@ -27,6 +28,7 @@ import java.util.Locale;
  * @author : Arsalan
  */
 public class FirebaseOperations {
+
 
     private FirebaseFirestore db;
     private CollectionReference ItemsCollections;
@@ -37,6 +39,7 @@ public class FirebaseOperations {
     private ArrayList<Item> dataList2;
 
     private TextView totalvalue;
+
 
     /**
      * Class Constructor. When Called initializes the database and sets to interact with the initial collection- to be
