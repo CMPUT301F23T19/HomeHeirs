@@ -62,6 +62,10 @@ public class AddItemFragment extends DialogFragment {
     public interface OnFragmentInteractionListener {
         void onOKPressed(Item item);
 
+        //void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
+
+        //void onDelete(Item item);
+
         void onTagOKPressed(Tag tag);
     }
 
@@ -79,51 +83,30 @@ public class AddItemFragment extends DialogFragment {
         itemSerialNumber = view.findViewById(R.id.serial_number_edit_text);
         estimatedValue = view.findViewById(R.id.estimated_value_edit_text);
         itemComment = view.findViewById(R.id.comment_edit_text);
-        itemTag = view.findViewById(R.id.tags_textview);
+//        itemTag = view.findViewById(R.id.tags_textview);
 
         // If item is being edited, fill in Dialog Box entries with existing information
-        if (isEdit) {
-            itemName.setText(item.getName());
-            purchaseMonth.setText(String.valueOf(item.getPurchase_month()));
-            purchaseYear.setText(String.valueOf(item.getPurchase_year()));
-            itemDescription.setText(item.getDescription());
-            itemMake.setText(item.getMake());
-            itemModel.setText(item.getModel());
-            itemSerialNumber.setText(String.valueOf(item.getSerial_number()));
-            estimatedValue.setText(String.format(Locale.getDefault(), "%.2f", item.getEstimated_value()));
-            itemComment.setText(item.getComment());
-
-            // code adapted from https://stackoverflow.com/questions/44863723/how-to-show-list-of-string-in-textview-on-android- temporary test
-            StringBuilder builder = new StringBuilder();
-            for (Tag star: item.getTag_list()) {
-                builder.append(star.getTag_name());
-                builder.append(", ");
-            }
-            itemTag.setText(builder.toString());
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        return builder
+        final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle("Add Item")
-                .setNeutralButton("Cancel", null)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK",null)
+                //.setNeutralButton("Cancel", null)
+                .create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button2 = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+
+                button2.setOnClickListener(new View.OnClickListener() {
+
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View view){
+                        // Save depending on if it is edit
 
-                        String item_str = itemName.getText().toString();
-                        String month_str = purchaseMonth.getText().toString();
-                        String year_str = purchaseYear.getText().toString();
-                        String make_str = itemMake.getText().toString();
-                        String model_str = itemModel.getText().toString();
-                        String est_val_str = estimatedValue.getText().toString();
-
-                        boolean check = (validate(itemName, item_str) && validate(purchaseMonth, month_str) &&
-                            validate(purchaseYear, year_str) && validate(itemMake, make_str) &&
-                            validate(itemModel, model_str) && validate(estimatedValue, est_val_str));
 
                         // Otherwise, add new item to Item List
+
                         String name = itemName.getText().toString();
                         int month = Integer.parseInt(purchaseMonth.getText().toString());
                         int year = Integer.parseInt(purchaseYear.getText().toString());
@@ -133,19 +116,53 @@ public class AddItemFragment extends DialogFragment {
                         int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
                         double value = Double.parseDouble(estimatedValue.getText().toString());
                         String detail = itemComment.getText().toString();
+                        // validate to make sure non empty string given
 
-                        listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
-                        dialog.dismiss();
+
+                            // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
+                            listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
+                            // Only dismiss dialog if error check passes
+                            dialog.dismiss();
+
+
                     }
-                }).create();
-    }
+                });
+            }
+        });
+        dialog.show();
+        return dialog;}
+
 
     private boolean validate(EditText editText, String text) {
         if (text.isEmpty()) {
             editText.requestFocus();
-            editText.setError("Field can't be empty");
+            editText.setError("Field Can't be Empty");
             return false;
         }
         return true;
     }
+
+
+
+
+
+
+
+    // Validate that the EditText field is not empty
+    /*
+    private boolean validate(EditText editText) {
+
+        String string = editText.getText().toString();
+        if (string.isEmpty()) {
+
+            editText.setError("Field cannot be empty");
+            editText.requestFocus();
+
+            return false;
+        }
+        return true;
+
+    }*/
+
+
 }
