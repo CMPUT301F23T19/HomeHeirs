@@ -17,6 +17,13 @@ import androidx.fragment.app.DialogFragment;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+
+/**
+ * Class for Implementing the logic behind the Add Tag Dialog
+ * Extends Dialogframgment
+ * @author Arsalan Ahmed
+
+ */
 public class AddTagFragment extends DialogFragment {
 
 
@@ -25,6 +32,11 @@ public class AddTagFragment extends DialogFragment {
 
     private AddItemFragment.OnFragmentInteractionListener listener; //DOUBLE CHECK??
 
+    /**
+     * Method that sets listener for when Dialog needs to be created
+     * @param : context - Context from mainactivity
+     * Source Used : Lab Assignment and materials
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -36,19 +48,28 @@ public class AddTagFragment extends DialogFragment {
         }
     }
 
-    // Describe methods that should be implemented
+    /**
+     * Method that describes interface that should be implemented in main
+     * Currently not in use
+     */
     public interface OnFragmentInteractionListener {
         // implement this method in main
-
         void onTagOKPressed(Item item);
-
-
     }
 
 
 
 
 
+    /**
+     * Method that implements main logic of showing the dialog
+     * Takes User Input and validates- Only closes dialog if cancel is pressed
+     * Or correct input is given ie Non empty field
+     *When Input correct, creates new Tag object and passes it to OnTagOkPressed method in Main
+     * Source Used : Lab Assignment and materials
+     * @param savedInstanceState-Bundle
+     * @return - Dialog- actual Dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -56,11 +77,7 @@ public class AddTagFragment extends DialogFragment {
 
         TagName = view.findViewById(R.id.tag_input);
 
-
-
         // At Any point, the dialog will just show the empty textbox to add a tag
-
-
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle("Add Tag")
@@ -82,6 +99,7 @@ public class AddTagFragment extends DialogFragment {
                         // Otherwise, add new item to Item List
 
                         String new_tag_name = TagName.getText().toString();
+                        // validate to make sure non empty string given
                         boolean check = validate(new_tag_name);
                         if (check){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
@@ -101,6 +119,13 @@ public class AddTagFragment extends DialogFragment {
 
 
 
+
+    /**
+     * Method that implements validation check to make sure field not empty
+     * If field is empty, user cannot exit dialog and warning message shows
+     * @param tagName - String containinng name of tag
+     * @return - boolean - returns true if information passes check
+     */
     private boolean validate(String tagName){
         // error check function
         if (tagName.isEmpty()){

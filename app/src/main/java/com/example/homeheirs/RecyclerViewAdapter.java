@@ -18,27 +18,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+
+/**
+ * Class Made to implement a recycle view to help with effieciency, ease of use, and flexibility.
+ * Class creates a recycleview Adapter that sets data properly in the List
+ * Source: https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
+ * @author : Arsalan
+ */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Item> item_data;
-
-
-
-
     private ArrayList<Item> selected_items= new ArrayList<>();
-
     private Context context;
-
     private ItemClickListener ClickListener;
-
     private Boolean is_long_clicked = false;
-
     // Required for resetting selected items
     private RecyclerView recyclerView;
 
 
 
-    // data is passed into the constructor and we initialize our list of items
+    /**
+     * Construcor of RecyclerView Adapter
+     * @param  context : Mainactivity Context passed on
+     * @param recyclerView1: Actual RecyclerView passed on from mainActivity
+     * @param data: Array of items containing the current data
+     */
     RecyclerViewAdapter(Context context,RecyclerView recyclerView1, ArrayList<Item> data) {
         this.context = context;
         this.item_data = data;
@@ -46,7 +50,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
-    // inflates the content.xml file as that represents each row
+    /**
+     * method that inflates context.xml file which contains layouout for each individual row
+     * @param parent
+     * @param viewType
+     * @return A viewholder containing view of each row
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,7 +64,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * Method binding text view to current itemData data in each row
+     *
+     * @param holder:the Viewholder returned from the previous method
+     * @param position:describes position of data within array
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
@@ -65,22 +79,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.name.setText(item.getName());
         holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
         holder.description.setText(item.getDescription());
-
+    // double check if this if needed
         if (selected_items.contains(item_data.get(position))) {
             holder.itemView.setBackgroundResource(R.color.selected_color);
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
-
-
-
+        // double check if needed
         holder.estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", item.getEstimated_value()));
-
-
-
     }
 
-    // total number of rows
+    /**
+     * Required method for implmentation of Recycle view- determines the amount of data able to fit on screen?
+     * @return item_data.size() - integer with the amount of Item objects in dataList
+     */
     @Override
     public int getItemCount() {
         return item_data.size();
