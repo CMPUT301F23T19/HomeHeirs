@@ -113,7 +113,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Button delSelButton = findViewById(R.id.delete_button);
         delSelButton.setOnClickListener(v -> {
 
-            delSelectedItems(dataList);
+
+            recycleAdapter.deleteSelectedItems();
+
+            // this is not working
+            firebaseOperations.deleteData(recycleAdapter.getSelected_items());
 
             //recycleAdapter.resetLongClickState();
 
@@ -144,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         return true;
     }
-
+/*
     public void delSelectedItems(ArrayList<Item> dataList){
 
 
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         recycleAdapter.resetLongClickState();
         recycleAdapter.notifyDataSetChanged();
         //recycleAdapter.notifyDataSetChanged();
-    }
+    }*/
 
 
 

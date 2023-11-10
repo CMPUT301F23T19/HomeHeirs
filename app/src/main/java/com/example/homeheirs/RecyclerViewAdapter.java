@@ -66,6 +66,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
         holder.description.setText(item.getDescription());
 
+        if (selected_items.contains(item_data.get(position))) {
+            holder.itemView.setBackgroundResource(R.color.selected_color);
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+
 
         holder.estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", item.getEstimated_value()));
 
@@ -150,8 +157,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
 
-
-
         @Override
         public void onClick(View view) {
 
@@ -211,10 +216,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
 
+
+    public void deleteSelectedItems() {
+        // Remove items from the end to avoid index shifting
+        for (int i = selected_items.size() - 1; i >= 0; i--) {
+            //int position = selected_items.get(i);
+            item_data.remove(selected_items.get(i));
+            notifyDataSetChanged();
+        }
+        // Clear the selection list
+        selected_items.clear();
+        // Reset long click state
+        resetLongClickState();
+        // Update the UI via MainActivity
+        ((MainActivity) context).showcustomtool(is_long_clicked);
+        // Notify any other necessary UI changes or data set changes
+        notifyDataSetChanged(); // This will rebind all views with the correct state
+    }
+
+
     // prolly bug with resetselected items
     // itemview is colored right after deletion ( is_long_clicked is always true in onLongClick )
     public void resetSelected_items(){
         // use this to reset all selected items on the screen
+        //int position = getAdapterPosition();
+
         for (int i=0;i<selected_items.size();i++){
             //get the actual object then we find the position of that object withing the recycle view
             Item selectedItems = selected_items.get(i);
@@ -238,7 +264,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         selected_items.clear();
         //notifyDataSetChanged();
         is_long_clicked=false;
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
         ((MainActivity) context).showcustomtool(is_long_clicked);
 
     }
