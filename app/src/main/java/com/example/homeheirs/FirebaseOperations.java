@@ -40,20 +40,23 @@ public class FirebaseOperations {
 
     private TextView totalvalue;
 
+    private String userID;
+
 
     /**
      * Class Constructor. When Called initializes the database and sets to interact with the initial collection- to be
      * changed depending on the User in the future
      * @param total_estimated_value : Required due to strange bug not correctly updating the total cost so its done here
      */
-    public FirebaseOperations(TextView total_estimated_value) {
+    public FirebaseOperations(TextView total_estimated_value,String userID) {
 
         //Different user implementation comin soon
+        this.userID = userID;
         db = FirebaseFirestore.getInstance();
         dataList = new ArrayList<>();
         totalvalue=total_estimated_value;
 
-        ItemsCollections=db.collection("initial");
+        ItemsCollections=db.collection("initial").document(userID).collection("items");
 
     }
 

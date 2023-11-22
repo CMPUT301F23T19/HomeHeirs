@@ -2,6 +2,7 @@ package com.example.homeheirs;
 
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +19,12 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -49,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
 
+    // Create firebase auth variables
+    FirebaseAuth auth;
+    FirebaseUser user;
+
+    private BottomNavigationView bottomNavigationView;
+
+    private String userId;
+
     /**
      * Called when the activity is first created. Also setup the navigation menu and firestore
      *
@@ -58,28 +71,47 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
-//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.navigation_filter:
-//                        filter();
+        if (user==null){
+            Intent intent = new Intent(getApplicationContext(), login.class);
+            startActivity(intent);
+            finish();
+        }
+        else{
+            userId=user.getUid();
+        }
 
-//                    case R.id.navigation_home:
-//                        return true;
-//
-//                    case R.id.navigation_logout:
-//                        return true;
-//
-//                    default:
-//                        return true;
-//                }
-//            }
-//        });
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        custom_bar = findViewById(R.id.hidden_toolbar);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+                    if (item.getItemId()== R.id.navigation_logout) {
+                        startActivity(new Intent(getApplicationContext(), userProfile.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    } else if (item.getItemId()== R.id.navigation_home) {
+                        return true;
+                    }
+
+
+                return false;
+            }
+        });
+
+
+
+
+
+    custom_bar = findViewById(R.id.hidden_toolbar);
         original_bar=findViewById(R.id.custom_toolbar   );
 
 
@@ -88,11 +120,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemsRef = db.collection("items");
         total_estimated_value = findViewById(R.id.total_value_amount);
 
-        firebaseOperations = new FirebaseOperations(total_estimated_value);
+        firebaseOperations = new FirebaseOperations(total_estimated_value,userId);
         dataList= firebaseOperations.get_dataList();
 
         // initialize the array and set up the Array Adapter with recycle view
-        // dataList = new ArrayList<>();
+
         itemList = findViewById(R.id.item_list);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         recycleAdapter = new RecyclerViewAdapter(this,itemList,dataList);
@@ -101,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         firebaseOperations.setAdapter(recycleAdapter);
 
-        //firebaseOperations = new FirebaseOperations(recycleAdapter);
+
 
 
 
@@ -115,12 +147,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
 
-       //dataList = firebaseOperations.get_dataList();
+
 
        updateFullCost();
-        //double estimated_value = firebaseOperations.updateFullCost();
-        //this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", estimated_value));
-       // updateFullCost();
+
 
 
 

@@ -1,0 +1,95 @@
+package com.example.homeheirs;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+public class userProfile extends AppCompatActivity {
+
+    FirebaseAuth auth;
+    FirebaseUser user;
+
+    private TextView email_toDisplay,password_toDisplay;
+
+    private Button logout_button;
+
+
+
+
+    private BottomNavigationView bottomNavigationView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_profile);
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        if (user==null){
+            Intent intent = new Intent(getApplicationContext(), login.class);
+            startActivity(intent);
+            finish();
+        }
+
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+                if (item.getItemId()== R.id.navigation_logout) {
+
+                    return true;
+                } else if (item.getItemId()== R.id.navigation_home) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+
+
+                return false;
+            }
+        });
+
+        email_toDisplay=findViewById(R.id.user_email_textView);
+        password_toDisplay = findViewById(R.id.user_password_textView);
+        logout_button = findViewById(R.id.logout_button);
+
+
+        // set the two fields to the information
+        email_toDisplay.setText(user.getEmail());
+        // we cannot display the password currently
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+    }
+
+
+}
