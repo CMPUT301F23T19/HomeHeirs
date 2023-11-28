@@ -20,12 +20,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/sort_item_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/bg_yellow"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Sort"
+            android:textColor="@color/black">
+
+        </Button>
+
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:text="HomeHeirs"
+            android:layout_marginStart="40dp"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/white">
@@ -43,7 +56,139 @@
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/asc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ascending"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
 
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/sortLayoutAsc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/asc">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:textColor="@color/black"
+            android:onClick="dateASCTapped"
+            android:text="Date" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:textColor="@color/black"
+            android:onClick="descriptionASCTapped"
+            android:text="Description"
+            android:textSize="13dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:textColor="@color/black"
+            android:onClick="makeASCTapped"
+            android:text="Make" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:textColor="@color/black"
+            android:onClick="valueASCTapped"
+            android:text="Value" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:textColor="@color/black"
+            android:onClick="tagsASCTapped"
+            android:text="Tags" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descending"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sortLayoutAsc">
+        >
+
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/sortLayoutDes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/desc">
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="dateDESTapped"
+            android:text="Date"
+            android:textColor="@color/black" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="descriptionDESTapped"
+            android:text="Description"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="makeDESTapped"
+            android:text="Make"
+            android:textColor="@color/black" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="valueDESTapped"
+            android:text="Value"
+            android:textColor="@color/black" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="tagsDESTapped"
+            android:text="Tags"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_list"
@@ -55,7 +200,7 @@
         app:layout_constraintHorizontal_bias="0.0"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/custom_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/sortLayoutDes"
 
         app:layout_constraintVertical_bias="1.0">
     </androidx.recyclerview.widget.RecyclerView>

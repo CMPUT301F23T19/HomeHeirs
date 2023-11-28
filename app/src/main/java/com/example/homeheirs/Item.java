@@ -2,6 +2,7 @@ package com.example.homeheirs;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -173,5 +174,62 @@ public class Item implements Serializable {
      * @param selected True to mark the item as selected, false otherwise.
      */
     public void setSelected(boolean selected) {isSelected = selected;}
+
+    public static Comparator<Item> descriptionAscending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            String description1 = item1.getDescription();
+            String description2 = item2.getDescription();
+
+            description1 = description1.toLowerCase();
+            description2 = description2.toLowerCase();
+
+            return description1.compareTo(description2);
+        }
+    };
+
+    public static Comparator<Item> makeAscending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            String make1 = item1.getMake();
+            String make2 = item2.getMake();
+
+            make1 = make1.toLowerCase();
+            make2 = make2.toLowerCase();
+
+            return make1.compareTo(make2);
+        }
+    };
+
+    public static Comparator<Item> valueAscending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            Double value1 = item1.getEstimated_value();
+            Double value2 = item2.getEstimated_value();
+
+            return Double.compare(value1, value2);
+        }
+    };
+
+//    public static Comparator<Item> tagAscending = new Comparator<Item>()
+//    {
+//        @Override
+//        public int compare(Item item1, Item item2)
+//        {
+//            String make1 = item1.getTag_list();
+//            String make2 = item2.getMake();
+//
+//            make1 = make1.toLowerCase();
+//            make2 = make2.toLowerCase();
+//
+//            return make1.compareTo(make2);
+//        }
+//    };
 
 }

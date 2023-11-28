@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 
@@ -53,6 +54,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
+
+    private Button sortButton;
+    private LinearLayout sortView1;
+    private LinearLayout sortView2;
+    boolean sortHidden = true;
+    private TextView asc;
+    private TextView desc;
 
     // Create firebase auth variables
     FirebaseAuth auth;
@@ -167,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         });
 
-
         FloatingActionButton addButton = findViewById(R.id.add_item_button);
         addButton.setOnClickListener( v -> {
             new AddItemFragment().show(getSupportFragmentManager(), "ADD_EXPENSE");
@@ -176,18 +183,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Button delSelButton = findViewById(R.id.delete_button);
         delSelButton.setOnClickListener(v -> {
 
-
             //recycleAdapter.deleteSelectedItems();
 
             //fixed bug for delte fuctionality
             firebaseOperations.deleteData(recycleAdapter.getSelected_items());
 
             recycleAdapter.resetSelected_items();
+        });
 
+        sortButton = (Button) findViewById(R.id.sort_item_button);
+        sortView1 = (LinearLayout) findViewById(R.id.sortLayoutAsc);
+        sortView2 = (LinearLayout) findViewById(R.id.sortLayoutDes);
+        asc = findViewById(R.id.asc);
+        desc = findViewById(R.id.desc);
 
+        hideSort();
 
-
-
+        sortButton.setOnClickListener( v -> {
+            showSortTapped(v);
         });
 
     }
@@ -339,4 +352,109 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             custom_bar.setVisibility(View.INVISIBLE);
         }
     }
+
+    public void showSortTapped(View view)
+    {
+        if(sortHidden == true)
+        {
+            sortHidden = false;
+            showSort();
+        }
+        else
+        {
+            sortHidden = true;
+            hideSort();
+        }
+    }
+
+    private void hideSort() {
+        sortView1.setVisibility(View.GONE);
+        sortView2.setVisibility(View.GONE);
+        asc.setVisibility(View.GONE);
+        desc.setVisibility(View.GONE);
+
+        sortButton.setText("SORT");
+    }
+
+    private void showSort() {
+        sortView1.setVisibility(View.VISIBLE);
+        sortView2.setVisibility(View.VISIBLE);
+        asc.setVisibility(View.VISIBLE);
+        desc.setVisibility(View.VISIBLE);
+
+        sortButton.setText("HIDE");
+    }
+
+//    public void dateASCTapped(View view)
+//    {
+//        Collections.sort(shapeList, Shape.idAscending);
+//        checkForFilter();
+//    }
+//
+//    public void dateDESTapped(View view)
+//    {
+//        Collections.sort(shapeList, Shape.idAscending);
+//        Collections.reverse(shapeList);
+//        checkForFilter();
+//    }
+
+    public void descriptionASCTapped(View view)
+    {
+        Collections.sort(dataList, Item.descriptionAscending);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void descriptionDESTapped(View view)
+    {
+        Collections.sort(dataList, Item.descriptionAscending);
+        Collections.reverse(dataList);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void makeASCTapped(View view)
+    {
+        Collections.sort(dataList, Item.makeAscending);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void makeDESTapped(View view)
+    {
+        Collections.sort(dataList, Item.makeAscending);
+        Collections.reverse(dataList);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void valueASCTapped(View view)
+    {
+        Collections.sort(dataList, Item.valueAscending);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void valueDESTapped(View view)
+    {
+        Collections.sort(dataList, Item.valueAscending);
+        Collections.reverse(dataList);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+//    public void tagsASCTapped(View view)
+//    {
+//        Collections.sort(dataList, Item.tagAscending);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        itemList.setAdapter(recycleAdapter);
+//    }
+//
+//    public void tagsDESTapped(View view)
+//    {
+//        Collections.sort(dataList, Item.tagAscending);
+//        Collections.reverse(dataList);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        itemList.setAdapter(recycleAdapter);
+//    }
 }
