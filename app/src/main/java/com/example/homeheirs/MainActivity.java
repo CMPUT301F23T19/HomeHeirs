@@ -4,12 +4,16 @@ package com.example.homeheirs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,6 +21,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.homeheirs.databinding.ActivityBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private BottomNavigationView bottomNavigationView;
 
+    ActivityBinding binding;
+
     private String userId;
 
     /**
@@ -70,7 +77,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity);
+        binding = ActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        //setContentView(R.layout.activity);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
@@ -87,7 +97,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
+                    int itemId = item.getItemId();
+
+                    if (itemId == R.id.navigation_filter) {
+                        replaceFragment(new FilterFragment());
+                    } else if (itemId == R.id.navigation_home) {
+                        replaceFragment(new HomeFragment());
+                    } else if (itemId == R.id.navigation_logout) {
+                        replaceFragment(new LogoutFragment());
+                    }
+                    return true;
+                });
+
+        /*
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
 
             @Override
@@ -105,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
                 return false;
             }
-        });
+        });*/
 
 
 
@@ -190,6 +214,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         });
 
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
     /**
