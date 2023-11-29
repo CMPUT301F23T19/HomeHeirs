@@ -1,12 +1,15 @@
 package com.example.homeheirs;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,20 +18,28 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * ShowItemActivity displays the details of an item and allows the user to edit and save the changes.
  * It interacts with Firestore to update item details.
  */
-public class ShowItemActivity extends AppCompatActivity {
+public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOptionFragment.CameraFragmentlistener {
 
     /**
      * The item whose details are displayed and can be edited.
      */
     private Item item;
+
+
 
     /**
      * The instance of FirebaseFirestore for interacting with Firestore.
@@ -39,6 +50,15 @@ public class ShowItemActivity extends AppCompatActivity {
      * The reference to the Firestore collection where the item details are stored.
      */
     private CollectionReference collectionRef;
+
+    private GridView image_grid_view;
+    private ImageAdapter imageAdapter;
+    private ArrayList<Uri> imagePaths = new ArrayList<>();
+
+    StorageReference storageRef;
+
+    // serves the purpose of the different users
+    private String userID;
 
     /**
      * Initializes the activity, sets up the UI, and retrieves the item details.
@@ -52,13 +72,18 @@ public class ShowItemActivity extends AppCompatActivity {
 
         // Initialize Firestore instance and Collection Reference
         db = FirebaseFirestore.getInstance();
-        collectionRef = db.collection("initial");
+
+
+
 
         // Retrieve intent and the item
         Intent intent = getIntent();
         if (intent != null) {
             item = (Item) intent.getSerializableExtra("ITEM");
+            userID = (String) intent.getSerializableExtra("USERID");
+
         }
+        collectionRef = db.collection("initial").document(userID).collection("items");
 
         /**
          * Sets values for each EditText field based on the item details
@@ -94,6 +119,15 @@ public class ShowItemActivity extends AppCompatActivity {
 
             TextView tagsTextView = findViewById(R.id.show_tags);
             tagsTextView.setText(formatTags(item.getTag_list()));
+
+            // work on implementing gridview
+            image_grid_view = findViewById(R.id.photograph_grid);
+             imagePaths = new ArrayList<>();
+
+
+
+             imageAdapter = new ImageAdapter(this,getSupportFragmentManager(), imagePaths);
+            image_grid_view.setAdapter(imageAdapter);
         }
 
         Button saveButton = findViewById(R.id.save_button);
@@ -126,15 +160,26 @@ public class ShowItemActivity extends AppCompatActivity {
                     String detail = commentTextView.getText().toString();
 
                     Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), detail);
-
+                    newItem.setDate_identifier(item.getDate_identifier());
                     /**
                      * Updates the item details in Firestore with the updated values
                      *
                      * @param item The Item object being updated
                      * @param newItem The Updated version of our Item
                      */
-                    collectionRef.document(item.getName())
-                            .set(newItem)
+
+                    //  look into .update for this.
+                    collectionRef.document(item.getDate_identifier())
+                            //double check this otherwise .set(newItem)
+                            .update("name", name,
+                                    "purchase_month", Integer.parseInt(month),
+                                    "purchase_year", Integer.parseInt(year),
+                                    "description", description,
+                                    "make", make,
+                                    "model", model,
+                                    "serial_number", Integer.parseInt(serialNumber),
+                                    "estimated_value", Double.parseDouble(value),
+                                    "detail", detail)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -173,4 +218,27 @@ public class ShowItemActivity extends AppCompatActivity {
         return tagStringBuilder.toString();
     }
 
+    @Override
+    public void onImageAdd(Uri uri) {
+        imagePaths.add(uri);
+        imageAdapter.notifyDataSetChanged();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date now = new Date();
+        String filename = format.format(now);
+        storageRef= FirebaseStorage.getInstance().getReference("images/"+filename);
+        storageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Toast.makeText(ShowItemActivity.this, "hi",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ShowItemActivity.this, "Failed",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
 }

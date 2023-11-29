@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Item item = dataList.get(position);
         Intent intent = new Intent(MainActivity.this, ShowItemActivity.class);
         intent.putExtra("ITEM", item);
+        intent.putExtra("USERID", userId);
         startActivity(intent);
     }
 

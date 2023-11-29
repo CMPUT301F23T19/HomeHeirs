@@ -1,9 +1,14 @@
 package com.example.homeheirs;
 
+import android.net.Uri;
+
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Represents an item in the item list.
@@ -25,6 +30,30 @@ public class Item implements Serializable {
     private String comment;
 
     private boolean isSelected = false;
+
+    private String Date_identifier;
+
+    private List<Uri> image_uriList;
+
+    public String getDate_identifier() {
+        return Date_identifier;
+    }
+
+    public void setDate_identifier(String date_identifier) {
+        Date_identifier = date_identifier;
+    }
+
+    public List<Uri> getImage_uriList() {
+        return image_uriList;
+    }
+
+    public void setImage_uriList(List<Uri> image_uriList) {
+        this.image_uriList = image_uriList;
+    }
+
+    public void add_uri(Uri uri) {
+        image_uriList.add(uri);
+    }
 
     /**
      * Gets the list of tags associated with the item.
@@ -56,6 +85,8 @@ public class Item implements Serializable {
         //required for firebase
     }
 
+
+
     /**
      * Constructs an Item with the specified details.
      *
@@ -81,6 +112,10 @@ public class Item implements Serializable {
         this.comment = comment;
         //initialize our list on creation in case tags need to be added
         this.tag_list = new ArrayList<>();
+        this.image_uriList = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date current = new Date();
+        this.Date_identifier = format.format(current);
     }
 
 
