@@ -124,7 +124,7 @@ public class FirebaseOperations {
     public void addData(Item item){
 
         ItemsCollections
-                .document(item.getName())
+                .document(item.getDate_identifier())
                 .set(item)
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -157,7 +157,7 @@ public class FirebaseOperations {
 
         for (int i=0;i<itemsToDelete.size();i++){
 
-            ItemsCollections.document(itemsToDelete.get(i).getName())
+            ItemsCollections.document(itemsToDelete.get(i).getDate_identifier())
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -194,7 +194,7 @@ public class FirebaseOperations {
 
         for (int i=0;i<itemsToUpdate.size();i++){
 
-            ItemsCollections.document(itemsToUpdate.get(i).getName())
+            ItemsCollections.document(itemsToUpdate.get(i).getDate_identifier())
                     .set(itemsToUpdate.get(i))
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

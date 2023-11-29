@@ -34,10 +34,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/show_item_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/show_item_details"
         app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
 
         <LinearLayout
@@ -48,20 +48,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:text="Name:"
-                android:textSize="16sp"
                 android:layout_marginTop="16dp"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Name:"
+                android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/show_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/show_item_name"
-                android:text="Item Name"
-                android:ems="15"
                 android:layout_marginTop="16dp"
+                android:ems="15"
+                android:inputType="textPersonName"
                 android:maxLength="15"
-                android:inputType="textPersonName"/>
+                android:text="Item Name" />
 
         </LinearLayout>
 
@@ -74,39 +74,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Year:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <!-- Year EditText -->
             <EditText
+                android:id="@+id/show_purchase_year"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:ems="4"
                 android:hint="YYYY"
-                android:maxLength="4"
-                android:id="@+id/show_purchase_year"
-                android:inputType="number">
-            </EditText>
+                android:inputType="number"
+                android:maxLength="4"></EditText>
 
             <!-- Month Label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Month:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <!-- Month EditText -->
             <EditText
+                android:id="@+id/show_purchase_month"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:ems="2"
                 android:hint="MM"
-                android:maxLength="2"
-                android:id="@+id/show_purchase_month"
-                android:inputType="number">
-            </EditText>
+                android:inputType="number"
+                android:maxLength="2"></EditText>
 
         </LinearLayout>
 
@@ -118,16 +116,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Description:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/show_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="Description"/>
+                android:text="Description" />
 
         </LinearLayout>
 
@@ -139,17 +137,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Make:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/show_make"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="Item Make"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:text="Item Make" />
 
         </LinearLayout>
 
@@ -161,17 +159,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Model:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/show_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="Item Model"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:text="Item Model" />
 
         </LinearLayout>
 
@@ -183,17 +181,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Serial No:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/show_serial_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="Serial No."
-                android:inputType="number"/>
+                android:inputType="number"
+                android:text="Serial No." />
         </LinearLayout>
 
         <LinearLayout
@@ -204,39 +202,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:gravity="center_vertical"
                 android:text="Estimated Value (CAD$):"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:textSize="16sp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/show_value"
-                android:ems="10"
-                android:text="Item Value"
-                android:inputType="numberDecimal"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:text="Comments:"
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
-
-            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/show_comments"
                 android:ems="10"
-                android:text="Item Comments"
-                android:inputType="textPersonName"/>
+                android:inputType="numberDecimal"
+                android:text="Item Value" />
 
         </LinearLayout>
 
@@ -248,16 +224,38 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:text="Tags: "
-                android:textSize="16sp"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Comments:"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/show_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Item Comments" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="Tags: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/show_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/show_tags"
-                android:text="Item Tags"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:text="Item Tags" />
 
         </LinearLayout>
     </LinearLayout>
@@ -266,10 +264,9 @@
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
             android:id="@+id/back_button"
@@ -287,6 +284,20 @@
             android:layout_height="wrap_content"
             android:text="Save" />
     </LinearLayout>
+
+    <GridView
+        android:layout_width="409dp"
+        android:layout_height="313dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:numColumns="3"
+        android:id="@+id/photograph_grid"
+        app:layout_constraintBottom_toTopOf="@+id/button_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_item_details" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

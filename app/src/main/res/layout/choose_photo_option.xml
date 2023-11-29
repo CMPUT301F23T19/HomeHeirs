@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:text="Choose From Library"
+        android:textColor="@color/blue_300"
+        android:id="@+id/fragment_libray_option"
+        android:padding="10dp">
+
+    </TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:text="Take photo"
+        android:textColor="@color/blue_300"
+        android:id="@+id/fragment_camera_option"
+        android:padding="10dp">
+
+    </TextView>
+
+    <ImageView
+        android:id="@+id/imageView_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+</LinearLayout>
