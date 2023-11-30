@@ -55,6 +55,10 @@ public class Item implements Serializable {
         image_uriList.add(image_date);
     }
 
+    public void deleteImageUri(String imageUri) {
+         image_uriList.remove(imageUri);
+    }
+
     /**
      * Gets the list of tags associated with the item.
      *

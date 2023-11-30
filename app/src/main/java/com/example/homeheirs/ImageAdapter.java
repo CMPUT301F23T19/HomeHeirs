@@ -23,17 +23,21 @@ public class ImageAdapter extends BaseAdapter {
     private Context context;
 
     private ArrayList<Uri> image_paths;
+
+    private ArrayList<String> delete_paths;
     private LayoutInflater layoutInflater;
+
 
 
     // One idea is to pass the item here, and then access then load the images of the item into the array
     private FragmentManager fragmentManager;
 
-    public ImageAdapter(Context context, FragmentManager fragmentManager, ArrayList<Uri> image_paths) {
+    public ImageAdapter(Context context, FragmentManager fragmentManager, ArrayList<Uri> image_paths,ArrayList<String> image_delete_paths) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.image_paths = image_paths;
         this.layoutInflater = LayoutInflater.from(context);
+        delete_paths = image_delete_paths;
     }
 
     @Override
@@ -90,6 +94,10 @@ public class ImageAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "This has succeeded",Toast.LENGTH_SHORT).show();
+
+                    AppCompatActivity activity = (AppCompatActivity) context;
+                    ShowEnlargedImageFragment enlargedImageFragment = ShowEnlargedImageFragment.newInstance(image_paths.get(position-1),delete_paths.get(position-1));
+                    enlargedImageFragment.show(activity.getSupportFragmentManager(),"edit_expense_dialog");
                 }
             });
         }

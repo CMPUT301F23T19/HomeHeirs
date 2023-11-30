@@ -32,7 +32,7 @@ import java.util.Locale;
  * ShowItemActivity displays the details of an item and allows the user to edit and save the changes.
  * It interacts with Firestore to update item details.
  */
-public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOptionFragment.CameraFragmentlistener {
+public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOptionFragment.CameraFragmentlistener, ShowEnlargedImageFragment.EnlargedFragmentlistener {
 
     /**
      * The item whose details are displayed and can be edited.
@@ -55,8 +55,12 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
     private ImageAdapter imageAdapter;
     private ArrayList<Uri> imagePaths ;
 
+    // use seperate array for delete, ie hold the id_date for the delete photograph
+    private ArrayList<String> image_deletePaths;
+
     StorageReference storageRef;
     StorageReference storageRef2;
+    StorageReference storageRef3;
 
     // serves the purpose of the different users
     private String userID;
@@ -75,7 +79,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         db = FirebaseFirestore.getInstance();
 
 
-
+        image_deletePaths=new ArrayList<>();
 
         // Retrieve intent and the item
         Intent intent = getIntent();
@@ -92,6 +96,8 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         for (int i=0; i<item.getImage_uriList().size();i++) {
             // should work?
             storageRef2 = FirebaseStorage.getInstance().getReference().child("images").child(userID).child(item.getDate_identifier()).child(item.getImage_uriList().get(i));
+           // add the image filenames to the deletepath
+            image_deletePaths.add(item.getImage_uriList().get(i));
             storageRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri downloadUri) {
@@ -189,7 +195,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
 
 
-             imageAdapter = new ImageAdapter(this,getSupportFragmentManager(), imagePaths);
+             imageAdapter = new ImageAdapter(this,getSupportFragmentManager(), imagePaths,image_deletePaths);
             image_grid_view.setAdapter(imageAdapter);
             Toast.makeText(ShowItemActivity.this, String.valueOf(imagePaths.size()),Toast.LENGTH_SHORT).show();
             imageAdapter.notifyDataSetChanged();
@@ -287,12 +293,15 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
     @Override
     public void onImageAdd(Uri uri) {
         imagePaths.add(uri);
+        Log.i("uristuff",String.valueOf(uri));
         imageAdapter.notifyDataSetChanged();
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
         Date now = new Date();
         String filename = format.format(now);
         item.add_uri(filename);
+        // double check if this works
+        image_deletePaths.add(filename);
         storageRef= FirebaseStorage.getInstance().getReference("images/"+userID+"/"+item.getDate_identifier()+"/"+filename);
         storageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -306,6 +315,32 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                 Toast.makeText(ShowItemActivity.this, "Failed",Toast.LENGTH_SHORT).show();
             }
         });
+
+
+    }
+
+    @Override
+    public void onDeleteImage(Uri uri_toDelete, String image_deletePath) {
+
+        storageRef3 = FirebaseStorage.getInstance().getReference().child("images").child(userID).child(item.getDate_identifier()).child(image_deletePath);
+        storageRef3.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(ShowItemActivity.this, "deleteitem good",Toast.LENGTH_SHORT).show();
+                item.deleteImageUri(image_deletePath);
+                image_deletePaths.remove(image_deletePath);
+                imagePaths.remove(uri_toDelete);
+                imageAdapter.notifyDataSetChanged();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ShowItemActivity.this, "delete item bad",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
 
     }
