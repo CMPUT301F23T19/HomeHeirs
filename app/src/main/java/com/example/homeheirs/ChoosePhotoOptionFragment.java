@@ -7,6 +7,7 @@ import static androidx.core.content.PermissionChecker.checkSelfPermission;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.Manifest;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -29,9 +30,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.Manifest;
+
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
@@ -225,11 +228,15 @@ public class ChoosePhotoOptionFragment extends DialogFragment {
 
     private void openCamera() {
 
-        Toast.makeText(getContext(), "hi",Toast.LENGTH_SHORT).show();
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (checkSelfPermission(requireContext(), Manifest.permission.CAMERA)==PermissionChecker.PERMISSION_GRANTED) {
+            Toast.makeText(getContext(), "hi", Toast.LENGTH_SHORT).show();
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
             activityResultLauncher.launch(cameraIntent);
+        }else {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},100);
+        }
 
 
 

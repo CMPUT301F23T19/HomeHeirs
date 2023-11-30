@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.transition.TransitionInflater;
+
+import com.bumptech.glide.Glide;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -79,8 +82,16 @@ public class ImageAdapter extends BaseAdapter {
 
         }else {
 
-            image_view.setImageURI(image_paths.get(position-1));
+            Glide.with(context)
+                    .load(image_paths.get(position - 1))
+                    .into(image_view);
 
+            image_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "This has succeeded",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 

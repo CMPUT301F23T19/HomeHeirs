@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,7 +83,16 @@ public class userProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
+
+                // Due to Some thread error
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.get(getApplicationContext()).clearDiskCache();
+                    }
+                }).start();
                 Intent intent = new Intent(getApplicationContext(), login.class);
+
                 startActivity(intent);
                 finish();
             }

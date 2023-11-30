@@ -33,7 +33,7 @@ public class Item implements Serializable {
 
     private String Date_identifier;
 
-    private List<Uri> image_uriList;
+    private List<String> image_uriList;
 
     public String getDate_identifier() {
         return Date_identifier;
@@ -43,16 +43,16 @@ public class Item implements Serializable {
         Date_identifier = date_identifier;
     }
 
-    public List<Uri> getImage_uriList() {
+    public List<String> getImage_uriList() {
         return image_uriList;
     }
 
-    public void setImage_uriList(List<Uri> image_uriList) {
+    public void setImage_uriList(List<String> image_uriList) {
         this.image_uriList = image_uriList;
     }
 
-    public void add_uri(Uri uri) {
-        image_uriList.add(uri);
+    public void add_uri(String image_date) {
+        image_uriList.add(image_date);
     }
 
     /**

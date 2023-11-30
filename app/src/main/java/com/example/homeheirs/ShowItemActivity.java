@@ -53,9 +53,10 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
     private GridView image_grid_view;
     private ImageAdapter imageAdapter;
-    private ArrayList<Uri> imagePaths = new ArrayList<>();
+    private ArrayList<Uri> imagePaths ;
 
     StorageReference storageRef;
+    StorageReference storageRef2;
 
     // serves the purpose of the different users
     private String userID;
@@ -84,6 +85,68 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
         }
         collectionRef = db.collection("initial").document(userID).collection("items");
+        imagePaths=new ArrayList<>();
+        //imagePaths = item.getImage_uriList();
+        //storageRef2 = FirebaseStorage.getInstance().getReference("images/" + userID + "/" + item.getDate_identifier());
+
+        for (int i=0; i<item.getImage_uriList().size();i++) {
+            // should work?
+            storageRef2 = FirebaseStorage.getInstance().getReference().child("images").child(userID).child(item.getDate_identifier()).child(item.getImage_uriList().get(i));
+            storageRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUri) {
+
+                    imagePaths.add(downloadUri);
+                    Log.i("cat", String.valueOf(downloadUri));
+                    imageAdapter.notifyDataSetChanged();
+                    //Toast.makeText(ShowItemActivity.this, "This has succeeded",Toast.LENGTH_SHORT).show();
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(ShowItemActivity.this, "bad",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
+        // load each of the uris
+
+
+
+//        for (String imageUri : item.getImage_uriList()) {
+//            storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri downloadUri) {
+//
+//                    imagePaths.add(downloadUri);
+//                    Toast.makeText(ShowItemActivity.this, "good",Toast.LENGTH_SHORT).show();
+//
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    Toast.makeText(ShowItemActivity.this, "bad",Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+
+//        storageReference1.listAll().addOnSuccessListener(listResult -> {
+//            for (StorageReference item : listResult.getItems()) {
+//                // Get the download URL for each item and add it to the imagePaths list
+//                item.getDownloadUrl().addOnSuccessListener(uri -> {
+//                    imagePaths.add(uri);
+//                   // imageAdapter.notifyDataSetChanged();
+//                }).addOnFailureListener(exception -> {
+//                    // Handle failures
+//                    Toast.makeText(ShowItemActivity.this, "Failed to retrieve download URL", Toast.LENGTH_SHORT).show();
+//                });
+//            }
+//        }).addOnFailureListener(exception -> {
+//            // Handle failures
+//            Toast.makeText(ShowItemActivity.this, "Failed to list items", Toast.LENGTH_SHORT).show();
+//        });
 
         /**
          * Sets values for each EditText field based on the item details
@@ -122,12 +185,14 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
             // work on implementing gridview
             image_grid_view = findViewById(R.id.photograph_grid);
-             imagePaths = new ArrayList<>();
+
 
 
 
              imageAdapter = new ImageAdapter(this,getSupportFragmentManager(), imagePaths);
             image_grid_view.setAdapter(imageAdapter);
+            Toast.makeText(ShowItemActivity.this, String.valueOf(imagePaths.size()),Toast.LENGTH_SHORT).show();
+            imageAdapter.notifyDataSetChanged();
         }
 
         Button saveButton = findViewById(R.id.save_button);
@@ -179,7 +244,8 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                                     "model", model,
                                     "serial_number", Integer.parseInt(serialNumber),
                                     "estimated_value", Double.parseDouble(value),
-                                    "detail", detail)
+                                    "detail", detail,
+                                    "image_uriList", item.getImage_uriList())
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -222,10 +288,12 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
     public void onImageAdd(Uri uri) {
         imagePaths.add(uri);
         imageAdapter.notifyDataSetChanged();
+
         SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
         Date now = new Date();
         String filename = format.format(now);
-        storageRef= FirebaseStorage.getInstance().getReference("images/"+filename);
+        item.add_uri(filename);
+        storageRef= FirebaseStorage.getInstance().getReference("images/"+userID+"/"+item.getDate_identifier()+"/"+filename);
         storageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
