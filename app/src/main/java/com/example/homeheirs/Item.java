@@ -77,6 +77,11 @@ public class Item implements Serializable {
         tag_list.add(new_tag);
     }
 
+
+    public void remove_tag(Tag tag){
+        tag_list.remove(tag);
+    }
+
     /**
      * List of tags associated with the item.
      */

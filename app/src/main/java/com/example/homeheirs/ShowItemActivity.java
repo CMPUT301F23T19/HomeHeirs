@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -64,6 +67,9 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
     // serves the purpose of the different users
     private String userID;
+
+    // create Chipgroup for our tags
+    private ChipGroup tag_group;
 
     /**
      * Initializes the activity, sets up the UI, and retrieves the item details.
@@ -186,8 +192,38 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
             EditText commentTextView = findViewById(R.id.show_comments);
             commentTextView.setText(item.getComment());
 
-            TextView tagsTextView = findViewById(R.id.show_tags);
-            tagsTextView.setText(formatTags(item.getTag_list()));
+           // TextView tagsTextView = findViewById(R.id.show_tags);
+            //tagsTextView.setText(formatTags(item.getTag_list()));
+
+            tag_group= findViewById(R.id.show_tags);
+
+            // implement the creations of the chips
+            for (int i=0;i<item.getTag_list().size();i++){
+
+                Chip chip =  new Chip(this);
+                ChipDrawable drawable = ChipDrawable.createFromAttributes(this,null,0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry);
+
+                chip.setChipDrawable(drawable);
+                // set true if we want clickable ie useful for filtering OR editing the name of the tag
+                chip.setCheckable(false);
+                chip.setClickable(false);
+                // gets the tag name
+                chip.setText(item.getTag_list().get(i).getTag_name());
+
+                // look into this, this is a autocorrect by android studio
+                int finalI = i;
+                chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tag_group.removeView(chip);
+                        // remove the tag from the taglist
+                        item.remove_tag(item.getTag_list().get(finalI));
+                    }
+                });
+                tag_group.addView(chip);
+
+            }
+
 
             // work on implementing gridview
             image_grid_view = findViewById(R.id.photograph_grid);
@@ -251,7 +287,8 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                                     "serial_number", Integer.parseInt(serialNumber),
                                     "estimated_value", Double.parseDouble(value),
                                     "detail", detail,
-                                    "image_uriList", item.getImage_uriList())
+                                    "image_uriList", item.getImage_uriList(),
+                                    "tag_list",item.getTag_list())
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

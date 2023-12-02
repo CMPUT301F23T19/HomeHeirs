@@ -257,12 +257,19 @@
                 android:text="Tags: "
                 android:textSize="16sp" />
 
-            <TextView
+<!--            <TextView-->
+<!--                android:id="@+id/show_tags"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPersonName"-->
+<!--                android:text="Item Tags" />-->
+
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/show_tags"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="Item Tags" />
+                android:layout_height="match_parent">
+
+            </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>
 
