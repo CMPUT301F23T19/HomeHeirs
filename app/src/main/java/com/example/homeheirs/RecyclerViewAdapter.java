@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +35,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Boolean is_long_clicked = false;
     // Required for resetting selected items
     private RecyclerView recyclerView;
+    private boolean isDescFilterActive = false;
 
 
 
@@ -47,7 +49,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.context = context;
         this.item_data = data;
         this.recyclerView = recyclerView1;
-
     }
 
     /**
@@ -79,6 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.name.setText(item.getName());
         holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
         holder.description.setText(item.getDescription());
+        holder.make.setText(item.getMake());
     // double check if this if needed
         if (selected_items.contains(item_data.get(position))) {
             holder.itemView.setBackgroundResource(R.color.selected_color);
@@ -108,14 +110,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * @return A viewholder containing view of each row
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
-        TextView name ;
-        TextView purchase_date ;
-        TextView description ;
-        TextView make ;
+        TextView name;
+        TextView purchase_date;
+        TextView description;
+        TextView make;
         TextView model ;
         TextView serial_number;
         TextView estimated_value;
-      TextView comment ;
+        TextView comment;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -161,12 +163,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
 
 
-             name= itemView.findViewById(R.id.name);
-             purchase_date = itemView.findViewById(R.id.purchase_date);
-             description = itemView.findViewById(R.id.description);
-
-             estimated_value = itemView.findViewById(R.id.estimated_value);
-
+            name = itemView.findViewById(R.id.name);
+            purchase_date = itemView.findViewById(R.id.purchase_date);
+            description = itemView.findViewById(R.id.description);
+            make = itemView.findViewById(R.id.make);
+            estimated_value = itemView.findViewById(R.id.estimated_value);
 
             itemView.setOnClickListener(this);
         }
@@ -204,12 +205,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     // calls on itemclick method in Main Activity if not in selection mode- ie to display item details
                     ClickListener.onItemClick(view, getAdapterPosition());
                 }
-
             }
-
         }
-
-
     }
 
     // may need this method to retrieve data once clicked
@@ -236,14 +233,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ArrayList<Item> getSelected_items(){
         // use this method to retrieve all current selected items
         // Use for deleting items and adding tags to items
-
-
         return selected_items;
-
-
-        }
-
-
+    }
 
     /**
      * Method that plays role in removing each selected item from datalist by iterating through
@@ -265,7 +256,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // Notify any other necessary UI changes or data set changes
         notifyDataSetChanged(); // This will rebind all views with the correct state
     }
-
 
     /**
      * Resets all the selected items background color to normal and exists out of long clciked mode,
@@ -300,14 +290,47 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         is_long_clicked=false;
         notifyDataSetChanged();
         ((MainActivity) context).showcustomtool(is_long_clicked);
-
     }
-
 
     // resets longClickState to avoid bugs - needed after deletion of an item
     public void resetLongClickState(){ is_long_clicked = false; }
 
+    // Set "DESCR." filter flag
+    public void setDescFilterActive(boolean active) {
+        isDescFilterActive = active;
+    }
 
+    /**
+     * Filters items in RecyclerView based on provided keyword and the "DESCR." filter flag.
+     *
+     * If the "DESCR." flag is active, and keyword is not empty, this method filters items
+     * whose description contains given keyword. Otherwise, it uses original list of items.
+     *
+     * @param keyword - The keyword entered by user to filter items
+     */
+    public void filterItemsByDesc(String keyword) {
+        // Create new list to store filtered items
+        ArrayList<Item> filteredList = new ArrayList<>();
+
+        // Only perform filter if "DESCR." filter flag is set
+        if (isDescFilterActive && keyword != null && !keyword.isEmpty()) {
+            // Iterate through each item in original list
+            for (Item item : item_data) {
+                // Check if description contains keyword
+                if (item.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+        }
+
+        // Otherwise, just use original list
+        else {
+            filteredList.addAll(item_data);
+        }
+
+        item_data.clear();
+        item_data.addAll(filteredList);
+
+        notifyDataSetChanged();
+    }
 }
-
-

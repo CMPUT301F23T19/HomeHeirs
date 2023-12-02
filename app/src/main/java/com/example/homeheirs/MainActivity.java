@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -62,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private TextView asc;
     private TextView desc;
 
+    // Filter Buttons and Search bar
+    private LinearLayout filterLayout;
+    private boolean filterHidden = true;
+    private boolean isDescFilterActive = false;
+
     // Create firebase auth variables
     FirebaseAuth auth;
     FirebaseUser user;
@@ -91,43 +97,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             userId=user.getUid();
         }
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
-        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
-
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
-                    if (item.getItemId()== R.id.navigation_logout) {
-                        startActivity(new Intent(getApplicationContext(), userProfile.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    } else if (item.getItemId()== R.id.navigation_home) {
-                        return true;
-                    }
-
-
-                return false;
-            }
-        });
-
-
-
-
-
-    custom_bar = findViewById(R.id.hidden_toolbar);
+        custom_bar = findViewById(R.id.hidden_toolbar);
         original_bar=findViewById(R.id.custom_toolbar   );
-
-
-
         db = FirebaseFirestore.getInstance();
         itemsRef = db.collection("items");
         total_estimated_value = findViewById(R.id.total_value_amount);
-
         firebaseOperations = new FirebaseOperations(total_estimated_value,userId);
         dataList= firebaseOperations.get_dataList();
 
@@ -140,39 +114,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
 
         firebaseOperations.setAdapter(recycleAdapter);
-
-
-
-
-
-
-
-
-
         firebaseOperations.listenForDataChanges();
         dataList = firebaseOperations.get_dataList();
         recycleAdapter.notifyDataSetChanged();
 
-
-
-
-
-       updateFullCost();
-
-
-
-
-
-
-
-
+        updateFullCost();
 
         // Implement the swipe feature that will launch dialog box
-        //Create listener for the add tag button
+        // Create listener for the add tag button
         Button addTagButton = findViewById(R.id.mutliple_tag_button);
         addTagButton.setOnClickListener(v -> {
             new AddTagFragment().show(getSupportFragmentManager(), "ADD_TAG");
-
         });
 
         FloatingActionButton addButton = findViewById(R.id.add_item_button);
@@ -191,6 +143,57 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             recycleAdapter.resetSelected_items();
         });
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+        // Filter button functionality
+        filterLayout = (LinearLayout) findViewById(R.id.filterLayout);
+        filterLayout.setVisibility(View.GONE);
+        SearchView searchView = (SearchView) findViewById(R.id.list_search_view);
+        searchView.setVisibility(View.GONE);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // When the Profile button is clicked, show user's profile
+                if (item.getItemId()== R.id.navigation_logout) {
+                    startActivity(new Intent(getApplicationContext(), userProfile.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+
+                // When the Filter button is clicked for the first time, show filtering options
+                else if (item.getItemId() == R.id.navigation_filter && filterHidden == true) {
+                    filterHidden = false;
+                    filterLayout.setVisibility(View.VISIBLE);
+                    return true;
+                }
+
+                // When the Filter button is clicked again, hide filtering options and Search bar
+                else if (item.getItemId() == R.id.navigation_filter && filterHidden == false) {
+                    filterHidden = true;
+                    filterLayout.setVisibility(View.GONE);
+                    return true;
+                }
+
+                // When the Home button is clicked, hide filtering/sorting options
+                else if (item.getItemId() == R.id.navigation_home) {
+                    if (filterHidden == false) {
+                        filterHidden = true;
+                        filterLayout.setVisibility(View.GONE);
+                    }
+
+                    if (sortHidden == false) {
+                        sortHidden = true;
+                        hideSort();
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         sortButton = (Button) findViewById(R.id.sort_item_button);
         sortView1 = (LinearLayout) findViewById(R.id.sortLayoutAsc);
         sortView2 = (LinearLayout) findViewById(R.id.sortLayoutDes);
@@ -203,6 +206,46 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             showSortTapped(v);
         });
 
+        // Filter buttons functionality
+        Button descFilterButton = findViewById(R.id.descFilterButton);
+        descFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isDescFilterActive = !isDescFilterActive;
+
+                // Show/hide Search bar based on button's state
+                if (isDescFilterActive) {
+                    searchView.setVisibility(View.VISIBLE);
+                } else {
+                    searchView.setVisibility(View.GONE);
+                }
+
+                recycleAdapter.setDescFilterActive(isDescFilterActive);
+
+                if (isDescFilterActive) {
+                    String keyword = searchView.getQuery().toString();
+                    recycleAdapter.filterItemsByDesc(keyword);
+                    updateFullCost();
+                }
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (isDescFilterActive) {
+                    recycleAdapter.filterItemsByDesc(newText);
+                    updateFullCost();
+                }
+
+                return false;
+            }
+        });
     }
 
     /**
@@ -403,6 +446,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.descriptionAscending);
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
     }
 
@@ -411,6 +455,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Collections.sort(dataList, Item.descriptionAscending);
         Collections.reverse(dataList);
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
     }
 
@@ -418,6 +463,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.makeAscending);
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
     }
 
@@ -426,6 +472,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Collections.sort(dataList, Item.makeAscending);
         Collections.reverse(dataList);
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
     }
 
@@ -433,6 +480,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.valueAscending);
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
     }
 
@@ -441,6 +489,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Collections.sort(dataList, Item.valueAscending);
         Collections.reverse(dataList);
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
     }
 
