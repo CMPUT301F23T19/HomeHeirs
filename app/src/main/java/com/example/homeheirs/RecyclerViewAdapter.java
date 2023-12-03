@@ -77,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Item item = item_data.get(position);
 
         holder.name.setText(item.getName());
-        holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
+        holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month(), item.getPurchase_day()));
         holder.description.setText(item.getDescription());
     // double check if this if needed
         if (selected_items.contains(item_data.get(position))) {
