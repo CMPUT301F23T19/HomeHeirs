@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,8 +42,11 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, AddItemFragment.OnFragmentInteractionListener {
 
     private ArrayList<Item> dataList;
+    private ArrayList<Item> dataCopyList;
+    private ArrayList<Item> filteredList = new ArrayList<>();
     private RecyclerView itemList;
     private RecyclerViewAdapter recycleAdapter;
+    private RecyclerViewAdapter recycleAdapter_filter;
     private ArrayAdapter<Item> itemAdapter;
     private TextView total_estimated_value;
     private FirebaseFirestore db;
@@ -52,10 +56,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     // Class through which database interactions should be handled
     private FirebaseOperations firebaseOperations;
+    private FirebaseOperations firebaseOperations_forfilter;
 
     private LinearLayout custom_bar ;
     private LinearLayout original_bar;
 
+    // Sort buttons
     private Button sortButton;
     private LinearLayout sortView1;
     private LinearLayout sortView2;
@@ -63,17 +69,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private TextView asc;
     private TextView desc;
 
-    // Filter Buttons and Search bar
+    // Filter buttons
     private LinearLayout filterLayout;
     private boolean filterHidden = true;
     private boolean isDescFilterActive = false;
+    private boolean isMakeFilterActive = false;
+    private boolean isTagsFilterActive = false;
 
     // Create firebase auth variables
     FirebaseAuth auth;
     FirebaseUser user;
 
     private BottomNavigationView bottomNavigationView;
-
     private String userId;
 
     /**
@@ -103,14 +110,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemsRef = db.collection("items");
         total_estimated_value = findViewById(R.id.total_value_amount);
         firebaseOperations = new FirebaseOperations(total_estimated_value,userId);
-        dataList= firebaseOperations.get_dataList();
+        firebaseOperations_forfilter = new FirebaseOperations(total_estimated_value,userId);
+        dataList = firebaseOperations.get_dataList();
+        dataCopyList = firebaseOperations_forfilter.get_dataList(); // copy of data for fitering
 
-        // initialize the array and set up the Array Adapter with recycle view
-
+        // Initialize the array of items, and set up the RecyclerViewAdapter
         itemList = findViewById(R.id.item_list);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         recycleAdapter = new RecyclerViewAdapter(this,itemList,dataList);
-        recycleAdapter.setClickListener( this);
+
+        // The following are for filtering needs
+        recycleAdapter_filter = new RecyclerViewAdapter(this,itemList,dataCopyList);
+        firebaseOperations_forfilter.setAdapter(recycleAdapter_filter);
+        firebaseOperations_forfilter.listenForDataChanges();
+
+        recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
 
         firebaseOperations.setAdapter(recycleAdapter);
@@ -141,6 +155,19 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             firebaseOperations.deleteData(recycleAdapter.getSelected_items());
 
             recycleAdapter.resetSelected_items();
+        });
+
+        // Sort button functionality
+        sortButton = (Button) findViewById(R.id.sort_item_button);
+        sortView1 = (LinearLayout) findViewById(R.id.sortLayoutAsc);
+        sortView2 = (LinearLayout) findViewById(R.id.sortLayoutDes);
+        asc = findViewById(R.id.asc);
+        desc = findViewById(R.id.desc);
+
+        hideSort();
+
+        sortButton.setOnClickListener( v -> {
+            showSortTapped(v);
         });
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -194,19 +221,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             }
         });
 
-        sortButton = (Button) findViewById(R.id.sort_item_button);
-        sortView1 = (LinearLayout) findViewById(R.id.sortLayoutAsc);
-        sortView2 = (LinearLayout) findViewById(R.id.sortLayoutDes);
-        asc = findViewById(R.id.asc);
-        desc = findViewById(R.id.desc);
-
-        hideSort();
-
-        sortButton.setOnClickListener( v -> {
-            showSortTapped(v);
-        });
-
-        // Filter buttons functionality
+        // Filter button "DESCR." functionality
         Button descFilterButton = findViewById(R.id.descFilterButton);
         descFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,12 +235,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     searchView.setVisibility(View.GONE);
                 }
 
-                recycleAdapter.setDescFilterActive(isDescFilterActive);
+                // Set list of items back to original
+                if (!isDescFilterActive) {
+                    dataList = firebaseOperations.get_dataList();
+                }
+            }
+        });
 
-                if (isDescFilterActive) {
-                    String keyword = searchView.getQuery().toString();
-                    recycleAdapter.filterItemsByDesc(keyword);
-                    updateFullCost();
+        // Filter button "MAKE" functionality
+        Button makeFilterButton = findViewById(R.id.makeFilterButton);
+        makeFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMakeFilterActive = !isMakeFilterActive;
+
+                // Show/hide Search bar based on button's state
+                if (isMakeFilterActive) {
+                    searchView.setVisibility(View.VISIBLE);
+                } else {
+                    searchView.setVisibility(View.GONE);
+                }
+
+                // Set list of items back to original
+                if (!isMakeFilterActive) {
+                    dataList = firebaseOperations.get_dataList();
                 }
             }
         });
@@ -239,11 +272,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (isDescFilterActive) {
-                    recycleAdapter.filterItemsByDesc(newText);
-                    updateFullCost();
+                    filterListByDesc(newText);
                 }
 
-                return false;
+                if (isMakeFilterActive) {
+                    filterListByMake(newText);
+                }
+
+                return true;
+            }
+        });
+
+        // Filter button "TAGS" functionality
+        Button tagsFilterButton = findViewById(R.id.tagsFilterButton);
+        tagsFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isTagsFilterActive = !isTagsFilterActive;
+
+
             }
         });
     }
@@ -281,8 +328,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         return true;
     }
-/*
-    public void delSelectedItems(ArrayList<Item> dataList){
+
+    /*public void delSelectedItems(ArrayList<Item> dataList){
 
 
         ArrayList<Item> selectedItems = recycleAdapter.getSelected_items();
@@ -302,28 +349,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         //recycleAdapter.notifyDataSetChanged();
     }*/
 
-
-
-
-
-
-
     /**
      * Called when the "OK" button is pressed in the AddItemFragment.
      *
      * @param item The item to be added.
      */
     public void onOKPressed(Item item) {
-
-
         firebaseOperations.addData(item);
-
     }
 
     //  When u press ok upon editing the expense and province it sets the name and province to what is in the edit text
-
-
-
     // We should have a list of the items to edit-make this change
     /**
      * Called when the "OK" button is pressed in the AddTagFragment.
@@ -353,7 +388,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     }
 
-
     /**
      * Updates the total estimated value displayed on the UI.
      */
@@ -367,8 +401,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         this.total_estimated_value.setText(String.format(Locale.getDefault(), "$%.2f", total_estimated_value));
     }
-
-
 
     /**
      * Changes the visibility of the toolbox to switch between the original toolbox and one showing
@@ -507,4 +539,62 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 //        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
 //        itemList.setAdapter(recycleAdapter);
 //    }
+
+    /**
+     * Filters the list of items by their description based on provided keyword
+     *
+     * @param keyword - user input to filter items by description
+     */
+    private void filterListByDesc(String keyword) {
+        // Create new list to store filtered items
+        filteredList = new ArrayList<>();
+
+        // Iterate through each item in original list
+        for (Item item : dataCopyList) {
+            // Check if description contains keyword
+            if (item.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        // Check if no items are filtered
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this,"No data available", Toast.LENGTH_SHORT).show();
+        }
+
+        // Otherwise, update RecyclerViewAdapter
+        dataList.clear();
+        dataList.addAll(filteredList);
+        recycleAdapter.notifyDataSetChanged();
+        updateFullCost();
+    }
+
+    /**
+     * Filters the list of items by their make based on provided keyword
+     *
+     * @param keyword - user input to filter by make
+     */
+    private void filterListByMake(String keyword) {
+        // Create new list to store filtered items
+        filteredList = new ArrayList<>();
+
+        // Iterate through each item in original list
+        for (Item item : dataCopyList) {
+            // Check if description contains keyword
+            if (item.getMake().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        // Check if no items are filtered
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this,"No data available", Toast.LENGTH_SHORT).show();
+        }
+
+        // Otherwise, update RecyclerViewAdapter
+        dataList.clear();
+        dataList.addAll(filteredList);
+        recycleAdapter.notifyDataSetChanged();
+        updateFullCost();
+    }
 }
