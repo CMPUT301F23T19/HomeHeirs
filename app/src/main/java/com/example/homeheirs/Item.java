@@ -272,19 +272,29 @@ public class Item implements Serializable {
         }
     };
 
-//    public static Comparator<Item> tagAscending = new Comparator<Item>()
-//    {
-//        @Override
-//        public int compare(Item item1, Item item2)
-//        {
-//            String make1 = item1.getTag_list();
-//            String make2 = item2.getMake();
-//
-//            make1 = make1.toLowerCase();
-//            make2 = make2.toLowerCase();
-//
-//            return make1.compareTo(make2);
-//        }
-//    };
+    public static Comparator<Item> tagAscending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            List<Tag> tags1 = item1.getTag_list();
+            List<Tag> tags2 = item2.getTag_list();
+
+            String tag1 = tags1.get(0).getTag_name();
+            String tag2 = tags2.get(0).getTag_name();
+
+            // Compare the first tags
+            int result = tag1.compareToIgnoreCase(tag2);
+
+            // If the first tags are equal, compare the next tags
+            if (result == 0 && tags1.size() > 1 && tags2.size() > 1) {
+                tag1 = tags1.get(1).getTag_name();
+                tag2 = tags2.get(1).getTag_name();
+                result = tag1.compareToIgnoreCase(tag2);
+            }
+
+            return result;
+        }
+    };
 
 }

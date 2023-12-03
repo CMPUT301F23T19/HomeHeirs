@@ -527,20 +527,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
-//    public void tagsASCTapped(View view)
-//    {
-//        Collections.sort(dataList, Item.tagAscending);
-//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-//        itemList.setAdapter(recycleAdapter);
-//    }
-//
-//    public void tagsDESTapped(View view)
-//    {
-//        Collections.sort(dataList, Item.tagAscending);
-//        Collections.reverse(dataList);
-//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-//        itemList.setAdapter(recycleAdapter);
-//    }
+    public void tagsASCTapped(View view)
+    {
+        Collections.sort(dataList, Item.tagAscending);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void tagsDESTapped(View view)
+    {
+        Collections.sort(dataList, Item.tagAscending);
+        Collections.reverse(dataList);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
+        itemList.setAdapter(recycleAdapter);
+    }
 
     /**
      * Filters the list of items by their description based on provided keyword
