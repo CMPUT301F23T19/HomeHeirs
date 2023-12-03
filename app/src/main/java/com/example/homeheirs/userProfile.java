@@ -16,6 +16,11 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+/**
+ * Class thats responsible for showing some user information (thier email)
+ * as well as handling the logout
+ */
 public class userProfile extends AppCompatActivity {
 
     FirebaseAuth auth;
@@ -30,6 +35,12 @@ public class userProfile extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+
+    /**
+     * Method For when the acitivty starts, the activity sets the users username and presents a logout button
+     * which logs the indiviudal out
+     * @param savedInstanceState-Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +61,8 @@ public class userProfile extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
 
+
+        // The navigation view is used to navigate bewteen the different pages
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
 
             @Override
@@ -71,7 +84,7 @@ public class userProfile extends AppCompatActivity {
         });
 
         email_toDisplay=findViewById(R.id.user_email_textView);
-        password_toDisplay = findViewById(R.id.user_password_textView);
+       // password_toDisplay = findViewById(R.id.user_password_textView);
         logout_button = findViewById(R.id.logout_button);
 
 
@@ -79,6 +92,7 @@ public class userProfile extends AppCompatActivity {
         email_toDisplay.setText(user.getEmail());
         // we cannot display the password currently
 
+        // logout button logs the user out
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

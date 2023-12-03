@@ -162,10 +162,11 @@ public class AddItemFragment extends DialogFragment {
                         // validate to make sure non empty string given
 
 
+                        if(validate(name,month,year,description,make,model,serialNumber,value,detail)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
                             listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
                             // Only dismiss dialog if error check passes
-                            dialog.dismiss();
+                            dialog.dismiss();}
                     }
                 });
             }
@@ -174,19 +175,54 @@ public class AddItemFragment extends DialogFragment {
         return dialog;}
 
 
-    /**
-     * Validates the input in the EditText fields.
-     *
-     * @param editText The EditText to be validated.
-     * @param text     The text entered in the EditText.
-     * @return True if the input is valid, false otherwise.
-     */
-    private boolean validate(EditText editText, String text) {
-        if (text.isEmpty()) {
-            editText.requestFocus();
-            editText.setError("Field Can't be Empty");
-            return false;
+//    /**
+//     * Validates the input in the EditText fields.
+//     *
+//     * @param editText The EditText to be validated.
+//     * @param text     The text entered in the EditText.
+//     * @return True if the input is valid, false otherwise.
+//     */
+    private boolean validate(String name, int month, int year, String description, String make, String model, int serialNumber, double value, String detail) {
+
+        boolean check = true;
+        if (name.isEmpty()) {
+            itemName.requestFocus();
+            itemName.setError("Please enter a name");
+            check=false;
         }
-        return true;
+
+        if (month <= 0 || month > 12) {
+            purchaseMonth.requestFocus();
+            purchaseMonth.setError("Please enter a valid month");
+            check=false;
+        }
+
+        if (year < 1990 || year > 2035) {
+            purchaseYear.requestFocus();
+            purchaseYear.setError("Please enter a valid year between 1990 and 2035");
+            check=false;
+        }
+
+        if (make.isEmpty()) {
+            itemMake.requestFocus();
+            itemMake.setError("Please enter a make");
+            check=false;
+        }
+
+        if (model.isEmpty()) {
+            itemModel.requestFocus();
+            itemModel.setError("Please enter a model");
+            check=false;
+        }
+
+        if (value < 0) {
+            estimatedValue.requestFocus();
+            estimatedValue.setError("Please enter a valid value");
+            check=false;
+        }
+
+
+
+        return check;
     }
 }
