@@ -290,7 +290,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             public void onClick(View v) {
                 isTagsFilterActive = !isTagsFilterActive;
 
-
+                if (!isTagsFilterActive) {
+                    dataList = firebaseOperations.get_dataList();
+                }
             }
         });
     }
