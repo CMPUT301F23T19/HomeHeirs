@@ -25,6 +25,7 @@ import java.util.Locale;
 public class AddItemFragment extends DialogFragment {
     private EditText itemName;
     private EditText purchaseMonth;
+    private EditText purchaseDay;
     private EditText purchaseYear;
     private EditText itemDescription;
     private EditText itemMake;
@@ -121,6 +122,7 @@ public class AddItemFragment extends DialogFragment {
 
         itemName = view.findViewById(R.id.item_name_edit_text);
         purchaseMonth = view.findViewById(R.id.purchase_month_edit_text);
+        purchaseDay = view.findViewById(R.id.purchase_day_edit_text);
         purchaseYear = view.findViewById(R.id.purchase_year_edit_text);
         itemDescription = view.findViewById(R.id.description_edit_text);
         itemMake = view.findViewById(R.id.make_edit_text);
@@ -152,6 +154,7 @@ public class AddItemFragment extends DialogFragment {
 
                         String name = itemName.getText().toString();
                         int month = Integer.parseInt(purchaseMonth.getText().toString());
+                        int day = Integer.parseInt(purchaseDay.getText().toString());
                         int year = Integer.parseInt(purchaseYear.getText().toString());
                         String description = itemDescription.getText().toString();
                         String make = itemMake.getText().toString();
@@ -162,9 +165,9 @@ public class AddItemFragment extends DialogFragment {
                         // validate to make sure non empty string given
 
 
-                        if(validate(name,month,year,description,make,model,serialNumber,value,detail)){
+                        if(validate(name,month,day, year,description,make,model,serialNumber,value,detail)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
-                            listener.onOKPressed(new Item(name, month, year, description, make, model, serialNumber, value, detail));
+                            listener.onOKPressed(new Item(name, month, day, year, description, make, model, serialNumber, value, detail));
                             // Only dismiss dialog if error check passes
                             dialog.dismiss();}
                     }
@@ -182,7 +185,7 @@ public class AddItemFragment extends DialogFragment {
 //     * @param text     The text entered in the EditText.
 //     * @return True if the input is valid, false otherwise.
 //     */
-    private boolean validate(String name, int month, int year, String description, String make, String model, int serialNumber, double value, String detail) {
+    private boolean validate(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
 
         boolean check = true;
         if (name.isEmpty()) {
@@ -192,6 +195,12 @@ public class AddItemFragment extends DialogFragment {
         }
 
         if (month <= 0 || month > 12) {
+            purchaseMonth.requestFocus();
+            purchaseMonth.setError("Please enter a valid month");
+            check=false;
+        }
+
+        if (day <= 0 || day > 31) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
             check=false;
