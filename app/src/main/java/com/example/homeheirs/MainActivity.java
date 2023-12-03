@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -160,6 +163,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
        updateFullCost();
 
 
+       // search bar
+
+        EditText editTextSearch = findViewById(R.id.search_edit_text);
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // filter the dataList based on the search text
+
+                recycleAdapter.filter(s.toString());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
 
 
@@ -202,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         sortButton.setOnClickListener( v -> {
             showSortTapped(v);
         });
+
+
+
 
     }
 

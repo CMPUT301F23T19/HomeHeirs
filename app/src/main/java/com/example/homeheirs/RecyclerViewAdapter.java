@@ -27,7 +27,9 @@ import java.util.Locale;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Item> item_data;
+    private ArrayList<Item> item_data;  // original data
+
+    private ArrayList<Item> item_data_full;  // Full list for Filtering
     private ArrayList<Item> selected_items= new ArrayList<>();
     private Context context;
     private ItemClickListener ClickListener;
@@ -46,9 +48,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     RecyclerViewAdapter(Context context,RecyclerView recyclerView1, ArrayList<Item> data) {
         this.context = context;
         this.item_data = data;
+        this.item_data_full = new ArrayList<>(data); // initialize with full data
         this.recyclerView = recyclerView1;
 
     }
+    // filter of name and description
+    public void filter(String text) {
+        item_data.clear();
+
+        if (text.isEmpty()) {
+            item_data.addAll(item_data_full);
+        }
+        else{
+
+            text = text.toLowerCase();
+            for (Item item : item_data_full){
+
+                if(item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase().contains(text)){
+                    item_data.add(item);
+                }
+
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 
     /**
      * method that inflates context.xml file which contains layouout for each individual row
