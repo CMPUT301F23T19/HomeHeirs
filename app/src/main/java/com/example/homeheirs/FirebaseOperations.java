@@ -88,8 +88,8 @@ public class FirebaseOperations {
                         Item item = doc.toObject(Item.class);
 //
 
-                        Log.i("Firestore", String.format("Item(%s, %d, %d, %s, %s, %s, %s, %s, %s) fetched",
-                                name, item.getPurchase_month(), item.getPurchase_year(), item.getDescription(),
+                        Log.i("Firestore", String.format("Item(%s, %d, %d, %d, %s, %s, %s, %s, %s, %s) fetched",
+                                name, item.getPurchase_month(), item.getPurchase_day(), item.getPurchase_year(), item.getDescription(),
                                 item.getMake(), item.getModel(), item.getSerial_number(), item.getEstimated_value(),
                                 item.getComment()));
 

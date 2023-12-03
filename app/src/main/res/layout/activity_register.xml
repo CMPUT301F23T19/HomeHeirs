@@ -51,12 +51,12 @@
 
     <TextView
         android:id="@+id/ConfirmPassword_text_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_width="178dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="56dp"
         android:text="Confirm Password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.298"
+        app:layout_constraintHorizontal_bias="0.377"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Password_input_register" />
 
@@ -65,8 +65,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="352dp"
+        android:layout_marginBottom="56dp"
         android:ems="10"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/ConfirmPassword_text_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,8 +77,8 @@
 
     <EditText
         android:id="@+id/ConfirmPassword_input_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
         android:ems="10"
         android:hint="Retype Password"
         android:inputType="textPassword"
@@ -90,10 +92,14 @@
         android:id="@+id/register_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
-        android:layout_marginBottom="264dp"
+        android:layout_marginStart="285dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginBottom="252dp"
         android:text="OK"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ConfirmPassword_input_register" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

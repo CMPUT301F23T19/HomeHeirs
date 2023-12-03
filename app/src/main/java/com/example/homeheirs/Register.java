@@ -19,6 +19,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+/**
+ * Class That takes an email and password and creates an account using Firebase auth
+ * @author Arsalan Ahmed
+ * Source: Youtube video
+ * Url : https://www.youtube.com/watch?v=QAKq8UBv4GI
+ */
+
 public class Register extends AppCompatActivity {
 
     // Initalize the text and editviews
@@ -28,6 +36,10 @@ public class Register extends AppCompatActivity {
     private TextView register_button;
 
 
+    /**
+     * Method Describing what to do on Start, if user already logged in, take them to
+     * the mainactivity
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -39,6 +51,11 @@ public class Register extends AppCompatActivity {
             finish();
         }
     }
+
+    /**
+     * Method That actuallly, creates and account, where once created, logs the user
+     * and starts the Login activity,
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,21 +118,29 @@ public class Register extends AppCompatActivity {
 
 
     }
+
+    /**
+     * Method for Validating User input
+     *  @param username:String- contains username to validate not empty
+     *  @param password:String - contains password to validate not empty
+     * @param confirm_password:String - Contains the confirm pass field and makes sure
+     * that passwords are identical
+     */
     private boolean validate(String username, String password, String confirm_password){
         // error check function
         if (username.isEmpty()){
             editText_username.requestFocus();
-            editText_username.setError("Field Can'nt be Empty");
+            editText_username.setError("Field Can't be Empty");
             return false;
         }
         if (password.isEmpty()){
             editText_password.requestFocus();
-            editText_password.setError("Field Can'nt be Empty");
+            editText_password.setError("Field Can't be Empty");
             return false;
         }
         if (confirm_password.isEmpty()){
             editText_password_confirm.requestFocus();
-            editText_password_confirm.setError("Field Can'nt be Empty");
+            editText_password_confirm.setError("Field Can't be Empty");
             return false;
         }
         // Check to make sure password is the same

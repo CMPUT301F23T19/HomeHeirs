@@ -56,6 +56,7 @@ dependencies {
         exclude(module = "protobuf-lite")
     }
 
+
 //    implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
 //    implementation("com.google.firebase:firebase-firestore")
 //    implementation("androidx.core:core-ktx:1.8.0")
