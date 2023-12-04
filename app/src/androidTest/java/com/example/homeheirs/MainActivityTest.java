@@ -95,14 +95,6 @@ public class MainActivityTest {
 
         onView(withId(R.id.delete_button)).perform(click());
 
-
-
-
-
-
-
-
-
 // Check if text "Edmonton" is matched with any of the text
 
         //onView(withText("Edmonton")).check(matches(isDisplayed()));
@@ -173,7 +165,6 @@ public class MainActivityTest {
         onView(withText("Hardrive")).check(matches(isDisplayed()));
         onView(withText("Chair")).check(matches(isDisplayed()));
 
-
         onView(withId(R.id.item_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
 
@@ -188,50 +179,7 @@ public class MainActivityTest {
         onView(withText("Hardrive")).check(doesNotExist());
         onView(withText("Chair")).check(doesNotExist());
 
-
-
-
     }
-
-
-//    @Test
-//    public void CheckConcistencyAndMultipleDelete(){
-//
-//        // check if items from previous checks present
-//        onView(withText("Computer")).check(matches(isDisplayed()));
-//        onView(withText("Hardrive")).check(matches(isDisplayed()));
-//        onView(withText("Chair")).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-//
-//        onView(withId(R.id.delete_button)).perform(click());
-//
-//        onView(withText("Computer")).check(doesNotExist());
-//        onView(withText("Hardrive")).check(doesNotExist());
-//        onView(withText("Chair")).check(doesNotExist());
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    }
-
-
-
-
-
-
 
     @Test
     public void AddTag() {
@@ -551,20 +499,6 @@ public class MainActivityTest {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    @Test
 //    public void testClearCity(){

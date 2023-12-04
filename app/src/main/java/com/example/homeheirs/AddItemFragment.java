@@ -235,57 +235,58 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
      * @param value      The estimated value of the item.
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
+
     private boolean validate(String name, String month, String day, String year, String make, String model, String serial_number, String value) {
 
-        boolean check = true;
         if (name.isEmpty()) {
             itemName.requestFocus();
             itemName.setError("Please enter a name");
-            check=false;
+            return false;
         }
 
         if (month.isEmpty() || Integer.parseInt(month) <= 0 || Integer.parseInt(month) > 12) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
-            check=false;
+            return false;
         }
 
         if (day.isEmpty() || Integer.parseInt(day) <= 0 || Integer.parseInt(day) > 31) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
-            check=false;
+            return false;
         }
 
         if (year.isEmpty() || Integer.parseInt(year) < 1990 || Integer.parseInt(year) > 2035) {
             purchaseYear.requestFocus();
             purchaseYear.setError("Please enter a valid year between 1990 and 2035");
-            check=false;
+            return false;
         }
 
         if (make.isEmpty()) {
             itemMake.requestFocus();
             itemMake.setError("Please enter a make");
-            check=false;
+            return false;
         }
 
         if (model.isEmpty()) {
             itemModel.requestFocus();
             itemModel.setError("Please enter a model");
-            check=false;
+            return false;
         }
 
         if (serial_number.isEmpty()) {
             itemSerialNumber.requestFocus();
             itemSerialNumber.setError("Please enter a valid number");
-            check=false;
+            return false;
         }
 
         if (value.isEmpty() || Double.parseDouble(value) < 0) {
             estimatedValue.requestFocus();
             estimatedValue.setError("Please enter a valid value");
-            check=false;
+            return false;
         }
 
-        return check;
+        return true;
+
     }
 }

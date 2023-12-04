@@ -34,16 +34,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
-
-
-
 // This requires to be in the Login activity, ie you need to logout
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LoginTest {
-
-
 
     @Rule
     public ActivityScenarioRule<login> scenario = new ActivityScenarioRule<login>(login.class);
@@ -67,8 +61,6 @@ public class LoginTest {
 //        }
 //
 //    }
-
-
 
     @Test
     public void testEmptyUsername() {
