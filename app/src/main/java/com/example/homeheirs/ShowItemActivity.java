@@ -287,7 +287,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                     String value = valueTextView.getText().toString();
                     String detail = commentTextView.getText().toString();
 
-                    Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, serialNumber, Double.parseDouble(value), detail);
+                    Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), detail);
                     newItem.setDate_identifier(item.getDate_identifier());
                     /**
                      * Updates the item details in Firestore with the updated values

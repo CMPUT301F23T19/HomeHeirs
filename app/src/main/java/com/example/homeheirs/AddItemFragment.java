@@ -190,9 +190,9 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
                         comment = itemComment.getText().toString();
                         // validate to make sure non empty string given
 
-                        if(validate(name,month,day,year,make,model,value)){
+                        if(validate(name,month,day,year,make,model,serialNumber,value)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
-                            listener.onOKPressed(new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, serialNumber, Double.parseDouble(value), comment));
+                            listener.onOKPressed(new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), comment));
                             // Only dismiss dialog if error check passes
                             dialog.dismiss();}
                     }
@@ -235,7 +235,7 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
      * @param value      The estimated value of the item.
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
-    private boolean validate(String name, String month, String day, String year, String make, String model, String value) {
+    private boolean validate(String name, String month, String day, String year, String make, String model, String serial_number, String value) {
 
         boolean check = true;
         if (name.isEmpty()) {
@@ -271,6 +271,12 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
         if (model.isEmpty()) {
             itemModel.requestFocus();
             itemModel.setError("Please enter a model");
+            check=false;
+        }
+
+        if (serial_number.isEmpty()) {
+            itemSerialNumber.requestFocus();
+            itemSerialNumber.setError("Please enter a valid number");
             check=false;
         }
 

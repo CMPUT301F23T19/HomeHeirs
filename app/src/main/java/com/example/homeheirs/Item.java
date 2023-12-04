@@ -26,7 +26,7 @@ public class Item implements Serializable {
     private String description;
     private String make;
     private String model;
-    private String serial_number;
+    private int serial_number;
     private double estimated_value;
     private String comment;
 
@@ -106,7 +106,7 @@ public class Item implements Serializable {
      * @param estimated_value The estimated value of the item.
      * @param comment         Additional comments about the item.
      */
-    public Item(String name, int purchase_month, int purchase_day, int purchase_year, String description, String make, String model, String serial_number, double estimated_value, String comment) {
+    public Item(String name, int purchase_month, int purchase_day, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
         this.name = name;
         this.purchase_month = purchase_month;
         this.purchase_day = purchase_day;
@@ -182,11 +182,11 @@ public class Item implements Serializable {
         this.model = model;
     }
 
-    public String getSerial_number() {
+    public int getSerial_number() {
         return serial_number;
     }
 
-    public void setSerial_number(String serial_number) {
+    public void setSerial_number(int serial_number) {
         this.serial_number = serial_number;
     }
 
