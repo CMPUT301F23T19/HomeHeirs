@@ -78,7 +78,7 @@ public class ChoosePhotoOptionFragment extends DialogFragment {
 
         library_choice = view.findViewById(R.id.fragment_libray_option);
         takePhoto_choice = view.findViewById(R.id.fragment_camera_option);
-        imageView=view.findViewById(R.id.imageView_fragment);
+
 
 
 
@@ -153,12 +153,12 @@ public class ChoosePhotoOptionFragment extends DialogFragment {
 
 
 
-                imageView.setImageResource(R.drawable.ic_home);
+
 
                 library_choice.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        System.out.println("dasf");
+
                         camera_selected=false;
                         // Open the gallery to choose photos
                         openGallery();
