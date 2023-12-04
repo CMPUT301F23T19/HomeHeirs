@@ -1,7 +1,10 @@
 package com.example.homeheirs;
 
 import org.junit.Test;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import static org.junit.Assert.*;
 
@@ -123,5 +126,23 @@ public class ItemTest {
 
         assertEquals(tag2, itemList.get(0).getTag_list().get(1));
         assertEquals(tag3, itemList.get(1).getTag_list().get(1));
+    }
+
+    @Test
+    public void testCreateCustomDate() {
+        // Given
+        int day = 4;
+        int month = 12;
+        int year = 2023;
+
+        // When
+        Date result = Item.createCustomDate(day, month, year);
+
+        assertNotNull(String.valueOf(result));
+
+        // You can also check if the result matches the expected date string
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String actualDateString = dateFormat.format(result);
+        assertEquals("2023/12/04", actualDateString);
     }
 }
