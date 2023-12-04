@@ -1,5 +1,7 @@
 package com.example.homeheirs;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,9 +13,16 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -24,6 +33,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,8 +56,6 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
      * The item whose details are displayed and can be edited.
      */
     private Item item;
-
-
 
     /**
      * The instance of FirebaseFirestore for interacting with Firestore.
@@ -71,6 +84,22 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
     // create Chipgroup for our tags
     private ChipGroup tag_group;
 
+    String api = "https://api.barcodelookup.com/v3/products?barcode=" + "9780140157376" + "&formatted=y&key=" + "4w9q79i04ahvo4tspqzi22e2j4jle2";
+    String api_base = "https://api.barcodelookup.com/v3/products?barcode=";
+    String api_key = "4w9q79i04ahvo4tspqzi22e2j4jle2";
+    String barcode_raw_value;
+    String description;
+    String serial_num;
+    EditText nameTextView;
+    EditText monthTextView;
+    EditText yearTextView;
+    EditText descriptionTextView;
+    EditText makeTextView;
+    EditText modelTextView;
+    EditText serialNumTextView;
+    EditText valueTextView;
+    EditText commentTextView;
+
     /**
      * Initializes the activity, sets up the UI, and retrieves the item details.
      *
@@ -81,9 +110,18 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_item_details);
 
+        nameTextView = findViewById(R.id.show_item_name);
+        monthTextView = findViewById(R.id.show_purchase_month);
+        yearTextView = findViewById(R.id.show_purchase_year);
+        descriptionTextView = findViewById(R.id.show_description);
+        makeTextView = findViewById(R.id.show_make);
+        modelTextView = findViewById(R.id.show_model);
+        serialNumTextView = findViewById(R.id.show_serial_no);
+        valueTextView = findViewById(R.id.show_value);
+        commentTextView = findViewById(R.id.show_comments);
+
         // Initialize Firestore instance and Collection Reference
         db = FirebaseFirestore.getInstance();
-
 
         image_deletePaths=new ArrayList<>();
 
@@ -165,38 +203,20 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
          */
         if (item != null && item.getName() != null) {
             // Set Values for each EditText
-            EditText nameTextView = findViewById(R.id.show_item_name);
             nameTextView.setText(item.getName());
-
-            EditText monthTextView = findViewById(R.id.show_purchase_month);
             monthTextView.setText(String.valueOf(item.getPurchase_month()));
+            EditText dayTextView = findViewById(R.id.show_purchase_day);
+            dayTextView.setText(String.valueOf(item.getPurchase_day()));
 
             EditText yearTextView = findViewById(R.id.show_purchase_year);
             yearTextView.setText(String.valueOf(item.getPurchase_year()));
-
-            EditText descriptionTextView = findViewById(R.id.show_description);
-            descriptionTextView.setText(item.getDescription());
-
-            EditText makeTextView = findViewById(R.id.show_make);
-            makeTextView.setText(item.getMake());
-
-            EditText modelTextView = findViewById(R.id.show_model);
+            descriptionTextView.setText(item.getDescription());makeTextView.setText(item.getMake());
             modelTextView.setText(item.getModel());
-
-            EditText serialNumTextView = findViewById(R.id.show_serial_no);
             serialNumTextView.setText(String.valueOf(item.getSerial_number()));
-
-            EditText valueTextView = findViewById(R.id.show_value);
             valueTextView.setText(String.valueOf(item.getEstimated_value()));
-
-            EditText commentTextView = findViewById(R.id.show_comments);
             commentTextView.setText(item.getComment());
 
-           // TextView tagsTextView = findViewById(R.id.show_tags);
-            //tagsTextView.setText(formatTags(item.getTag_list()));
-
             tag_group= findViewById(R.id.show_tags);
-
             // implement the creations of the chips
             for (int i=0;i<item.getTag_list().size();i++){
 
@@ -223,8 +243,6 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                 tag_group.addView(chip);
 
             }
-
-
             // work on implementing gridview
             image_grid_view = findViewById(R.id.photograph_grid);
 
@@ -248,6 +266,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                     // Get the edited values from the EditText fields
                     EditText nameTextView = findViewById(R.id.show_item_name);
                     EditText monthTextView = findViewById(R.id.show_purchase_month);
+                    EditText dayTextView = findViewById(R.id.show_purchase_day);
                     EditText yearTextView = findViewById(R.id.show_purchase_year);
                     EditText descriptionTextView = findViewById(R.id.show_description);
                     EditText makeTextView = findViewById(R.id.show_make);
@@ -258,6 +277,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
                     String name = nameTextView.getText().toString();
                     String month = monthTextView.getText().toString();
+                    String day = dayTextView.getText().toString();
                     String year = yearTextView.getText().toString();
                     String description = descriptionTextView.getText().toString();
                     String make = makeTextView.getText().toString();
@@ -266,7 +286,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                     String value = valueTextView.getText().toString();
                     String detail = commentTextView.getText().toString();
 
-                    Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), detail);
+                    Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), detail);
                     newItem.setDate_identifier(item.getDate_identifier());
                     /**
                      * Updates the item details in Firestore with the updated values
@@ -280,6 +300,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                             //double check this otherwise .set(newItem)
                             .update("name", name,
                                     "purchase_month", Integer.parseInt(month),
+                                    "purchase_day", Integer.parseInt(day),
                                     "purchase_year", Integer.parseInt(year),
                                     "description", description,
                                     "make", make,
@@ -311,6 +332,66 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
          * Navigates back to the previous screen or finishes the current activity.
          */
         backButton.setOnClickListener(view -> onBackPressed());
+
+        Button scanButton = findViewById(R.id.scan_button);
+        scanButton.setOnClickListener(v -> {
+            scanCode();
+        });
+
+    }
+
+    private void scanCode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLaucher.launch(options);
+    }
+
+    ActivityResultLauncher<ScanOptions> barLaucher = registerForActivityResult(new ScanContract(), result ->
+    {
+        if (result.getContents() != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ShowItemActivity.this);
+            builder.setTitle("Result");
+            api = api_base + result.getContents() + "&formatted=y&key=" + api_key;
+            getData();
+            builder.setMessage(description);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).show();
+        }
+    });
+
+    private void getData() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, api,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray singleProduct = jsonObject.getJSONArray("products");
+                            JSONObject product = singleProduct.getJSONObject(0);
+                            description = product.getString("description");
+                            descriptionTextView.setText(description);
+                            serial_num = product.getString("mpn");
+                            serialNumTextView.setText(serial_num);
+                        } catch (JSONException e) {
+                            Log.e("api", "onResponse: " + e.getMessage());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("api", "onErrorResponse:" + error.getLocalizedMessage());
+            }
+        });
+
+        queue.add(stringRequest);
     }
 
     private String formatTags(List<Tag> tagList) {
@@ -377,8 +458,5 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
             }
         });
-
-
-
     }
 }

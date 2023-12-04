@@ -5,6 +5,7 @@ import android.net.Uri;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -17,10 +18,10 @@ import java.util.Locale;
  * @author Archi Patel
  */
 
-
 public class Item implements Serializable {
     private String name;
     private int purchase_month;
+    private int purchase_day;
     private int purchase_year;
     private String description;
     private String make;
@@ -29,11 +30,13 @@ public class Item implements Serializable {
     private double estimated_value;
     private String comment;
 
-    private boolean isSelected = false;
-
+//  other private variables
     private String Date_identifier;
-
     private List<String> image_uriList;
+    /**
+     * List of tags associated with the item.
+     */
+    private List<Tag> tag_list;
 
     public String getDate_identifier() {
         return Date_identifier;
@@ -83,24 +86,18 @@ public class Item implements Serializable {
     }
 
     /**
-     * List of tags associated with the item.
-     */
-    private List<Tag> tag_list;
-
-    /**
      * Default constructor required for Firebase.
      */
     public Item(){
         //required for firebase
     }
 
-
-
     /**
      * Constructs an Item with the specified details.
      *
      * @param name            The name of the item.
      * @param purchase_month  The month of purchase.
+     * @param purchase_day    The day of purchase.
      * @param purchase_year   The year of purchase.
      * @param description     The description of the item.
      * @param make            The make of the item.
@@ -109,9 +106,10 @@ public class Item implements Serializable {
      * @param estimated_value The estimated value of the item.
      * @param comment         Additional comments about the item.
      */
-    public Item(String name, int purchase_month, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
+    public Item(String name, int purchase_month, int purchase_day, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
         this.name = name;
         this.purchase_month = purchase_month;
+        this.purchase_day = purchase_day;
         this.purchase_year = purchase_year;
         this.description = description;
         this.make = make;
@@ -119,6 +117,7 @@ public class Item implements Serializable {
         this.serial_number = serial_number;
         this.estimated_value = estimated_value;
         this.comment = comment;
+
         //initialize our list on creation in case tags need to be added
         this.tag_list = new ArrayList<>();
         this.image_uriList = new ArrayList<>();
@@ -126,9 +125,6 @@ public class Item implements Serializable {
         Date current = new Date();
         this.Date_identifier = format.format(current);
     }
-
-
-
 
     public String getName() {
         return name;
@@ -144,6 +140,14 @@ public class Item implements Serializable {
 
     public void setPurchase_month(int purchase_month) {
         this.purchase_month = purchase_month;
+    }
+
+    public int getPurchase_day() {
+        return purchase_day;
+    }
+
+    public void setPurchase_day(int purchase_day) {
+        this.purchase_day = purchase_day;
     }
 
     public int getPurchase_year() {
@@ -190,10 +194,7 @@ public class Item implements Serializable {
         return estimated_value;
     }
 
-    public void setEstimated_value(double estimated_value) {
-        this.estimated_value = estimated_value;
-    }
-
+    public void setEstimated_value(double estimated_value) {this.estimated_value = estimated_value;}
 
     public String getComment() {
         return comment;
@@ -204,21 +205,40 @@ public class Item implements Serializable {
     }
 
     /**
-     * Checks if the item is selected.
+     * Creates a custom Date object based on the given day, month, and year values.
      *
-     * @return True if the item is selected, false otherwise.
+     * @param day   The day of the month.
+     * @param month The month (1-12).
+     * @param year  The year.
+     * @return A Date object representing the custom date or null if an exception occurs during parsing.
      */
-    public boolean isSelected() {
-        return isSelected;
+    public static Date createCustomDate(int day, int month, int year){
+        String dateString = String.format("%04d/%02d/%02d", year, month, day);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            return dateFormat.parse(dateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Handle the exception appropriately in your code
+        }
     }
 
     /**
-     * Sets the selection status of the item.
-     *
-     * @param selected True to mark the item as selected, false otherwise.
+     * Comparator for sorting items in ascending order based on their custom date (purchase date).
      */
-    public void setSelected(boolean selected) {isSelected = selected;}
+    public static Comparator<Item> dateAscending = new Comparator<Item>() {
+        @Override
+        public int compare(Item item1, Item item2) {
+            Date customDate1 = createCustomDate(item1.getPurchase_day(), item1.getPurchase_month(), item1.getPurchase_year());
+            Date customDate2 = createCustomDate(item2.getPurchase_day(), item2.getPurchase_month(), item2.getPurchase_year());
 
+            return customDate1.compareTo(customDate2);
+        }
+    };
+
+    /**
+     * Comparator for sorting items in ascending order based on their description.
+     */
     public static Comparator<Item> descriptionAscending = new Comparator<Item>()
     {
         @Override
@@ -234,6 +254,9 @@ public class Item implements Serializable {
         }
     };
 
+    /**
+     * Comparator for sorting items in ascending order based on their make.
+     */
     public static Comparator<Item> makeAscending = new Comparator<Item>()
     {
         @Override
@@ -249,6 +272,9 @@ public class Item implements Serializable {
         }
     };
 
+    /**
+     * Comparator for sorting items in ascending order based on their estimated value.
+     */
     public static Comparator<Item> valueAscending = new Comparator<Item>()
     {
         @Override
@@ -261,19 +287,33 @@ public class Item implements Serializable {
         }
     };
 
-//    public static Comparator<Item> tagAscending = new Comparator<Item>()
-//    {
-//        @Override
-//        public int compare(Item item1, Item item2)
-//        {
-//            String make1 = item1.getTag_list();
-//            String make2 = item2.getMake();
-//
-//            make1 = make1.toLowerCase();
-//            make2 = make2.toLowerCase();
-//
-//            return make1.compareTo(make2);
-//        }
-//    };
+    /**
+     * Comparator for sorting items in ascending order based on their tags.
+     * It compares the first tags and, if equal, compares the next tags.
+     */
+    public static Comparator<Item> tagAscending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            List<Tag> tags1 = item1.getTag_list();
+            List<Tag> tags2 = item2.getTag_list();
+
+            String tag1 = tags1.get(0).getTag_name();
+            String tag2 = tags2.get(0).getTag_name();
+
+            // Compare the first tags
+            int result = tag1.compareToIgnoreCase(tag2);
+
+            // If the first tags are equal, compare the next tags
+            if (result == 0 && tags1.size() > 1 && tags2.size() > 1) {
+                tag1 = tags1.get(1).getTag_name();
+                tag2 = tags2.get(1).getTag_name();
+                result = tag1.compareToIgnoreCase(tag2);
+            }
+
+            return result;
+        }
+    };
 
 }

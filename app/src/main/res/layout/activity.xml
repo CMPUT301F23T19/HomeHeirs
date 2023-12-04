@@ -63,7 +63,7 @@
         android:text="Ascending"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/list_search_view">
 
     </TextView>
 
@@ -198,10 +198,8 @@
         app:layout_constraintBottom_toTopOf="@+id/total_value"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sortLayoutDes"
-
+        app:layout_constraintTop_toBottomOf="@+id/filterLayout"
         app:layout_constraintVertical_bias="1.0">
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -216,7 +214,7 @@
             android:id="@+id/total_value_text"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:text="Total Value (CAD$):"
             android:textColor="@color/black"
             android:textSize="22sp"
@@ -227,12 +225,81 @@
             android:id="@+id/total_value_amount"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="10dp"
             android:text=""
             android:textColor="@color/black"
             android:textSize="20sp"></TextView>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/sortLayoutDes">
+
+        <Button
+            android:id="@+id/allFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="allFilterTapped"
+            android:text="All"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/dateFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="dateFilterTapped"
+            android:text="Date"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/descFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="descFilterTapped"
+            android:text="Descr"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/makeFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="makeFilterTapped"
+            android:text="Make"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/tagsFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="tagsFilterTapped"
+            android:text="Tags"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <SearchView
+        android:id="@+id/list_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search"
+        app:layout_constraintTop_toBottomOf="@id/custom_toolbar">
+
+    </SearchView>
 
     <LinearLayout
         android:id="@+id/hidden_toolbar"
@@ -273,6 +340,8 @@
         app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navigation_menu"
-        tools:ignore="MissingConstraints"></com.google.android.material.bottomnavigation.BottomNavigationView>
+        tools:ignore="MissingConstraints">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

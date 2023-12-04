@@ -32,6 +32,18 @@
     </TextView>
 
     <TextView
+        android:id="@+id/make"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="Make"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description">
+    </TextView>
+
+    <TextView
         android:id="@+id/purchase_date"
         android:layout_width="150dp"
         android:layout_height="30dp"
@@ -65,6 +77,6 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description">
+        app:layout_constraintTop_toBottomOf="@+id/make">
     </View>
 </androidx.constraintlayout.widget.ConstraintLayout>

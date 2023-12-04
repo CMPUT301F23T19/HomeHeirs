@@ -27,19 +27,13 @@ import java.util.ArrayList;
  *
  */
 public class ImageAdapter extends BaseAdapter {
-
     private Context context;
-
     private ArrayList<Uri> image_paths;
-
     private ArrayList<String> delete_paths;
     private LayoutInflater layoutInflater;
 
-
-
     // One idea is to pass the item here, and then access then load the images of the item into the array
     private FragmentManager fragmentManager;
-
 
     /**
      * Constructor for the Adapter
@@ -69,7 +63,6 @@ public class ImageAdapter extends BaseAdapter {
         return image_paths.size()+1;
     }
 
-
     /**
      * Method Required for the adapter which retrievs image path
      * @param position:int
@@ -91,7 +84,6 @@ public class ImageAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-
 
     /**
      * Method Required for adapter- this method loads the images into the gridview using the Glide library
@@ -115,7 +107,7 @@ public class ImageAdapter extends BaseAdapter {
         image_view = convertView.findViewById(R.id.grid_imageView);
 
         // sets the image of very first thing in gridview
-        //Onclick produces a photooption fragment
+        // Onclick produces a photo option fragment
         if (position==0){
             image_view.setImageResource(R.drawable.plus_sign);
 
@@ -126,8 +118,7 @@ public class ImageAdapter extends BaseAdapter {
                 }
             });
 
-
-        }else {
+        } else {
 
             // Loads images into all other positions using Glide
             Glide.with(context)
@@ -146,15 +137,6 @@ public class ImageAdapter extends BaseAdapter {
                 }
             });
         }
-
-
-        // for testing purposes will remove
-
-
-
-
-
-
         return convertView;
     }
 }

@@ -15,26 +15,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-
 /**
  * Class thats responsible for showing some user information (thier email)
  * as well as handling the logout
  */
 public class userProfile extends AppCompatActivity {
-
     FirebaseAuth auth;
     FirebaseUser user;
-
     private TextView email_toDisplay,password_toDisplay;
-
     private Button logout_button;
-
-
-
-
     private BottomNavigationView bottomNavigationView;
-
 
     /**
      * Method For when the acitivty starts, the activity sets the users username and presents a logout button
@@ -55,19 +45,15 @@ public class userProfile extends AppCompatActivity {
             finish();
         }
 
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-
-
 
         // The navigation view is used to navigate bewteen the different pages
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
 
                 if (item.getItemId()== R.id.navigation_logout) {
 
@@ -78,7 +64,6 @@ public class userProfile extends AppCompatActivity {
                     return true;
                 }
 
-
                 return false;
             }
         });
@@ -86,7 +71,6 @@ public class userProfile extends AppCompatActivity {
         email_toDisplay=findViewById(R.id.user_email_textView);
        // password_toDisplay = findViewById(R.id.user_password_textView);
         logout_button = findViewById(R.id.logout_button);
-
 
         // set the two fields to the information
         email_toDisplay.setText(user.getEmail());
@@ -111,9 +95,5 @@ public class userProfile extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
-
-
 }

@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 /**
  * Class Made to implement a recycle view to help with effieciency, ease of use, and flexibility.
@@ -35,8 +37,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // Required for resetting selected items
     private RecyclerView recyclerView;
 
-
-
     /**
      * Construcor of RecyclerView Adapter
      * @param  context : Mainactivity Context passed on
@@ -47,7 +47,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.context = context;
         this.item_data = data;
         this.recyclerView = recyclerView1;
-
     }
 
     /**
@@ -77,9 +76,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Item item = item_data.get(position);
 
         holder.name.setText(item.getName());
-        holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month()));
+        holder.purchase_date.setText(String.format(Locale.getDefault(), "%d" + "-" + "%d" + "-" + "%d", item.getPurchase_year(), item.getPurchase_month(), item.getPurchase_day()));
         holder.description.setText(item.getDescription());
-    // double check if this if needed
+        holder.make.setText(item.getMake());
+        // double check if this if needed
         if (selected_items.contains(item_data.get(position))) {
             holder.itemView.setBackgroundResource(R.color.selected_color);
         } else {
@@ -98,9 +98,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return item_data.size();
     }
 
-
-
-
     /**
      * method that stores and recycles views as they are scrolled off screen
      * The method also contains code that helps with getting selected items and adding them to
@@ -108,25 +105,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * @return A viewholder containing view of each row
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
-        TextView name ;
-        TextView purchase_date ;
-        TextView description ;
-        TextView make ;
+        TextView name;
+        TextView purchase_date;
+        TextView description;
+        TextView make;
         TextView model ;
         TextView serial_number;
         TextView estimated_value;
-      TextView comment ;
+        TextView comment;
 
         ViewHolder(View itemView) {
             super(itemView);
             //will make a method for this later
 
-
             //Long click listener will detect long holds, and will allow for implementation of adding/deleting multiple items
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-
 
                     if (!is_long_clicked) {
                         is_long_clicked = true;
@@ -143,10 +138,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             itemView.setBackgroundResource(R.color.selected_color);
                             selected_items.add(item_data.get(position));
                         }
-
-                        // Notify the adapter to update the view for the clicked item
-                        //notifyItemChanged(position);
-
                     }
 
                     // If no items selected, show the original toolbox
@@ -154,19 +145,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         is_long_clicked = false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
                     }
-
                     return true;
                 }
-
             });
 
-
-             name= itemView.findViewById(R.id.name);
-             purchase_date = itemView.findViewById(R.id.purchase_date);
-             description = itemView.findViewById(R.id.description);
-
-             estimated_value = itemView.findViewById(R.id.estimated_value);
-
+            name = itemView.findViewById(R.id.name);
+            purchase_date = itemView.findViewById(R.id.purchase_date);
+            description = itemView.findViewById(R.id.description);
+            make = itemView.findViewById(R.id.make);
+            estimated_value = itemView.findViewById(R.id.estimated_value);
 
             itemView.setOnClickListener(this);
         }
@@ -197,19 +184,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     if (selected_items.size()==0){
                         is_long_clicked=false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
-
-
                     }
-                }else{
-                    // calls on itemclick method in Main Activity if not in selection mode- ie to display item details
+                } else {
+                    // calls on item click method in Main Activity if not in selection mode- ie to display item details
                     ClickListener.onItemClick(view, getAdapterPosition());
                 }
-
             }
-
         }
-
-
     }
 
     // may need this method to retrieve data once clicked
@@ -236,14 +217,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ArrayList<Item> getSelected_items(){
         // use this method to retrieve all current selected items
         // Use for deleting items and adding tags to items
-
-
         return selected_items;
-
-
-        }
-
-
+    }
 
     /**
      * Method that plays role in removing each selected item from datalist by iterating through
@@ -256,9 +231,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             item_data.remove(selected_items.get(i));
             notifyDataSetChanged();
         }
-        // Clear the selection list
+
         selected_items.clear();
-        // Reset long click state
         resetLongClickState();
         // Update the UI via MainActivity
         ((MainActivity) context).showcustomtool(is_long_clicked);
@@ -266,10 +240,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged(); // This will rebind all views with the correct state
     }
 
-
     /**
      * Resets all the selected items background color to normal and exists out of long clciked mode,
-     * ie lonclicked is set to false
+     * ie long clicked is set to false
      */
     public void resetSelected_items(){
         // use this to reset all selected items on the screen
@@ -283,14 +256,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (recycle_position != -1) {
 
                 View itemView = recyclerView.getChildAt(recycle_position);
-                if (itemView!=null){// != null) {
-                    //if (!is_long_clicked) {
+                if (itemView!=null){
 
-                        itemView.setBackgroundColor(Color.TRANSPARENT);
+                    itemView.setBackgroundColor(Color.TRANSPARENT);
 
-                    //}
                 }
-
             }
         }
 
@@ -300,14 +270,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         is_long_clicked=false;
         notifyDataSetChanged();
         ((MainActivity) context).showcustomtool(is_long_clicked);
-
     }
-
 
     // resets longClickState to avoid bugs - needed after deletion of an item
     public void resetLongClickState(){ is_long_clicked = false; }
-
-
 }
-
-
