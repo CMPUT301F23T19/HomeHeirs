@@ -310,7 +310,8 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                                     "estimated_value", Double.parseDouble(value),
                                     "detail", detail,
                                     "image_uriList", item.getImage_uriList(),
-                                    "tag_list",item.getTag_list())
+                                    "tag_list",item.getTag_list(),
+                                    "comment",detail)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
