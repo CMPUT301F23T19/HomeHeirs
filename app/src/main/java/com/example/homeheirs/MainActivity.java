@@ -210,11 +210,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     if (filterHidden == false) {
                         filterHidden = true;
                         filterLayout.setVisibility(View.GONE);
+                        resetRecyclerView();
                     }
 
                     if (sortHidden == false) {
                         sortHidden = true;
                         hideSort();
+                        resetRecyclerView();
                     }
 
                     if (searchView.getVisibility() == View.VISIBLE) {
