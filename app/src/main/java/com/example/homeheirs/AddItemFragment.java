@@ -236,7 +236,7 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
 
-    private boolean validate(String name, String month, String day, String year, String make, String model, String serial_number, String value) {
+    public boolean validate(String name, String month, String day, String year, String make, String model, String serial_number, String value) {
 
         if (name.isEmpty()) {
             itemName.requestFocus();
