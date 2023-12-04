@@ -11,9 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.Locale;
 
@@ -22,7 +27,7 @@ import java.util.Locale;
  * Provides a form for the user to input details of an item, including name, purchase date, description, make, model, serial number, estimated value, and additional comments.
  * @author Archi Patel
  */
-public class AddItemFragment extends DialogFragment {
+public class AddItemFragment extends DialogFragment implements Scanner.OnScanActivityListener{
     private EditText itemName;
     private EditText purchaseMonth;
     private EditText purchaseDay;
@@ -39,6 +44,7 @@ public class AddItemFragment extends DialogFragment {
     private String title = "Add Item";
     private Item item;
     private Boolean isEdit = false;
+    private Scanner scanner;
 
     /**
      * Constructs an AddItemFragment for editing an existing item.
@@ -140,9 +146,17 @@ public class AddItemFragment extends DialogFragment {
                 .setPositiveButton("OK",null)
                 //.setNeutralButton("Cancel", null)
                 .create();
+
+        Fragment lol = this;
+        Context F = getActivity();
+        scanner = new Scanner(getActivity(), this);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+
+                Button scanButton = view.findViewById(R.id.scan_button);
+                scanButton.setOnClickListener(v -> scanner.startScan(barLauncher));
+
                 Button button2 = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button2.setOnClickListener(new View.OnClickListener() {
 
@@ -176,6 +190,19 @@ public class AddItemFragment extends DialogFragment {
         });
         dialog.show();
         return dialog;}
+
+    private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
+            String barcodeRawValue = result.getContents();
+            scanner.scanCode(barcodeRawValue);
+        }
+    });
+
+    @Override
+    public void onScanResult(String prod_description, String prod_serial_num) {
+        itemDescription.setText(prod_description);
+        itemSerialNumber.setText(prod_serial_num);
+    }
 
 
 //    /**

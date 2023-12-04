@@ -50,7 +50,7 @@ import java.util.Locale;
  * ShowItemActivity displays the details of an item and allows the user to edit and save the changes.
  * It interacts with Firestore to update item details.
  */
-public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOptionFragment.CameraFragmentlistener, ShowEnlargedImageFragment.EnlargedFragmentlistener {
+public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOptionFragment.CameraFragmentlistener, ShowEnlargedImageFragment.EnlargedFragmentlistener, Scanner.OnScanActivityListener {
 
     /**
      * The item whose details are displayed and can be edited.
@@ -83,13 +83,8 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
     // create Chipgroup for our tags
     private ChipGroup tag_group;
-
-    String api = "https://api.barcodelookup.com/v3/products?barcode=" + "9780140157376" + "&formatted=y&key=" + "4w9q79i04ahvo4tspqzi22e2j4jle2";
-    String api_base = "https://api.barcodelookup.com/v3/products?barcode=";
-    String api_key = "4w9q79i04ahvo4tspqzi22e2j4jle2";
-    String barcode_raw_value;
-    String description;
-    String serial_num;
+    private String barcodeRawValue;
+    private Scanner scanner;
     EditText nameTextView;
     EditText monthTextView;
     EditText yearTextView;
@@ -119,6 +114,8 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         serialNumTextView = findViewById(R.id.show_serial_no);
         valueTextView = findViewById(R.id.show_value);
         commentTextView = findViewById(R.id.show_comments);
+
+        scanner = new Scanner(this);
 
         // Initialize Firestore instance and Collection Reference
         db = FirebaseFirestore.getInstance();
@@ -334,64 +331,21 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         backButton.setOnClickListener(view -> onBackPressed());
 
         Button scanButton = findViewById(R.id.scan_button);
-        scanButton.setOnClickListener(v -> {
-            scanCode();
-        });
+        scanButton.setOnClickListener(v -> scanner.startScan(barLauncher));
 
     }
 
-    private void scanCode() {
-        ScanOptions options = new ScanOptions();
-        options.setPrompt("Volume up to flash on");
-        options.setBeepEnabled(true);
-        options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class);
-        barLaucher.launch(options);
-    }
-
-    ActivityResultLauncher<ScanOptions> barLaucher = registerForActivityResult(new ScanContract(), result ->
-    {
+    private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents() != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ShowItemActivity.this);
-            builder.setTitle("Result");
-            api = api_base + result.getContents() + "&formatted=y&key=" + api_key;
-            getData();
-            builder.setMessage(description);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            }).show();
+            barcodeRawValue = result.getContents();
+            scanner.scanCode(barcodeRawValue);
         }
     });
 
-    private void getData() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, api,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray singleProduct = jsonObject.getJSONArray("products");
-                            JSONObject product = singleProduct.getJSONObject(0);
-                            description = product.getString("description");
-                            descriptionTextView.setText(description);
-                            serial_num = product.getString("mpn");
-                            serialNumTextView.setText(serial_num);
-                        } catch (JSONException e) {
-                            Log.e("api", "onResponse: " + e.getMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("api", "onErrorResponse:" + error.getLocalizedMessage());
-            }
-        });
-
-        queue.add(stringRequest);
+    @Override
+    public void onScanResult(String prod_description, String prod_serial_num) {
+        descriptionTextView.setText(prod_description);
+        serialNumTextView.setText(prod_serial_num);
     }
 
     private String formatTags(List<Tag> tagList) {
@@ -459,4 +413,5 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
             }
         });
     }
+
 }

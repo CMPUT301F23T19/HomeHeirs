@@ -1,12 +1,13 @@
 package com.example.homeheirs;
 
-import android.content.DialogInterface;
-
-import androidx.activity.ComponentActivity;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -21,47 +23,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Scanner extends ComponentActivity {
+public class Scanner {
 
-    String barcode_raw_value;
-    String api;
-    String api_base = "https://api.barcodelookup.com/v3/products?barcode=";
-    String api_key = "4w9q79i04ahvo4tspqzi22e2j4jle2";
+    private String apiBase = "https://api.barcodelookup.com/v3/products?barcode=";
+    private String apiKey = "4w9q79i04ahvo4tspqzi22e2j4jle2";
+    private Context context;
     String description;
     String serial_num;
+    private OnScanActivityListener listener;
 
-    public Scanner() {
+    public Scanner(Context context) {
+        this.context = context;
+        this.listener = (OnScanActivityListener) context;
     }
 
-    public void scanCode() {
-        ScanOptions options = new ScanOptions();
-        options.setBeepEnabled(true);
-        options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class);
-        barLauncher.launch(options);
+    public Scanner(Context context, Fragment fragment) {
+        this.context = context;
+        this.listener = (OnScanActivityListener) fragment;
     }
 
+    public void scanCode(String barcodeRawValue) {
+        String api = apiBase + barcodeRawValue + "&formatted=y&key=" + apiKey;
+        getData(api);
+    }
 
-    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result ->
-    {
-        if (result.getContents() != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Scanner.this);
-            builder.setTitle("Result");
-            barcode_raw_value = result.getContents();
-            api = api_base + barcode_raw_value + "&formatted=y&key=" + api_key;
-            getData();
-            builder.setMessage("Successful!");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            }).show();
-        }
-    });
+    public interface OnScanActivityListener {
+        void onScanResult(String prod_description, String prod_serial_num);
+    }
 
-    private void getData() {
-        RequestQueue queue = Volley.newRequestQueue(this);
+    private void getData(String api) {
+        RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, api,
                 new Response.Listener<String>() {
                     @Override
@@ -72,7 +63,7 @@ public class Scanner extends ComponentActivity {
                             JSONObject product = singleProduct.getJSONObject(0);
                             description = product.getString("description");
                             serial_num = product.getString("mpn");
-                            String sample = description;
+                            listener.onScanResult(description, serial_num);
                         } catch (JSONException e) {
                             Log.e("api", "onResponse: " + e.getMessage());
                         }
@@ -83,6 +74,17 @@ public class Scanner extends ComponentActivity {
                 Log.e("api", "onErrorResponse:" + error.getLocalizedMessage());
             }
         });
+
         queue.add(stringRequest);
     }
+
+    public void startScan(ActivityResultLauncher<ScanOptions> barLauncher) {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureActivity.class);
+        barLauncher.launch(options);
+    }
 }
+
