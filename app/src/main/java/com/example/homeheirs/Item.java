@@ -18,7 +18,6 @@ import java.util.Locale;
  * @author Archi Patel
  */
 
-
 public class Item implements Serializable {
     private String name;
     private int purchase_month;
@@ -31,11 +30,13 @@ public class Item implements Serializable {
     private double estimated_value;
     private String comment;
 
-    private boolean isSelected = false;
-
+//  other private variables
     private String Date_identifier;
-
     private List<String> image_uriList;
+    /**
+     * List of tags associated with the item.
+     */
+    private List<Tag> tag_list;
 
     public String getDate_identifier() {
         return Date_identifier;
@@ -85,18 +86,11 @@ public class Item implements Serializable {
     }
 
     /**
-     * List of tags associated with the item.
-     */
-    private List<Tag> tag_list;
-
-    /**
      * Default constructor required for Firebase.
      */
     public Item(){
         //required for firebase
     }
-
-
 
     /**
      * Constructs an Item with the specified details.
@@ -123,6 +117,7 @@ public class Item implements Serializable {
         this.serial_number = serial_number;
         this.estimated_value = estimated_value;
         this.comment = comment;
+
         //initialize our list on creation in case tags need to be added
         this.tag_list = new ArrayList<>();
         this.image_uriList = new ArrayList<>();
@@ -130,9 +125,6 @@ public class Item implements Serializable {
         Date current = new Date();
         this.Date_identifier = format.format(current);
     }
-
-
-
 
     public String getName() {
         return name;
@@ -202,10 +194,7 @@ public class Item implements Serializable {
         return estimated_value;
     }
 
-    public void setEstimated_value(double estimated_value) {
-        this.estimated_value = estimated_value;
-    }
-
+    public void setEstimated_value(double estimated_value) {this.estimated_value = estimated_value;}
 
     public String getComment() {
         return comment;
@@ -216,21 +205,13 @@ public class Item implements Serializable {
     }
 
     /**
-     * Checks if the item is selected.
+     * Creates a custom Date object based on the given day, month, and year values.
      *
-     * @return True if the item is selected, false otherwise.
+     * @param day   The day of the month.
+     * @param month The month (1-12).
+     * @param year  The year.
+     * @return A Date object representing the custom date or null if an exception occurs during parsing.
      */
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    /**
-     * Sets the selection status of the item.
-     *
-     * @param selected True to mark the item as selected, false otherwise.
-     */
-    public void setSelected(boolean selected) {isSelected = selected;}
-
     public static Date createCustomDate(int day, int month, int year){
         String dateString = String.format("%04d/%02d/%02d", year, month, day);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -242,7 +223,9 @@ public class Item implements Serializable {
         }
     }
 
-
+    /**
+     * Comparator for sorting items in ascending order based on their custom date (purchase date).
+     */
     public static Comparator<Item> dateAscending = new Comparator<Item>() {
         @Override
         public int compare(Item item1, Item item2) {
@@ -253,6 +236,9 @@ public class Item implements Serializable {
         }
     };
 
+    /**
+     * Comparator for sorting items in ascending order based on their description.
+     */
     public static Comparator<Item> descriptionAscending = new Comparator<Item>()
     {
         @Override
@@ -268,6 +254,9 @@ public class Item implements Serializable {
         }
     };
 
+    /**
+     * Comparator for sorting items in ascending order based on their make.
+     */
     public static Comparator<Item> makeAscending = new Comparator<Item>()
     {
         @Override
@@ -283,6 +272,9 @@ public class Item implements Serializable {
         }
     };
 
+    /**
+     * Comparator for sorting items in ascending order based on their estimated value.
+     */
     public static Comparator<Item> valueAscending = new Comparator<Item>()
     {
         @Override
@@ -295,6 +287,10 @@ public class Item implements Serializable {
         }
     };
 
+    /**
+     * Comparator for sorting items in ascending order based on their tags.
+     * It compares the first tags and, if equal, compares the next tags.
+     */
     public static Comparator<Item> tagAscending = new Comparator<Item>()
     {
         @Override

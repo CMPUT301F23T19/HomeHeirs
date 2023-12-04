@@ -97,10 +97,6 @@ public class AddItemFragment extends DialogFragment {
          */
         void onOKPressed(Item item);
 
-        //void onOkPressedEdit(Item item, String name, String purchase_month, String purchase_year, String description, String make, String model, String serial_number, String estimated_value, String comment);
-
-        //void onDelete(Item item);
-
         /**
          * Called when the "OK" button is pressed during tag selection. Sends the selected tag to the listener.
          *
@@ -130,7 +126,6 @@ public class AddItemFragment extends DialogFragment {
         itemSerialNumber = view.findViewById(R.id.serial_number_edit_text);
         estimatedValue = view.findViewById(R.id.estimated_value_edit_text);
         itemComment = view.findViewById(R.id.comment_edit_text);
-//        itemTag = view.findViewById(R.id.tags_textview);
 
         // If item is being edited, fill in Dialog Box entries with existing information
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -138,7 +133,6 @@ public class AddItemFragment extends DialogFragment {
                 .setTitle("Add Item")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK",null)
-                //.setNeutralButton("Cancel", null)
                 .create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -149,7 +143,6 @@ public class AddItemFragment extends DialogFragment {
                     @Override
                     public void onClick(View view){
                         // Save depending on if it is edit
-
                         // Otherwise, add new item to Item List
 
                         String name = itemName.getText().toString();
@@ -164,7 +157,6 @@ public class AddItemFragment extends DialogFragment {
                         String detail = itemComment.getText().toString();
                         // validate to make sure non empty string given
 
-
                         if(validate(name,month,day, year,description,make,model,serialNumber,value,detail)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
                             listener.onOKPressed(new Item(name, month, day, year, description, make, model, serialNumber, value, detail));
@@ -177,14 +169,21 @@ public class AddItemFragment extends DialogFragment {
         dialog.show();
         return dialog;}
 
-
-//    /**
-//     * Validates the input in the EditText fields.
-//     *
-//     * @param editText The EditText to be validated.
-//     * @param text     The text entered in the EditText.
-//     * @return True if the input is valid, false otherwise.
-//     */
+    /**
+     * Validates the input the EditText fields for creating or editing an item
+     *
+     * @param name       The name of the item.
+     * @param month      The purchase month of the item.
+     * @param day        The purchase day of the item.
+     * @param year       The purchase year of the item.
+     * @param description The description of the item.
+     * @param make       The make of the item.
+     * @param model      The model of the item.
+     * @param serialNumber The serial number of the item.
+     * @param value      The estimated value of the item.
+     * @param detail     Additional details about the item.
+     * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
+     */
     private boolean validate(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
 
         boolean check = true;

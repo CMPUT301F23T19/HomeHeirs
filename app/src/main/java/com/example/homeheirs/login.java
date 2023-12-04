@@ -28,14 +28,11 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class login extends AppCompatActivity {
 
-
     // initialize the variables
     private EditText editText_username, editText_password;
     private FirebaseAuth mAuth;
 
-    // should change variables later
    private TextView register_button, login_button;
-
 
     /**
      * Method for when the app starts, checks to make sure if they are already logged in, in which
@@ -52,7 +49,6 @@ public class login extends AppCompatActivity {
             finish();
         }
     }
-
 
     /**
      * Method for the actual logging in, uses Firebase auth to validate the login
@@ -87,7 +83,7 @@ public class login extends AppCompatActivity {
                 password = editText_password.getText().toString();
 
 
-                // Create a validation fuction
+                // Create a validation function
                 boolean check = validate(username, password);
 
                 //code taken from firestore docs
@@ -105,26 +101,21 @@ public class login extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
 
-
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     editText_username.requestFocus();
                                     editText_username.setError("Wrong username or Password");
+                                  
                                     editText_password.requestFocus();
                                     editText_password.setError("Wrong username or Password");
 
                                 }
                             }
                         });
-            }
+                }
             }
         });
-
-
-
-
-
     }
 
 
@@ -146,7 +137,6 @@ public class login extends AppCompatActivity {
             editText_password.setError("Field Can't be Empty");
             check=false;
         }
-
 
         return  check;
     }
