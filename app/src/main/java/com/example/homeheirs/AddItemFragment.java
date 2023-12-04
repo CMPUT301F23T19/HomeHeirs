@@ -233,4 +233,12 @@ public class AddItemFragment extends DialogFragment {
 
         return check;
     }
+
+    public boolean isValidInput(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
+        if (name.isEmpty() || month <= 0 || month > 12 || day <= 0 || day > 31 || year < 1990 || year > 2035 || make.isEmpty() || model.isEmpty() || value < 0) {
+            return false;
+        }
+        return true;
+    }
+
 }
