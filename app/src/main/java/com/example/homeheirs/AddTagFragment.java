@@ -46,6 +46,11 @@ public class AddTagFragment extends DialogFragment {
         }
     }
 
+    public boolean isTagNameValid(String tagName) {
+        return !tagName.isEmpty();
+    }
+
+
     /**
      * Method that describes interface that should be implemented in main
      * Currently not in use
