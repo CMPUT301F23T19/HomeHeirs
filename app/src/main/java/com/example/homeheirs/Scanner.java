@@ -32,7 +32,7 @@ public class Scanner {
     // Base URL for the barcode lookup API
     private String apiBase = "https://api.barcodelookup.com/v3/products?barcode=";
     // API key for accessing the barcode lookup service
-    private String apiKey = "4w9q79i04ahvo4tspqzi22e2j4jle2";
+    private String apiKey = "6vau6aq1wvt5pkpy3jfqzsx3g5b5rc";
     private Context context;
     String description;
     String serial_num;

@@ -34,12 +34,13 @@ import java.util.Date;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 /**
- * Class Responsible for intent testing
+ * Class Responsible for UI testing Our Filtture feature
  * @author : Arsalan
  * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
  * In Order for proper fuctionality, the database must be empty vefore initiating tests
- * The method CheckConcistencyAndMultipleDelete - sometimes fails or passes - looks like it depends on speed but
- * will be checking later
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
  * Method fuctionality is indicated by thier name
  */
 
@@ -53,7 +54,7 @@ public class FilterItemsTest {
 
 
 
-        onView(withId(R.id.Username_input)).perform(ViewActions.typeText("hello@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.Username_input)).perform(ViewActions.typeText("ui@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.Password_input)).perform(ViewActions.typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.ok_textView)).perform(click());
 

@@ -45,12 +45,16 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 /**
- * Class Responsible for intent testing
+ * Class Responsible for UI testing the for testing our image adding and making sure its consistent
  * @author : Arsalan
  * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
  * In Order for proper fuctionality, the database must be empty vefore initiating tests
- * The method CheckConcistencyAndMultipleDelete - sometimes fails or passes - looks like it depends on speed but
- * will be checking later
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
+ *
+ * WARNING: FOR THESE TESTS A USER MUST BE AVAILABLE TO CLICK AND SELECT AND ITEM FROM THE CAMERA, OR TAKE A CAMERA PICTURE
+ *
  * Method fuctionality is indicated by thier name
  */
 
@@ -85,6 +89,11 @@ public class AddImageTest {
 
         // Additional actions if needed after logout
     }
+
+    /**
+     * Method that attempts to add a single image using the photoGallery
+     * USER MUST BE AVAILABLE TO CLICK AND SELECT IMAGE FROM GALLERY WITH CERTAIN TIME FRAME
+     */
     @Test
     public void AddSinglePhotoGallery() throws InterruptedException {
         // Click on Add Item Button
@@ -174,6 +183,10 @@ public class AddImageTest {
     }
 
 
+    /**
+     * Method that attempts to add a single image using the camera
+     * USER MUST BE AVAILABLE TO CAMPURE IMAGE WITHING CERTAIN TIME FRAME
+     */
     @Test
     public void AddSinglePhotoCamera() throws InterruptedException {
         // Click on Add Item Button
@@ -267,6 +280,11 @@ public class AddImageTest {
 
 
 
+    /**
+     * Method that attempts to delete a picture
+     * USER MUST BE AVAILABLE TO SELECT IMAGE FROM GALLERY WITHIN CERTAIN TIME FRAME
+     */
+
     @Test
     public void DeletePhoto() throws InterruptedException {
         // Click on Add Item Button
@@ -335,178 +353,7 @@ public class AddImageTest {
 
 
 
-//    @Test
-//
-//    public void deleteitem(){
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-//
-//        onView(withId(R.id.delete_button)).perform(click());
-//
-//    }
 
-//    @Test
-//    public void AddMultipleItemsAndDeleteMultiple(){
-//        // Click on Add Item Button
-//        onView(withId(R.id.add_item_button)).perform(click());
-//        //Type in an item into the dialog
-//        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
-//        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
-//        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
-//        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
-//        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
-//        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
-//        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
-//        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-//        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
-//
-//        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
-//        onView(withId(android.R.id.button1)).perform(click());
-//        // Add second object
-//        onView(withId(R.id.add_item_button)).perform(click());
-//        //Type in an item into the dialog
-//        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Hardrive"));
-//        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2003"));
-//        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("8"));
-//        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
-//        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
-//        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
-//        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
-//        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-//        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
-//
-//        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
-//        onView(withId(android.R.id.button1)).perform(click());
-//        // Add third object
-//        onView(withId(R.id.add_item_button)).perform(click());
-//        //Type in an item into the dialog
-//        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Chair"));
-//        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
-//        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("10"));
-//        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("07"));
-//        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("John cena"));
-//        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
-//        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
-//        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-//        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("25"),closeSoftKeyboard());
-//
-//        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
-//        onView(withId(android.R.id.button1)).perform(click());
-//        //onView(withText("OK")).perform(click());
-//
-//        onView(withText("Computer")).check(matches(isDisplayed()));
-//        onView(withText("Hardrive")).check(matches(isDisplayed()));
-//        onView(withText("Chair")).check(matches(isDisplayed()));
-//
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-//
-//        onView(withId(R.id.delete_button)).perform(click());
-//
-//        onView(withText("Computer")).check(doesNotExist());
-//        onView(withText("Hardrive")).check(doesNotExist());
-//        onView(withText("Chair")).check(doesNotExist());
-//
-//
-//
-//
-//    }
-
-
-//    @Test
-//    public void CheckConcistencyAndMultipleDelete(){
-//
-//        // check if items from previous checks present
-//        onView(withText("Computer")).check(matches(isDisplayed()));
-//        onView(withText("Hardrive")).check(matches(isDisplayed()));
-//        onView(withText("Chair")).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-//
-//        onView(withId(R.id.delete_button)).perform(click());
-//
-//        onView(withText("Computer")).check(doesNotExist());
-//        onView(withText("Hardrive")).check(doesNotExist());
-//        onView(withText("Chair")).check(doesNotExist());
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @Test
-//    public void testClearCity(){
-//// Add first city to the list
-//        onView(withId(R.id.button_add)).perform(click());
-//        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
-//        onView(withId(R.id.button_confirm)).perform(click());
-////Add another city to the list
-//        onView(withId(R.id.button_add)).perform(click());
-//        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Vancouver"));
-//        onView(withId(R.id.button_confirm)).perform(click());
-////Clear the list
-//        onView(withId(R.id.button_clear)).perform(click());
-//        onView(withText("Edmonton")).check(doesNotExist());
-//        onView(withText("Vancouver")).check(doesNotExist());
-//    }
-//
-//    @Test
-//    public void testListView(){
-//// Add a city
-//        onView(withId(R.id.button_add)).perform(click());
-//        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
-//        onView(withId(R.id.button_confirm)).perform(click());
-//// Check if in the Adapter view (given id of that adapter view),there is a data
-//// (which is an instance of String) located at position zero.
-//// If this data matches the text we provided then Voila! Our test should pass
-//// You can also use anything() in place of
-//        // not right ? is(instanceOf(String.class));
-//        onData(is(instanceOf(String.class))).inAdapterView(withId(R.id.city_list
-//        )).atPosition(0).check(matches((withText("Edmonton"))));
-//    }
 
 
 }

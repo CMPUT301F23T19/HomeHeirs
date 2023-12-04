@@ -31,6 +31,7 @@ import com.example.homeheirs.MainActivity;
 import com.example.homeheirs.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,35 +40,53 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 /**
- * Class Responsible for intent testing
+ * Class Responsible for UI testing Our List, ie show details, and adding and deleting multiple items
+ * As well as tag adding
  * @author : Arsalan
  * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
  * In Order for proper fuctionality, the database must be empty vefore initiating tests
- * The method CheckConcistencyAndMultipleDelete - sometimes fails or passes - looks like it depends on speed but
- * will be checking later
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
  * Method fuctionality is indicated by thier name
  */
 
 public class MainActivityTest {
 
     @Rule
-    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
+    public ActivityScenarioRule<login> scenario = new ActivityScenarioRule<login>(login.class);
 
 
 
 
+    /**
+     * Method that logs into test account
+     */
     @Before
-    public void setUp() {
-        // Sign in with the test account before each test
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("ui@gmail.com", "123456")
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d("MainActivityTest", "Test user signed in successfully");
-                    } else {
-                        Log.e("MainActivityTest", "Error signing in test user", task.getException());
-                    }
-                });
+    public void setUp() throws InterruptedException {
+
+
+
+        onView(withId(R.id.Username_input)).perform(ViewActions.typeText("ui@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.Password_input)).perform(ViewActions.typeText("123456"), closeSoftKeyboard());
+        onView(withId(R.id.ok_textView)).perform(click());
+
+        // Wait for the login
+
+        Thread.sleep(5000);
+
+    }
+
+    /**
+     *Method that logs out of Test account
+     */
+    @After
+    public void tearDown() {
+        // Log out
+        onView(withId(R.id.navigation_logout)).perform(click());
+        onView(withId(R.id.logout_button)).perform(click());
+
+        // Additional actions if needed after logout
     }
 
     @Test
@@ -101,17 +120,12 @@ public class MainActivityTest {
 
     }
 
-//    @Test
-//
-//    public void deleteitem(){
-//
-//        onView(withId(R.id.item_list))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-//
-//        onView(withId(R.id.delete_button)).perform(click());
-//
-//    }
 
+
+
+    /**
+     * Method that deletes multiple items
+     */
     @Test
     public void AddMultipleItemsAndDeleteMultiple(){
         // Click on Add Item Button
@@ -181,6 +195,9 @@ public class MainActivityTest {
 
     }
 
+    /**
+     * Method that adds tag to single item
+     */
     @Test
     public void AddTag() {
         // Click on Add Item Button
@@ -231,6 +248,10 @@ public class MainActivityTest {
     }
 
 
+
+    /**
+     * Method that attempts to add multiple tags to multiple items
+     */
     @Test
     public void AddMultipleTagsToMultiple(){
         // Click on Add Item Button
@@ -327,6 +348,10 @@ public class MainActivityTest {
 
     }
 
+
+    /**
+     * Method that attempts to add multiple tags
+     */
     @Test
     public void addMultipleTags(){
 

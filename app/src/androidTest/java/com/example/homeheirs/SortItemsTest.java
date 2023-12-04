@@ -47,13 +47,15 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 /**
- * Class Responsible for intent testing
+ * Class Responsible for UI testing Our Sorting Feature
  * @author : Arsalan
  * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
  * In Order for proper fuctionality, the database must be empty vefore initiating tests
- * The method CheckConcistencyAndMultipleDelete - sometimes fails or passes - looks like it depends on speed but
- * will be checking later
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
  * Method fuctionality is indicated by thier name
+ * ALL METHODS TEST BOTH ASCENDING AND DESCENDING
  */
 
 public class SortItemsTest {
@@ -376,7 +378,7 @@ public class SortItemsTest {
 
 
 
-        onView(withId(R.id.makeDESTapped)).perform(click());
+        onView(withId(R.id.valueDESTapped)).perform(click());
 
         onView(withId(R.id.item_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -446,10 +448,8 @@ public class SortItemsTest {
 
 
 
-
-
     @Test
-    public void FilterbyMake(){
+    public void SortbyDate(){
 
 
         // Click on Add Item Button
@@ -460,7 +460,7 @@ public class SortItemsTest {
         onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
-        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("Lenovo Legion"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
         onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
@@ -475,10 +475,10 @@ public class SortItemsTest {
         onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("8"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Seagate"));
-        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("31"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("FiveTbVersion"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("22"),closeSoftKeyboard());
 
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
@@ -490,10 +490,10 @@ public class SortItemsTest {
         onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("10"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("07"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("LenovoSpecial"));
-        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("123"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("BestChair"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("25"),closeSoftKeyboard());
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("18"),closeSoftKeyboard());
 
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
@@ -504,14 +504,53 @@ public class SortItemsTest {
         onView(withText("Chair")).check(matches(isDisplayed()));
 
 
-        onView(withId(R.id.navigation_filter)).perform(click());
+        onView(withId(R.id.sort_item_button)).perform(click());
 
-        onView(withId(R.id.makeFilterButton)).perform(click());
 
-        onView(withId(R.id.list_search_view)).perform(ViewActions.typeText("12"),closeSoftKeyboard());
+
+        onView(withId(R.id.dateASCTapped)).perform(click());
+
 
         onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
         onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+        onView(withId(R.id.dateDESTapped)).perform(click());
 
         onView(withId(R.id.item_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -528,40 +567,18 @@ public class SortItemsTest {
 
         onView(withId(R.id.back_button)).perform(click());
 
-
-        onView(withId(R.id.list_search_view)).perform(ViewActions.typeText("3"),closeSoftKeyboard());
-
-
-        onView(withText("Computer")).check(doesNotExist());
-        onView(withText("Chair")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
 
-        onView(withId(R.id.allFilterButton)).perform(click());
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
 
-
-
-
-
-
-
+        onView(withId(R.id.back_button)).perform(click());
 
 
         onView(withText("Computer")).check(matches(isDisplayed()));
         onView(withText("Hardrive")).check(matches(isDisplayed()));
         onView(withText("Chair")).check(matches(isDisplayed()));
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -582,7 +599,401 @@ public class SortItemsTest {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
+
+    @Test
+    public void SortbyDescription(){
+
+
+        // Click on Add Item Button
+        onView(withId(R.id.add_item_button)).perform(click());
+        //Type in an item into the dialog
+        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
+        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
+        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
+        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("Lenovo Legion"));
+        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
+        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
+        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
+        onView(withId(android.R.id.button1)).perform(click());
+        // Add second object
+        onView(withId(R.id.add_item_button)).perform(click());
+        //Type in an item into the dialog
+        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Hardrive"));
+        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2003"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("8"));
+        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
+        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Seagate"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("FiveTbVersion"));
+        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
+        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("22"),closeSoftKeyboard());
+
+        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
+        onView(withId(android.R.id.button1)).perform(click());
+        // Add third object
+        onView(withId(R.id.add_item_button)).perform(click());
+        //Type in an item into the dialog
+        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Chair"));
+        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("10"));
+        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("07"));
+        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Hillsbury"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("BestChair"));
+        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
+        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("18"),closeSoftKeyboard());
+
+        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
+        onView(withId(android.R.id.button1)).perform(click());
+        //onView(withText("OK")).perform(click());
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+        onView(withId(R.id.sort_item_button)).perform(click());
+
+
+
+        onView(withId(R.id.descriptionASCTapped)).perform(click());
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+        onView(withId(R.id.descriptionDESTapped)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+        onView(withId(R.id.delete_button)).perform(click());
+
+        onView(withText("Computer")).check(doesNotExist());
+        onView(withText("Hardrive")).check(doesNotExist());
+        onView(withText("Chair")).check(doesNotExist());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+    @Test
+    public void SortbyTags(){
+
+
+        // Click on Add Item Button
+        onView(withId(R.id.add_item_button)).perform(click());
+        //Type in an item into the dialog
+        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
+        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
+        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
+        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("Lenovo Legion"));
+        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
+        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
+        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
+        onView(withId(android.R.id.button1)).perform(click());
+        // Add second object
+        onView(withId(R.id.add_item_button)).perform(click());
+        //Type in an item into the dialog
+        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Hardrive"));
+        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2003"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("8"));
+        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
+        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Seagate"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("FiveTbVersion"));
+        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
+        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("22"),closeSoftKeyboard());
+
+        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
+        onView(withId(android.R.id.button1)).perform(click());
+        // Add third object
+        onView(withId(R.id.add_item_button)).perform(click());
+        //Type in an item into the dialog
+        onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Chair"));
+        onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("10"));
+        onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("07"));
+        onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Hillsbury"));
+        onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("BestChair"));
+        onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
+        onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("18"),closeSoftKeyboard());
+
+        //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
+        onView(withId(android.R.id.button1)).perform(click());
+        //onView(withText("OK")).perform(click());
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+
+        onView(withId(R.id.mutliple_tag_button)).perform(click());
+        onView(withId(R.id.tag_input)).perform(ViewActions.typeText("Electronic"));
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, longClick()));
+
+        onView(withId(R.id.mutliple_tag_button)).perform(click());
+        onView(withId(R.id.tag_input)).perform(ViewActions.typeText("device"));
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, longClick()));
+
+        onView(withId(R.id.mutliple_tag_button)).perform(click());
+        onView(withId(R.id.tag_input)).perform(ViewActions.typeText("furniture"));
+        onView(withId(android.R.id.button1)).perform(click());
+
+
+
+
+
+
+
+        onView(withId(R.id.sort_item_button)).perform(click());
+
+
+
+        onView(withId(R.id.tagsASCTapped)).perform(click());
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+        onView(withId(R.id.tagsDESTapped)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_button)).perform(click());
+
+
+        onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withText("Hardrive")).check(matches(isDisplayed()));
+        onView(withText("Chair")).check(matches(isDisplayed()));
+
+
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+        onView(withId(R.id.delete_button)).perform(click());
+
+        onView(withText("Computer")).check(doesNotExist());
+        onView(withText("Hardrive")).check(doesNotExist());
+        onView(withText("Chair")).check(doesNotExist());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
 
 
 

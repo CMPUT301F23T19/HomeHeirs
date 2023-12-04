@@ -36,7 +36,16 @@ import org.junit.runner.RunWith;
 
 
 
-
+/**
+ * Class Responsible for UI testing Our Registration activity
+ * @author : Arsalan
+ * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
+ * In Order for proper fuctionality, the database must be empty vefore initiating tests
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
+ * Method fuctionality is indicated by thier name
+ */
 
 // This requires to be in the Login activity, ie you need to logout
 @RunWith(AndroidJUnit4.class)
@@ -148,48 +157,4 @@ public class RegisterTest {
 
 
 
-//    @Test
-//    public void testEmptyPassword() {
-//        onView(withId(R.id.Username_input)).perform(typeText("123456"), closeSoftKeyboard());
-//        onView(withId(R.id.Password_input)).perform(typeText(""), closeSoftKeyboard());
-//        onView(withId(R.id.ok_textView)).perform(click());
-//        //onView(withId(R.id.Username_input)).check(matches(hasErrorText("Field Can't be Empty")));
-//        onView(withId(R.id.Password_input)).check(matches(hasErrorText("Field Can't be Empty")));
-//    }
-//
-//
-//    // test keeps failing idk why
-////    @Test
-////    public void testEmptyUsernameAndPassword() {
-////        //onView(withId(R.id.Username_input)).perform(typeText(""), closeSoftKeyboard());
-////        //onView(withId(R.id.Password_input)).perform(typeText(""), closeSoftKeyboard());
-////        onView(withId(R.id.ok_textView)).perform(click());
-////        onView(withId(R.id.Username_input)).perform(click());
-////        onView(withId(R.id.Username_input)).check(matches(hasErrorText("Field Can't be Empty")));
-////        onView(withId(R.id.Password_input)).perform(click());
-////        onView(withId(R.id.Password_input)).check(matches(hasErrorText("Field Can't be Empty")));
-////    }
-//
-//    @Test
-//    public void testValidUsernameAndPasswordInput() {
-//        onView(withId(R.id.Username_input)).perform(typeText("valid@example.com"), closeSoftKeyboard());
-//        onView(withId(R.id.Password_input)).perform(typeText("password"), closeSoftKeyboard());
-//        onView(withId(R.id.ok_textView)).perform(click());
-//        // Verify the next action after successful login, such as navigating to MainActivity
-//    }
-//
-//    @Test
-//    public void testInvalidUsernameAndPasswordInput() {
-//        onView(withId(R.id.Username_input)).perform(typeText("invalid"), closeSoftKeyboard());
-//        onView(withId(R.id.Password_input)).perform(typeText("123"), closeSoftKeyboard());
-//        onView(withId(R.id.ok_textView)).perform(click());
-//        onView(withId(R.id.Password_input)).perform(click());
-//        onView(withId(R.id.Password_input)).check(matches(hasErrorText("Wrong username or Password")));
-//    }
-//
-//    @Test
-//    public void testNavigationToRegistration() {
-//        onView(withId(R.id.registration_textview)).perform(click());
-//        // Check if the Registration activity was started
-//    }
 }
