@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 
@@ -101,6 +102,13 @@ public class Register extends AppCompatActivity {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                            // Handles the case where the user already exists
+                                            editText_username.requestFocus();
+                                            editText_username.setError("A User with this Email Already Exists");
+
+                                            Toast.makeText(Register.this, "User already exists.",
+                                                    Toast.LENGTH_SHORT).show();}
                                         Toast.makeText(Register.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
 
@@ -122,20 +130,28 @@ public class Register extends AppCompatActivity {
      */
     public boolean validate(String username, String password, String confirm_password){
         // error check function
+        boolean check = true;
         if (username.isEmpty()){
             editText_username.requestFocus();
             editText_username.setError("Field Can't be Empty");
-            return false;
+            check=false;
         }
         if (password.isEmpty()){
             editText_password.requestFocus();
             editText_password.setError("Field Can't be Empty");
-            return false;
+            check=false;
+
+
+        }
+        if (password.length()>=1 && password.length()<6) {
+            editText_password.requestFocus();
+            editText_password.setError("Password must be greater then 6 Characters");
+            check = false;
         }
         if (confirm_password.isEmpty()){
             editText_password_confirm.requestFocus();
             editText_password_confirm.setError("Field Can't be Empty");
-            return false;
+            check=false;
         }
         // Check to make sure password is the same
         if ( password.equals(confirm_password)==false){
@@ -143,9 +159,9 @@ public class Register extends AppCompatActivity {
             editText_password_confirm.setError("Passwords must be same");
             editText_password.requestFocus();
             editText_password.setError("Passwords must be same");
-            return false;
+            check=false;
         }
-        return true;
+        return check;
     }
 }
 

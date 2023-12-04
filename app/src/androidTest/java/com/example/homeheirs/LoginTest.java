@@ -121,6 +121,6 @@ public class LoginTest {
     @Test
     public void testNavigationToRegistration() {
         onView(withId(R.id.registration_textview)).perform(click());
-        // Check if the Registration activity was started
+
     }
 }
