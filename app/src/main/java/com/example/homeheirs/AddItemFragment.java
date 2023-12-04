@@ -190,7 +190,7 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
                         comment = itemComment.getText().toString();
                         // validate to make sure non empty string given
 
-                        if(validate(name,month,day,year,make,model,serialNumber,value)){
+                        if(validate(name,month,day,year,make,model,value)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
                             listener.onOKPressed(new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), comment));
                             // Only dismiss dialog if error check passes
@@ -236,7 +236,7 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
 
-    public boolean validate(String name, String month, String day, String year, String make, String model, String serial_number, String value) {
+    public boolean validate(String name, String month, String day, String year, String make, String model, String value) {
 
         if (name.isEmpty()) {
             itemName.requestFocus();
@@ -251,8 +251,8 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
         }
 
         if (day.isEmpty() || Integer.parseInt(day) <= 0 || Integer.parseInt(day) > 31) {
-            purchaseMonth.requestFocus();
-            purchaseMonth.setError("Please enter a valid month");
+            purchaseDay.requestFocus();
+            purchaseDay.setError("Please enter a valid day");
             return false;
         }
 
@@ -274,11 +274,6 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
             return false;
         }
 
-        if (serial_number.isEmpty()) {
-            itemSerialNumber.requestFocus();
-            itemSerialNumber.setError("Please enter a valid number");
-            return false;
-        }
 
         if (value.isEmpty() || Double.parseDouble(value) < 0) {
             estimatedValue.requestFocus();
