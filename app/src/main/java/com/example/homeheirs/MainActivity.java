@@ -469,6 +469,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         }
     }
 
+
     /**
      * Toggles the visibility of sorting options. If hidden, it shows the options; otherwise, it hides them.
      *
@@ -520,9 +521,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void dateASCTapped(View view)
     {
         Collections.sort(dataList, Item.dateAscending);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+        //recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.notifyDataSetChanged();
+        //recycleAdapter.setClickListener(this);
+        //itemList.setAdapter(recycleAdapter);
+        //recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -534,9 +537,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.dateAscending);
         Collections.reverse(dataList);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -548,9 +552,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void descriptionASCTapped(View view)
     {
         Collections.sort(dataList, Item.descriptionAscending);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -562,9 +567,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.descriptionAscending);
         Collections.reverse(dataList);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -575,9 +581,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void makeASCTapped(View view)
     {
         Collections.sort(dataList, Item.makeAscending);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -589,9 +596,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.makeAscending);
         Collections.reverse(dataList);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -602,9 +610,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void valueASCTapped(View view)
     {
         Collections.sort(dataList, Item.valueAscending);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -616,9 +625,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.valueAscending);
         Collections.reverse(dataList);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -629,9 +639,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void tagsASCTapped(View view)
     {
         Collections.sort(dataList, Item.tagAscending);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -643,9 +654,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     {
         Collections.sort(dataList, Item.tagAscending);
         Collections.reverse(dataList);
-        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
-        recycleAdapter.setClickListener(this);
-        itemList.setAdapter(recycleAdapter);
+//        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+//        recycleAdapter.setClickListener(this);
+//        itemList.setAdapter(recycleAdapter);
+        recycleAdapter.notifyDataSetChanged();
     }
 
     /**
