@@ -463,18 +463,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         sortButton.setText("HIDE");
     }
 
-//    public void dateASCTapped(View view)
-//    {
-//        Collections.sort(shapeList, Shape.idAscending);
-//        checkForFilter();
-//    }
-//
-//    public void dateDESTapped(View view)
-//    {
-//        Collections.sort(shapeList, Shape.idAscending);
-//        Collections.reverse(shapeList);
-//        checkForFilter();
-//    }
+    public void dateASCTapped(View view)
+    {
+        Collections.sort(dataList, Item.dateAscending);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
+        itemList.setAdapter(recycleAdapter);
+    }
+
+    public void dateDESTapped(View view)
+    {
+        Collections.sort(dataList, Item.dateAscending);
+        Collections.reverse(dataList);
+        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
+        recycleAdapter.setClickListener(this);
+        itemList.setAdapter(recycleAdapter);
+    }
 
     public void descriptionASCTapped(View view)
     {

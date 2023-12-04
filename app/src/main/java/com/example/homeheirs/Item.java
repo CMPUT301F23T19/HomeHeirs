@@ -5,6 +5,7 @@ import android.net.Uri;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -229,6 +230,28 @@ public class Item implements Serializable {
      * @param selected True to mark the item as selected, false otherwise.
      */
     public void setSelected(boolean selected) {isSelected = selected;}
+
+    public static Date createCustomDate(int day, int month, int year){
+        String dateString = String.format("%04d/%02d/%02d", year, month, day);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            return dateFormat.parse(dateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Handle the exception appropriately in your code
+        }
+    }
+
+
+    public static Comparator<Item> dateAscending = new Comparator<Item>() {
+        @Override
+        public int compare(Item item1, Item item2) {
+            Date customDate1 = createCustomDate(item1.getPurchase_day(), item1.getPurchase_month(), item1.getPurchase_year());
+            Date customDate2 = createCustomDate(item2.getPurchase_day(), item2.getPurchase_month(), item2.getPurchase_year());
+
+            return customDate1.compareTo(customDate2);
+        }
+    };
 
     public static Comparator<Item> descriptionAscending = new Comparator<Item>()
     {
