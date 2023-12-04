@@ -299,6 +299,15 @@ public class Item implements Serializable {
             List<Tag> tags1 = item1.getTag_list();
             List<Tag> tags2 = item2.getTag_list();
 
+            // Check if either item has no tags
+            if (tags1.isEmpty() && tags2.isEmpty()) {
+                return 0; // Both items have no tags, consider them equal
+            } else if (tags1.isEmpty()) {
+                return 1; // Item1 has no tags, move it to the bottom
+            } else if (tags2.isEmpty()) {
+                return -1; // Item2 has no tags, move it to the bottom
+            }
+
             String tag1 = tags1.get(0).getTag_name();
             String tag2 = tags2.get(0).getTag_name();
 
@@ -316,4 +325,37 @@ public class Item implements Serializable {
         }
     };
 
+    public static Comparator<Item> tagDescending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            List<Tag> tags1 = item1.getTag_list();
+            List<Tag> tags2 = item2.getTag_list();
+
+            // Check if either item has no tags
+            if (tags1.isEmpty() && tags2.isEmpty()) {
+                return 0; // Both items have no tags, consider them equal
+            } else if (tags1.isEmpty()) {
+                return 1; // Item1 has no tags, move it to the bottom
+            } else if (tags2.isEmpty()) {
+                return -1; // Item2 has no tags, move it to the bottom
+            }
+
+            String tag1 = tags1.get(0).getTag_name();
+            String tag2 = tags2.get(0).getTag_name();
+
+            // Compare the first tags
+            int result = tag2.compareToIgnoreCase(tag1);
+
+            // If the first tags are equal, compare the next tags
+            if (result == 0 && tags1.size() > 1 && tags2.size() > 1) {
+                tag1 = tags1.get(1).getTag_name();
+                tag2 = tags2.get(1).getTag_name();
+                result = tag2.compareToIgnoreCase(tag1);
+            }
+
+            return result;
+        }
+    };
 }

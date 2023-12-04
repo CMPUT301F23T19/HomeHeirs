@@ -83,6 +83,24 @@ public class ItemTest {
         List<Item> itemList = new ArrayList<>();
         itemList.add(item2);
         itemList.add(item1);
+
+        Tag tag1 = new Tag("Tag1");
+        Tag tag2 = new Tag("Tag2");
+        Tag tag3 = new Tag("Tag3");
+
+        item1.add_tag(tag1);
+        item1.add_tag(tag3);
+        item2.add_tag(tag1);
+        item2.add_tag(tag2);
+
+        List<Tag> tagList1 = item1.getTag_list();
+        List<Tag> tagList2 = item2.getTag_list();
+
+        itemList.sort(Item.dateAscending);
+
+        assertEquals(2022, itemList.get(0).getPurchase_year());
+        assertEquals(2023, itemList.get(1).getPurchase_year());
+
         itemList.sort(Item.descriptionAscending);
 
         assertEquals("Description1", itemList.get(0).getDescription());
@@ -99,5 +117,11 @@ public class ItemTest {
 
         assertEquals(50.0, itemList.get(0).getEstimated_value(), 0.001);
         assertEquals(100.0, itemList.get(1).getEstimated_value(), 0.001);
+
+        // Text tag comparator
+        itemList.sort(Item.tagAscending);
+
+        assertEquals(tag2, itemList.get(0).getTag_list().get(1));
+        assertEquals(tag3, itemList.get(1).getTag_list().get(1));
     }
 }

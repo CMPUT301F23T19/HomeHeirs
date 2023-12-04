@@ -119,7 +119,7 @@ public class AddTagFragment extends DialogFragment {
         // error check function
         if (tagName.isEmpty()){
             TagName.requestFocus();
-            TagName.setError("Field Can'nt be Empty");
+            TagName.setError("Field Can't be Empty");
             return false;
         }
         return true;

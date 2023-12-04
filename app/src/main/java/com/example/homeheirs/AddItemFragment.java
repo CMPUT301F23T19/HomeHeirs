@@ -184,53 +184,50 @@ public class AddItemFragment extends DialogFragment {
      * @param detail     Additional details about the item.
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
-    private boolean validate(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
+    boolean validate(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
 
-        boolean check = true;
         if (name.isEmpty()) {
             itemName.requestFocus();
             itemName.setError("Please enter a name");
-            check=false;
+            return false;
         }
 
         if (month <= 0 || month > 12) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
-            check=false;
+            return false;
         }
 
         if (day <= 0 || day > 31) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
-            check=false;
+            return false;
         }
 
         if (year < 1990 || year > 2035) {
             purchaseYear.requestFocus();
             purchaseYear.setError("Please enter a valid year between 1990 and 2035");
-            check=false;
+            return false;
         }
 
         if (make.isEmpty()) {
             itemMake.requestFocus();
             itemMake.setError("Please enter a make");
-            check=false;
+            return false;
         }
 
         if (model.isEmpty()) {
             itemModel.requestFocus();
             itemModel.setError("Please enter a model");
-            check=false;
+            return false;
         }
 
         if (value < 0) {
             estimatedValue.requestFocus();
             estimatedValue.setError("Please enter a valid value");
-            check=false;
+            return false;
         }
 
-
-
-        return check;
+        return true;
     }
 }

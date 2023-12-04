@@ -67,14 +67,6 @@ public class MainActivityTest {
 
         onView(withText("Computer")).check(matches(isDisplayed()));
 
-
-
-
-
-
-
-
-
 // Check if text "Edmonton" is matched with any of the text
 
         //onView(withText("Edmonton")).check(matches(isDisplayed()));
@@ -140,8 +132,6 @@ public class MainActivityTest {
         onView(withText("Chair")).check(matches(isDisplayed()));
 
 
-
-
     }
 
 
@@ -167,22 +157,7 @@ public class MainActivityTest {
         onView(withText("Hardrive")).check(doesNotExist());
         onView(withText("Chair")).check(doesNotExist());
 
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 
     @Test
     public void AddTag() {
@@ -479,20 +454,6 @@ public class MainActivityTest {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    @Test
 //    public void testClearCity(){

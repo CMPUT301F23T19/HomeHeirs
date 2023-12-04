@@ -652,7 +652,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
      */
     public void tagsDESTapped(View view)
     {
-        Collections.sort(dataList, Item.tagAscending);
+        Collections.sort(dataList, Item.tagDescending);
         Collections.reverse(dataList);
 //        recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
 //        recycleAdapter.setClickListener(this);
