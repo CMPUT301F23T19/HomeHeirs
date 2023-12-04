@@ -34,10 +34,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-// This requires to be in the Login activity, ie you need to logout
+/**
+ * Class Responsible for UI testing Our login activity
+ * @author : Arsalan
+ * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
+ * In Order for proper fuctionality, the database must be empty vefore initiating tests
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
+ * Method fuctionality is indicated by thier name
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LoginTest {
+
 
     @Rule
     public ActivityScenarioRule<login> scenario = new ActivityScenarioRule<login>(login.class);

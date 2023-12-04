@@ -29,12 +29,13 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 /**
- * Class Responsible for intent testing
+ * Class Responsible for UI testing Our Filtture feature
  * @author : Arsalan
  * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
  * In Order for proper fuctionality, the database must be empty vefore initiating tests
- * The method CheckConcistencyAndMultipleDelete - sometimes fails or passes - looks like it depends on speed but
- * will be checking later
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND LOG OUT
+ *
  * Method fuctionality is indicated by thier name
  */
 
@@ -67,6 +68,10 @@ public class FilterItemsTest {
         // Additional actions if needed after logout
     }
 
+
+    /**
+     * Method that filters by date
+     */
     @Test
     public void FilterDate(){
 
