@@ -17,23 +17,16 @@ import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 
-
 /**
  * Class for Showning an Enlarged object dialogfragment
  * The Fragment gives the option of deleting the image which this class handles
  * @author Arsalan Ahmed
  */
 public class ShowEnlargedImageFragment extends DialogFragment {
-
-
     private Button deletebutton;
     private Button back_button;
-
     private ImageView enlargedImageView;
-
     private EnlargedFragmentlistener listener_enlarged;
-
-
 
     /**
      * Method Bundles arguments so that they can be accesed in this fragment
@@ -49,23 +42,6 @@ public class ShowEnlargedImageFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_show_enlarged_image, container, false);
-//        ImageView imageView = view.findViewById(R.id.enlargedImageView);
-//
-//        if (getArguments() != null) {
-//            String imageUrl = getArguments().getString(ARG_IMAGE_URL);
-//
-//            // Load the image into the ImageView using Glide
-//            Glide.with(this)
-//                    .load(imageUrl)
-//                    .into(imageView);
-//        }
-//
-//        return view;
 
     /**
      * Method for fragment
@@ -87,8 +63,6 @@ public class ShowEnlargedImageFragment extends DialogFragment {
         void onDeleteImage(Uri uri_toDelete, String image_deletePath);
     }
 
-
-
     /**
      * Method Creating the Alertdialog that shows image and cancel and delete button
      * @return Dialog- the Dialog we need to show
@@ -104,7 +78,6 @@ public class ShowEnlargedImageFragment extends DialogFragment {
 
         // Method gets the arguments from the bundle
         Bundle args = getArguments();
-
 
             Uri image_uri = (Uri) args.get("image_url");
 
@@ -128,10 +101,6 @@ public class ShowEnlargedImageFragment extends DialogFragment {
 
                             .into(enlargedImageView);
 
-
-
-
-
                     back_button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -148,28 +117,9 @@ public class ShowEnlargedImageFragment extends DialogFragment {
                             dialog.dismiss();
                         }
                     });
-
                 }
-
-
-
-
             });
-
-
         dialog.show();
         return dialog;
     }
-
-
-
-
-
-
-
-//    }
-
-
-
-
 }

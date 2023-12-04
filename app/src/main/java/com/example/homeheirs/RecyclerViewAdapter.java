@@ -36,7 +36,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Boolean is_long_clicked = false;
     // Required for resetting selected items
     private RecyclerView recyclerView;
-    private boolean isMakeFilterActive = false;
 
     /**
      * Construcor of RecyclerView Adapter
@@ -119,12 +118,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             //will make a method for this later
 
-
             //Long click listener will detect long holds, and will allow for implementation of adding/deleting multiple items
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-
 
                     if (!is_long_clicked) {
                         is_long_clicked = true;
@@ -141,10 +138,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             itemView.setBackgroundResource(R.color.selected_color);
                             selected_items.add(item_data.get(position));
                         }
-
-                        // Notify the adapter to update the view for the clicked item
-                        //notifyItemChanged(position);
-
                     }
 
                     // If no items selected, show the original toolbox
@@ -152,12 +145,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         is_long_clicked = false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
                     }
-
                     return true;
                 }
-
             });
-
 
             name = itemView.findViewById(R.id.name);
             purchase_date = itemView.findViewById(R.id.purchase_date);
@@ -194,11 +184,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     if (selected_items.size()==0){
                         is_long_clicked=false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
-
-
                     }
-                }else{
-                    // calls on itemclick method in Main Activity if not in selection mode- ie to display item details
+                } else {
+                    // calls on item click method in Main Activity if not in selection mode- ie to display item details
                     ClickListener.onItemClick(view, getAdapterPosition());
                 }
             }
@@ -243,9 +231,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             item_data.remove(selected_items.get(i));
             notifyDataSetChanged();
         }
-        // Clear the selection list
+
         selected_items.clear();
-        // Reset long click state
         resetLongClickState();
         // Update the UI via MainActivity
         ((MainActivity) context).showcustomtool(is_long_clicked);
@@ -255,7 +242,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     /**
      * Resets all the selected items background color to normal and exists out of long clciked mode,
-     * ie lonclicked is set to false
+     * ie long clicked is set to false
      */
     public void resetSelected_items(){
         // use this to reset all selected items on the screen
@@ -269,14 +256,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (recycle_position != -1) {
 
                 View itemView = recyclerView.getChildAt(recycle_position);
-                if (itemView!=null){// != null) {
-                    //if (!is_long_clicked) {
+                if (itemView!=null){
 
-                        itemView.setBackgroundColor(Color.TRANSPARENT);
+                    itemView.setBackgroundColor(Color.TRANSPARENT);
 
-                    //}
                 }
-
             }
         }
 
@@ -290,41 +274,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // resets longClickState to avoid bugs - needed after deletion of an item
     public void resetLongClickState(){ is_long_clicked = false; }
-
-    // Set "MAKE" filter flag
-    public void setMakeFilterActive(boolean active) {
-        isMakeFilterActive = active;
-    }
-
-    /**
-     * Filters items in RecyclerView based on provided keyword and the "MAKE" filter flag.
-     *
-     * If the "MAKE" flag is active, and keyword is not empty, this method filters items
-     * whose make contains given keyword. Otherwise, it uses original list of items.
-     *
-     * @param keyword - The keyword entered by user to filter items
-     */
-    public void filterItemsByMake(String keyword) {
-        // Create new list to store filtered items
-        ArrayList<Item> filteredList = new ArrayList<>();
-
-        // Only perform filter if "MAKE" filter flag is set
-        if (isMakeFilterActive && keyword != null && !keyword.isEmpty()) {
-            // Iterate through each item in original list
-            for (Item item : item_data) {
-                // Check if description contains keyword
-                if (item.getMake().toLowerCase().contains(keyword.toLowerCase())) {
-                    filteredList.add(item);
-                }
-            }
-        }
-
-        // Otherwise, just use original list
-        else {
-            filteredList.addAll(item_data);
-        }
-
-        item_data.clear();
-        item_data.addAll(filteredList);
-    }
 }

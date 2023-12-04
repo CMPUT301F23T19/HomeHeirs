@@ -85,6 +85,9 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
     private ChipGroup tag_group;
     private String barcodeRawValue;
     private Scanner scanner;
+    /**
+     * The reference to all the EditTexts.
+     */
     EditText nameTextView;
     EditText monthTextView;
     EditText yearTextView;
@@ -115,6 +118,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         valueTextView = findViewById(R.id.show_value);
         commentTextView = findViewById(R.id.show_comments);
 
+        // Initialize Scanner instance, pass Activity context
         scanner = new Scanner(this);
 
         // Initialize Firestore instance and Collection Reference
@@ -330,11 +334,18 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
          */
         backButton.setOnClickListener(view -> onBackPressed());
 
+        /**
+         * Handles the click event of the "Scan" button.
+         * Uses the Scanner class to open the barcode scanner.
+         */
         Button scanButton = findViewById(R.id.scan_button);
         scanButton.setOnClickListener(v -> scanner.startScan(barLauncher));
 
     }
 
+    /**
+     * Scans obtained code to get product information
+     */
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents() != null) {
             barcodeRawValue = result.getContents();
@@ -342,10 +353,15 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
         }
     });
 
+    /**
+     * Sets the text fields according to the obtained product information
+     * @param prod_description Obtained Product Description
+     * @param prod_serial_num Obtained Manufacturer Product Number
+     */
     @Override
     public void onScanResult(String prod_description, String prod_serial_num) {
-        descriptionTextView.setText(prod_description);
-        serialNumTextView.setText(prod_serial_num);
+        if (prod_description != "") { descriptionTextView.setText(prod_description); }
+        if (prod_serial_num != "") { serialNumTextView.setText(prod_serial_num); }
     }
 
     private String formatTags(List<Tag> tagList) {
