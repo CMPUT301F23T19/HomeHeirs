@@ -108,15 +108,9 @@ public class Register extends AppCompatActivity {
                                 }
                             });
                 }
-
                 // When registered click automatically take to login page
-
             }
         });
-
-
-
-
     }
 
     /**
@@ -150,7 +144,6 @@ public class Register extends AppCompatActivity {
             editText_password.requestFocus();
             editText_password.setError("Passwords must be same");
             return false;
-
         }
         return true;
     }

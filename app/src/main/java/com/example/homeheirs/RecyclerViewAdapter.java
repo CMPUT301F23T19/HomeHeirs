@@ -118,12 +118,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             //will make a method for this later
 
-
             //Long click listener will detect long holds, and will allow for implementation of adding/deleting multiple items
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-
 
                     if (!is_long_clicked) {
                         is_long_clicked = true;
@@ -140,10 +138,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             itemView.setBackgroundResource(R.color.selected_color);
                             selected_items.add(item_data.get(position));
                         }
-
-                        // Notify the adapter to update the view for the clicked item
-                        //notifyItemChanged(position);
-
                     }
 
                     // If no items selected, show the original toolbox
@@ -151,12 +145,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         is_long_clicked = false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
                     }
-
                     return true;
                 }
-
             });
-
 
             name = itemView.findViewById(R.id.name);
             purchase_date = itemView.findViewById(R.id.purchase_date);
@@ -193,11 +184,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     if (selected_items.size()==0){
                         is_long_clicked=false;
                         ((MainActivity) context).showcustomtool(is_long_clicked);
-
-
                     }
-                }else{
-                    // calls on itemclick method in Main Activity if not in selection mode- ie to display item details
+                } else {
+                    // calls on item click method in Main Activity if not in selection mode- ie to display item details
                     ClickListener.onItemClick(view, getAdapterPosition());
                 }
             }
@@ -242,9 +231,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             item_data.remove(selected_items.get(i));
             notifyDataSetChanged();
         }
-        // Clear the selection list
+
         selected_items.clear();
-        // Reset long click state
         resetLongClickState();
         // Update the UI via MainActivity
         ((MainActivity) context).showcustomtool(is_long_clicked);
@@ -254,7 +242,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     /**
      * Resets all the selected items background color to normal and exists out of long clciked mode,
-     * ie lonclicked is set to false
+     * ie long clicked is set to false
      */
     public void resetSelected_items(){
         // use this to reset all selected items on the screen
@@ -268,14 +256,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (recycle_position != -1) {
 
                 View itemView = recyclerView.getChildAt(recycle_position);
-                if (itemView!=null){// != null) {
-                    //if (!is_long_clicked) {
+                if (itemView!=null){
 
-                        itemView.setBackgroundColor(Color.TRANSPARENT);
+                    itemView.setBackgroundColor(Color.TRANSPARENT);
 
-                    //}
                 }
-
             }
         }
 

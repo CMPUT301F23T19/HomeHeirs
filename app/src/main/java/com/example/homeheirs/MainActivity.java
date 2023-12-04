@@ -176,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         filterLayout.setVisibility(View.GONE);
         SearchView searchView = (SearchView) findViewById(R.id.list_search_view);
         searchView.setVisibility(View.GONE);
+        /**
+         * Sets an item selected listener for a BottomNavigationView, handling various actions based on the selected item.
+         *
+         * @param onItemSelectedListener The listener to be invoked when a navigation item is selected.
+         */
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -221,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Filter button "ALL" functionality
         Button allFilterButton = findViewById(R.id.allFilterButton);
+        /**
+         * Sets an onClick listener for the "allFilterButton" view, triggering the reset of the RecyclerView when clicked.
+         *
+         * @param newOnClickListener The listener to be invoked when the "allFilterButton" view is clicked.
+         */
         allFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,6 +240,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Filter button "DATE" functionality
         Button dateFilterButton = findViewById(R.id.dateFilterButton);
+        /**
+         * Sets an onClick listener for the "dateFilterButton" view, toggling the state of the date filter
+         * and showing a date filter dialog when the button is clicked.
+         *
+         * @param newOnClickListener The listener to be invoked when the "dateFilterButton" view is clicked.
+         */
         dateFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,6 +260,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Filter button "DESCR" functionality
         Button descFilterButton = findViewById(R.id.descFilterButton);
+        /**
+         * Sets an onClick listener for the "descFilterButton" view, toggling the state of the description filter
+         * and showing/hiding the search bar based on the button's state. Additionally, resets the list of items
+         * to the original state when the description filter is deactivated.
+         *
+         * @param newOnClickListener The listener to be invoked when the "descFilterButton" view is clicked.
+         */
         descFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,6 +288,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Filter button "MAKE" functionality
         Button makeFilterButton = findViewById(R.id.makeFilterButton);
+        /**
+         * Sets an onClick listener for the "makeFilterButton" view, toggling the state of the make filter
+         * and showing/hiding the search bar based on the button's state. Additionally, resets the list of items
+         * to the original state when the make filter is deactivated.
+         *
+         * @param newOnClickListener The listener to be invoked when the "makeFilterButton" view is clicked.
+         */
         makeFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,6 +314,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             }
         });
 
+        /**
+         * Sets an OnQueryTextListener for the "searchView," handling text submission and text change events.
+         * Depending on the active filters, it filters the list of items by description or make when the text changes.
+         *
+         * @param onQueryTextListener The listener to be invoked when there are changes to the query text.
+         */
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -306,6 +342,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Filter button "TAGS" functionality
         Button tagsFilterButton = findViewById(R.id.tagsFilterButton);
+        /**
+         * Sets an onClick listener for the "tagsFilterButton" view, toggling the state of the tags filter
+         * and showing a tags filter dialog when the button is clicked. Additionally, resets the list of items
+         * to the original state when the tags filter is deactivated.
+         *
+         * @param newOnClickListener The listener to be invoked when the "tagsFilterButton" view is clicked.
+         */
         tagsFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -426,6 +469,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         }
     }
 
+    /**
+     * Toggles the visibility of sorting options. If hidden, it shows the options; otherwise, it hides them.
+     *
+     * @param view The view that triggered the method.
+     */
     public void showSortTapped(View view)
     {
         if(sortHidden == true)
@@ -440,6 +488,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         }
     }
 
+    /**
+     * Hides the sorting options by setting their visibility to GONE.
+     */
     private void hideSort() {
         sortView1.setVisibility(View.GONE);
         sortView2.setVisibility(View.GONE);
@@ -449,6 +500,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         sortButton.setText("SORT");
     }
 
+    /**
+     * Shows the sorting options by setting their visibility to VISIBLE.
+     */
     private void showSort() {
         sortView1.setVisibility(View.VISIBLE);
         sortView2.setVisibility(View.VISIBLE);
@@ -458,6 +512,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         sortButton.setText("HIDE");
     }
 
+    /**
+     * Sorts the data list in ascending order based on the date and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void dateASCTapped(View view)
     {
         Collections.sort(dataList, Item.dateAscending);
@@ -466,6 +525,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in descending order based on the date and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void dateDESTapped(View view)
     {
         Collections.sort(dataList, Item.dateAscending);
@@ -475,6 +539,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in ascending order based on the description and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
+
     public void descriptionASCTapped(View view)
     {
         Collections.sort(dataList, Item.descriptionAscending);
@@ -483,6 +553,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in descending order based on the description and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void descriptionDESTapped(View view)
     {
         Collections.sort(dataList, Item.descriptionAscending);
@@ -492,6 +567,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in ascending order based on the make and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void makeASCTapped(View view)
     {
         Collections.sort(dataList, Item.makeAscending);
@@ -500,6 +580,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in descending order based on the make and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void makeDESTapped(View view)
     {
         Collections.sort(dataList, Item.makeAscending);
@@ -509,6 +594,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in ascending order based on the value and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void valueASCTapped(View view)
     {
         Collections.sort(dataList, Item.valueAscending);
@@ -517,6 +607,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in descending order based on the value and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void valueDESTapped(View view)
     {
         Collections.sort(dataList, Item.valueAscending);
@@ -526,6 +621,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in ascending order based on the tags and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void tagsASCTapped(View view)
     {
         Collections.sort(dataList, Item.tagAscending);
@@ -534,6 +634,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         itemList.setAdapter(recycleAdapter);
     }
 
+    /**
+     * Sorts the data list in descending order based on the tags and updates the RecyclerViewAdapter.
+     *
+     * @param view The view that triggered the method.
+     */
     public void tagsDESTapped(View view)
     {
         Collections.sort(dataList, Item.tagAscending);

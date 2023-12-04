@@ -28,20 +28,13 @@ import java.util.Locale;
  * @author : Arsalan
  */
 public class FirebaseOperations {
-
-
     private FirebaseFirestore db;
     private CollectionReference ItemsCollections;
-
     private RecyclerViewAdapter Adapter;
-
     private ArrayList<Item> dataList;
     private ArrayList<Item> dataList2;
-
     private TextView totalvalue;
-
     private String userID;
-
 
     /**
      * Class Constructor. When Called initializes the database and sets to interact with the initial collection- to be
@@ -57,9 +50,7 @@ public class FirebaseOperations {
         totalvalue=total_estimated_value;
 
         ItemsCollections=db.collection("initial").document(userID).collection("items");
-
     }
-
 
     /**
      * Method for checking when data is changed, and updating our realtime database following
@@ -67,7 +58,6 @@ public class FirebaseOperations {
      * Updates the total cost as well to make ensure realtime updates
      */
     public void listenForDataChanges() {
-
         ItemsCollections.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot querySnapshots,
@@ -81,34 +71,19 @@ public class FirebaseOperations {
                     dataList.clear();
 
                     for (QueryDocumentSnapshot doc: querySnapshots) {
-
-
                         String name = doc.getId();
-
                         Item item = doc.toObject(Item.class);
-//
-
                         Log.i("Firestore", String.format("Item(%s, %d, %d, %d, %s, %s, %s, %s, %s, %s) fetched",
                                 name, item.getPurchase_month(), item.getPurchase_day(), item.getPurchase_year(), item.getDescription(),
                                 item.getMake(), item.getModel(), item.getSerial_number(), item.getEstimated_value(),
                                 item.getComment()));
-
-
                         dataList.add(item);
-
-
                     }
                     Adapter.notifyDataSetChanged();
-
                     updateFullCost();
-
                 }
-
             }
-
         });
-
-
     }
 
     /**
@@ -138,12 +113,9 @@ public class FirebaseOperations {
                     public void onFailure(@NonNull Exception e) {
                         Log.e("Firestore", "db write failed");
                     }
-                })
-        ;
+                });
         updateFullCost();
-
     }
-
 
     /**
      * Method for deleting Items from firebase db
@@ -153,7 +125,6 @@ public class FirebaseOperations {
      */
     public void deleteData(ArrayList<Item> itemsToDelete) {
         //may need to come up with something better as an identifier
-
 
         for (int i=0;i<itemsToDelete.size();i++){
 
@@ -172,13 +143,8 @@ public class FirebaseOperations {
                         }
                     });
             updateFullCost();
-
-
         }
-
-
     }
-
 
     /**
      * Method for updating tags to firebase db
@@ -208,12 +174,8 @@ public class FirebaseOperations {
                             Log.e("Firestore", "db delete fails");
                         }
                     });
-
-
         }
     }
-
-
 
     /**
      * Method that sets the Textview to reflect changes made ie adding/deleting items
@@ -230,19 +192,13 @@ public class FirebaseOperations {
         totalvalue.setText(String.format(Locale.getDefault(), "$%.2f", total_estimated_value));
     }
 
-
     /**
      * Getter method for Retrieving dataList, which contains all our objects
      * @return dataList - A list of item objects containing all data
      */
     public ArrayList<Item> get_dataList(){
-
         return dataList;
-
-
-
     }
-
 
     /**
      * Method required to enable updates to the Recyclerview Adapter for realtime change
@@ -251,7 +207,5 @@ public class FirebaseOperations {
     public void setAdapter(RecyclerViewAdapter Adapter){
         this.Adapter=Adapter;
     }
-
-
 
 }

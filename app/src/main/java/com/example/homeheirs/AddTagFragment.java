@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 /**
  * Class for Implementing the logic behind the Add Tag Dialog
- * Extends Dialogframgment
+ * Extends Dialog fragment
  * @author Arsalan Ahmed
 
  */
@@ -28,13 +28,11 @@ public class AddTagFragment extends DialogFragment {
 
 
     private EditText TagName;
-   // private Tag tag;
-
     private AddItemFragment.OnFragmentInteractionListener listener; //DOUBLE CHECK??
 
     /**
      * Method that sets listener for when Dialog needs to be created
-     * @param : context - Context from mainactivity
+     * @param : context - Context from main activity
      * Source Used : Lab Assignment and materials
      */
     @Override
@@ -56,10 +54,6 @@ public class AddTagFragment extends DialogFragment {
         // implement this method in main
         void onTagOKPressed(Item item);
     }
-
-
-
-
 
     /**
      * Method that implements main logic of showing the dialog
@@ -114,11 +108,6 @@ public class AddTagFragment extends DialogFragment {
         });
         dialog.show();
         return dialog;}
-
-
-
-
-
 
     /**
      * Method that implements validation check to make sure field not empty

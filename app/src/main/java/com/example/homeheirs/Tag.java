@@ -1,6 +1,5 @@
 package com.example.homeheirs;
 
-
 import android.app.Activity;
 
 import java.io.Serializable;
@@ -10,7 +9,7 @@ import java.io.Serializable;
  * @author : Arsalan
  */
 public class Tag  implements Serializable {
-    //The class will descrive the tag object that each item will have-weak has a relationship
+    //The class will derive the tag object that each item will have-weak has a relationship
     //where in we will be able to
     private String tag_name;
 
@@ -20,7 +19,6 @@ public class Tag  implements Serializable {
     public Tag(){
 
     }
-
 
     /**
      * Constructor actually used to create the tag objects
