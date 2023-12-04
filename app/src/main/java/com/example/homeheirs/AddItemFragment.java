@@ -29,15 +29,25 @@ import java.util.Locale;
  */
 public class AddItemFragment extends DialogFragment implements Scanner.OnScanActivityListener{
     private EditText itemName;
+    private String name;
     private EditText purchaseMonth;
+    private String month;
     private EditText purchaseDay;
+    private String day;
     private EditText purchaseYear;
+    private String year;
     private EditText itemDescription;
+    private String description;
     private EditText itemMake;
+    private String make;
     private EditText itemModel;
+    private String model;
     private EditText itemSerialNumber;
+    private String serialNumber;
     private EditText estimatedValue;
+    private String value;
     private EditText itemComment;
+    private String comment;
     // For test purposes
     private TextView itemTag;
     private OnFragmentInteractionListener listener;
@@ -162,21 +172,27 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
                         // Save depending on if it is edit
                         // Otherwise, add new item to Item List
 
-                        String name = itemName.getText().toString();
-                        int month = Integer.parseInt(purchaseMonth.getText().toString());
-                        int day = Integer.parseInt(purchaseDay.getText().toString());
-                        int year = Integer.parseInt(purchaseYear.getText().toString());
-                        String description = itemDescription.getText().toString();
-                        String make = itemMake.getText().toString();
-                        String model = itemModel.getText().toString();
-                        int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
-                        double value = Double.parseDouble(estimatedValue.getText().toString());
-                        String detail = itemComment.getText().toString();
+                        name = itemName.getText().toString();
+                        //Convert to int before passing
+                        month = purchaseMonth.getText().toString();
+                        //Convert to int before passing
+                        day = purchaseDay.getText().toString();
+                        //Convert to int before passing
+                        year = purchaseYear.getText().toString();
+                        description = itemDescription.getText().toString();
+                        make = itemMake.getText().toString();
+                        model = itemModel.getText().toString();
+                        //Convert to int before passing
+                        serialNumber = itemSerialNumber.getText().toString();
+                        //Convert to Double before passing
+                        value = estimatedValue.getText().toString();
+
+                        comment = itemComment.getText().toString();
                         // validate to make sure non empty string given
 
-                        if(validate(name,month,day, year,description,make,model,serialNumber,value,detail)){
+                        if(validate(name,month,day,year,make,model,value)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
-                            listener.onOKPressed(new Item(name, month, day, year, description, make, model, serialNumber, value, detail));
+                            listener.onOKPressed(new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, serialNumber, Double.parseDouble(value), comment));
                             // Only dismiss dialog if error check passes
                             dialog.dismiss();}
                     }
@@ -214,15 +230,12 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
      * @param month      The purchase month of the item.
      * @param day        The purchase day of the item.
      * @param year       The purchase year of the item.
-     * @param description The description of the item.
      * @param make       The make of the item.
      * @param model      The model of the item.
-     * @param serialNumber The serial number of the item.
      * @param value      The estimated value of the item.
-     * @param detail     Additional details about the item.
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
-    private boolean validate(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
+    private boolean validate(String name, String month, String day, String year, String make, String model, String value) {
 
         boolean check = true;
         if (name.isEmpty()) {
@@ -231,19 +244,19 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
             check=false;
         }
 
-        if (month <= 0 || month > 12) {
+        if (month.isEmpty() || Integer.parseInt(month) <= 0 || Integer.parseInt(month) > 12) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
             check=false;
         }
 
-        if (day <= 0 || day > 31) {
+        if (day.isEmpty() || Integer.parseInt(day) <= 0 || Integer.parseInt(day) > 31) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
             check=false;
         }
 
-        if (year < 1990 || year > 2035) {
+        if (year.isEmpty() || Integer.parseInt(year) < 1990 || Integer.parseInt(year) > 2035) {
             purchaseYear.requestFocus();
             purchaseYear.setError("Please enter a valid year between 1990 and 2035");
             check=false;
@@ -261,13 +274,11 @@ public class AddItemFragment extends DialogFragment implements Scanner.OnScanAct
             check=false;
         }
 
-        if (value < 0) {
+        if (value.isEmpty() || Double.parseDouble(value) < 0) {
             estimatedValue.requestFocus();
             estimatedValue.setError("Please enter a valid value");
             check=false;
         }
-
-
 
         return check;
     }
