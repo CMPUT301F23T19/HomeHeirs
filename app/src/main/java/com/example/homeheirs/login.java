@@ -133,7 +133,7 @@ public class login extends AppCompatActivity {
      * @param username:String- contains username to validate not empty
      * @param password:String - contains password to validate not empty
      */
-    public boolean validate(String username, String password){
+    private boolean validate(String username, String password){
         // error check function
         if (username.isEmpty()){
             editText_username.requestFocus();

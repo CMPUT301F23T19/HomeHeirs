@@ -126,7 +126,7 @@ public class Register extends AppCompatActivity {
      * @param confirm_password:String - Contains the confirm pass field and makes sure
      * that passwords are identical
      */
-    public boolean validate(String username, String password, String confirm_password){
+    private boolean validate(String username, String password, String confirm_password){
         // error check function
         if (username.isEmpty()){
             editText_username.requestFocus();
