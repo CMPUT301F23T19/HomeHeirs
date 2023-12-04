@@ -217,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         hideSort();
                     }
 
+                    if (searchView.getVisibility() == View.VISIBLE) {
+                        searchView.setVisibility(View.GONE);
+                    }
+
                     return true;
                 }
 
