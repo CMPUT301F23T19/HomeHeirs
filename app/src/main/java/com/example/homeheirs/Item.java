@@ -337,9 +337,9 @@ public class Item implements Serializable {
             if (tags1.isEmpty() && tags2.isEmpty()) {
                 return 0; // Both items have no tags, consider them equal
             } else if (tags1.isEmpty()) {
-                return 1; // Item1 has no tags, move it to the bottom
+                return -1; // Item1 has no tags, move it to the bottom
             } else if (tags2.isEmpty()) {
-                return -1; // Item2 has no tags, move it to the bottom
+                return 1; // Item2 has no tags, move it to the bottom
             }
 
             String tag1 = tags1.get(0).getTag_name();
