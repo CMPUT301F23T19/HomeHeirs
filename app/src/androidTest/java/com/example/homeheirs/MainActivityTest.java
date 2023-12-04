@@ -3,6 +3,7 @@ package com.example.homeheirs;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -10,8 +11,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+
+
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+
+import android.util.Log;
 
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
@@ -23,7 +29,9 @@ import androidx.test.filters.LargeTest;
 
 import com.example.homeheirs.MainActivity;
 import com.example.homeheirs.R;
+import com.google.firebase.auth.FirebaseAuth;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,24 +56,44 @@ public class MainActivityTest {
 
 
 
+    @Before
+    public void setUp() {
+        // Sign in with the test account before each test
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword("ui@gmail.com", "123456")
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("MainActivityTest", "Test user signed in successfully");
+                    } else {
+                        Log.e("MainActivityTest", "Error signing in test user", task.getException());
+                    }
+                });
+    }
+
     @Test
-    public void Additem(){
+    public void AdditemAndDelete(){
         // Click on Add Item Button
         onView(withId(R.id.add_item_button)).perform(click());
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         //onView(withText("OK")).perform(click());
 
         onView(withText("Computer")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+
+        onView(withId(R.id.delete_button)).perform(click());
 
 // Check if text "Edmonton" is matched with any of the text
 
@@ -73,30 +101,32 @@ public class MainActivityTest {
 
     }
 
+//    @Test
+//
+//    public void deleteitem(){
+//
+//        onView(withId(R.id.item_list))
+//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+//
+//        onView(withId(R.id.delete_button)).perform(click());
+//
+//    }
+
     @Test
-
-    public void deleteitem(){
-
-        onView(withId(R.id.item_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
-
-        onView(withId(R.id.delete_button)).perform(click());
-
-    }
-
-    @Test
-    public void AddMultipleItems(){
+    public void AddMultipleItemsAndDeleteMultiple(){
         // Click on Add Item Button
         onView(withId(R.id.add_item_button)).perform(click());
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         // Add second object
@@ -104,12 +134,14 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Hardrive"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2003"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("8"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         // Add third object
@@ -117,28 +149,18 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Chair"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("10"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("07"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("John cena"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("25"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("25"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         //onView(withText("OK")).perform(click());
 
-        onView(withText("Computer")).check(matches(isDisplayed()));
-        onView(withText("Hardrive")).check(matches(isDisplayed()));
-        onView(withText("Chair")).check(matches(isDisplayed()));
-
-
-    }
-
-
-    @Test
-    public void CheckConcistencyAndMultipleDelete(){
-
-        // check if items from previous checks present
         onView(withText("Computer")).check(matches(isDisplayed()));
         onView(withText("Hardrive")).check(matches(isDisplayed()));
         onView(withText("Chair")).check(matches(isDisplayed()));
@@ -167,12 +189,14 @@ public class MainActivityTest {
         // Type in item information into the Dialog Interface
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Laptop"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("5"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("gaming laptop"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("Dell"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("XPS 15"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("123456"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("1500"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("1500"),closeSoftKeyboard());
+
         onView(withId(android.R.id.button1)).perform(click());
 
         // Click on OK
@@ -189,6 +213,7 @@ public class MainActivityTest {
         onView(withId(R.id.item_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withText("Tag1")).check(matches(isDisplayed()));
+       // onView(withId(R.id.chip_group)).check(matches(hasChipWithText("Tag1, Tag2")));
 
 
 
@@ -213,12 +238,14 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         // Add second object
@@ -226,12 +253,14 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Hardrive"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2003"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("07"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         // Add third object
@@ -239,12 +268,14 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Chair"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("11"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("07"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("John cena"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("25"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("25"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         //onView(withText("OK")).perform(click());
@@ -304,11 +335,13 @@ public class MainActivityTest {
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("11"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
 
@@ -329,7 +362,8 @@ public class MainActivityTest {
 
         onView(withId(R.id.item_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withText("Tag1, Tag2")).check(matches(isDisplayed()));
+        onView(withText("Tag1")).check(matches(isDisplayed()));
+        onView(withText("Tag2")).check(matches(isDisplayed()));
         //onView(withText("Tag2")).check(matches(isDisplayed()));
 
         onView(withId(R.id.back_button)).perform(click());
@@ -364,12 +398,14 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
 
@@ -403,12 +439,14 @@ public class MainActivityTest {
         //Type in an item into the dialog
         onView(withId(R.id.item_name_edit_text)).perform(ViewActions.typeText("Computer"));
         onView(withId(R.id.purchase_year_edit_text)).perform(ViewActions.typeText("2023"));
+        onView(withId(R.id.purchase_day_edit_text)).perform(ViewActions.typeText("04"));
         onView(withId(R.id.purchase_month_edit_text)).perform(ViewActions.typeText("09"));
         onView(withId(R.id.description_edit_text)).perform(ViewActions.typeText("Lenovo"));
         onView(withId(R.id.make_edit_text)).perform(ViewActions.typeText("12"));
         onView(withId(R.id.model_edit_text)).perform(ViewActions.typeText("6.8"));
         onView(withId(R.id.serial_number_edit_text)).perform(ViewActions.typeText("985531454"));
-        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"));
+        onView(withId(R.id.estimated_value_edit_text)).perform(ViewActions.typeText("23.20"),closeSoftKeyboard());
+
         //onView(withId(R.id.comment_edit_text)).perform(ViewActions.typeText("Its a good laptop"));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.total_value_amount)).check(matches(withText("$23.20")));
@@ -445,6 +483,13 @@ public class MainActivityTest {
         onView(withId(R.id.total_value_amount)).check(matches(withText("$56.98")));
 
         onView(withText("Computer")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.item_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
+
+        onView(withId(R.id.delete_button)).perform(click());
+
+
 
 
 

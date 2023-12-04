@@ -11,34 +11,50 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.Locale;
 
 /**
  * A DialogFragment for adding or editing items in the item list.
  * Provides a form for the user to input details of an item, including name, purchase date, description, make, model, serial number, estimated value, and additional comments.
- * @author Archi Patel
+ * @author Archi Patel, Rayyan Rashid
  */
-public class AddItemFragment extends DialogFragment {
+public class AddItemFragment extends DialogFragment implements Scanner.OnScanActivityListener{
     private EditText itemName;
+    private String name;
     private EditText purchaseMonth;
+    private String month;
     private EditText purchaseDay;
+    private String day;
     private EditText purchaseYear;
+    private String year;
     private EditText itemDescription;
+    private String description;
     private EditText itemMake;
+    private String make;
     private EditText itemModel;
+    private String model;
     private EditText itemSerialNumber;
+    private String serialNumber;
     private EditText estimatedValue;
+    private String value;
     private EditText itemComment;
+    private String comment;
     // For test purposes
     private TextView itemTag;
     private OnFragmentInteractionListener listener;
     private String title = "Add Item";
     private Item item;
     private Boolean isEdit = false;
+    private Scanner scanner;
 
     /**
      * Constructs an AddItemFragment for editing an existing item.
@@ -134,9 +150,20 @@ public class AddItemFragment extends DialogFragment {
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK",null)
                 .create();
+
+        // Initialize Scanner instance, pass Activity context and Fragment instance
+        scanner = new Scanner(getActivity(), this);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+
+                /**
+                 * Handles the click event of the "Scan" button.
+                 * Uses the Scanner class to open the barcode scanner.
+                 */
+                Button scanButton = view.findViewById(R.id.scan_button);
+                scanButton.setOnClickListener(v -> scanner.startScan(barLauncher));
+
                 Button button2 = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button2.setOnClickListener(new View.OnClickListener() {
 
@@ -145,21 +172,27 @@ public class AddItemFragment extends DialogFragment {
                         // Save depending on if it is edit
                         // Otherwise, add new item to Item List
 
-                        String name = itemName.getText().toString();
-                        int month = Integer.parseInt(purchaseMonth.getText().toString());
-                        int day = Integer.parseInt(purchaseDay.getText().toString());
-                        int year = Integer.parseInt(purchaseYear.getText().toString());
-                        String description = itemDescription.getText().toString();
-                        String make = itemMake.getText().toString();
-                        String model = itemModel.getText().toString();
-                        int serialNumber = Integer.parseInt(itemSerialNumber.getText().toString());
-                        double value = Double.parseDouble(estimatedValue.getText().toString());
-                        String detail = itemComment.getText().toString();
+                        name = itemName.getText().toString();
+                        //Convert to int before passing
+                        month = purchaseMonth.getText().toString();
+                        //Convert to int before passing
+                        day = purchaseDay.getText().toString();
+                        //Convert to int before passing
+                        year = purchaseYear.getText().toString();
+                        description = itemDescription.getText().toString();
+                        make = itemMake.getText().toString();
+                        model = itemModel.getText().toString();
+                        //Convert to int before passing
+                        serialNumber = itemSerialNumber.getText().toString();
+                        //Convert to Double before passing
+                        value = estimatedValue.getText().toString();
+
+                        comment = itemComment.getText().toString();
                         // validate to make sure non empty string given
 
-                        if(validate(name,month,day, year,description,make,model,serialNumber,value,detail)){
+                        if(validate(name,month,day,year,make,model,serialNumber,value)){
                             // The idea is that we simply just return a Tag object which is appended to each selected items list of tags
-                            listener.onOKPressed(new Item(name, month, day, year, description, make, model, serialNumber, value, detail));
+                            listener.onOKPressed(new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), comment));
                             // Only dismiss dialog if error check passes
                             dialog.dismiss();}
                     }
@@ -170,21 +203,40 @@ public class AddItemFragment extends DialogFragment {
         return dialog;}
 
     /**
+     * Scans obtained code to get product information
+     */
+    private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
+            String barcodeRawValue = result.getContents();
+            scanner.scanCode(barcodeRawValue);
+        }
+    });
+
+    /**
+     * Sets the text fields according to the obtained product information
+     * @param prod_description Obtained Product Description
+     * @param prod_serial_num Obtained Manufacturer Product Number
+     */
+    @Override
+    public void onScanResult(String prod_description, String prod_serial_num) {
+        itemDescription.setText(prod_description);
+        itemSerialNumber.setText(prod_serial_num);
+    }
+
+    /**
      * Validates the input the EditText fields for creating or editing an item
      *
      * @param name       The name of the item.
      * @param month      The purchase month of the item.
      * @param day        The purchase day of the item.
      * @param year       The purchase year of the item.
-     * @param description The description of the item.
      * @param make       The make of the item.
      * @param model      The model of the item.
-     * @param serialNumber The serial number of the item.
      * @param value      The estimated value of the item.
-     * @param detail     Additional details about the item.
      * @return True if all input fields are valid; otherwise, false. Error messages are displayed for each invalid field.
      */
-    boolean validate(String name, int month, int day, int year, String description, String make, String model, int serialNumber, double value, String detail) {
+
+    private boolean validate(String name, String month, String day, String year, String make, String model, String serial_number, String value) {
 
         if (name.isEmpty()) {
             itemName.requestFocus();
@@ -192,19 +244,19 @@ public class AddItemFragment extends DialogFragment {
             return false;
         }
 
-        if (month <= 0 || month > 12) {
+        if (month.isEmpty() || Integer.parseInt(month) <= 0 || Integer.parseInt(month) > 12) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
             return false;
         }
 
-        if (day <= 0 || day > 31) {
+        if (day.isEmpty() || Integer.parseInt(day) <= 0 || Integer.parseInt(day) > 31) {
             purchaseMonth.requestFocus();
             purchaseMonth.setError("Please enter a valid month");
             return false;
         }
 
-        if (year < 1990 || year > 2035) {
+        if (year.isEmpty() || Integer.parseInt(year) < 1990 || Integer.parseInt(year) > 2035) {
             purchaseYear.requestFocus();
             purchaseYear.setError("Please enter a valid year between 1990 and 2035");
             return false;
@@ -222,12 +274,19 @@ public class AddItemFragment extends DialogFragment {
             return false;
         }
 
-        if (value < 0) {
+        if (serial_number.isEmpty()) {
+            itemSerialNumber.requestFocus();
+            itemSerialNumber.setError("Please enter a valid number");
+            return false;
+        }
+
+        if (value.isEmpty() || Double.parseDouble(value) < 0) {
             estimatedValue.requestFocus();
             estimatedValue.setError("Please enter a valid value");
             return false;
         }
 
         return true;
+
     }
 }
