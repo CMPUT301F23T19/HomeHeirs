@@ -21,6 +21,7 @@ import java.util.Locale;
 public class Item implements Serializable {
     private String name;
     private int purchase_month;
+    private int purchase_day;
     private int purchase_year;
     private String description;
     private String make;
@@ -101,6 +102,7 @@ public class Item implements Serializable {
      *
      * @param name            The name of the item.
      * @param purchase_month  The month of purchase.
+     * @param purchase_day    The day of purchase.
      * @param purchase_year   The year of purchase.
      * @param description     The description of the item.
      * @param make            The make of the item.
@@ -109,9 +111,10 @@ public class Item implements Serializable {
      * @param estimated_value The estimated value of the item.
      * @param comment         Additional comments about the item.
      */
-    public Item(String name, int purchase_month, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
+    public Item(String name, int purchase_month, int purchase_day, int purchase_year, String description, String make, String model, int serial_number, double estimated_value, String comment) {
         this.name = name;
         this.purchase_month = purchase_month;
+        this.purchase_day = purchase_day;
         this.purchase_year = purchase_year;
         this.description = description;
         this.make = make;
@@ -144,6 +147,14 @@ public class Item implements Serializable {
 
     public void setPurchase_month(int purchase_month) {
         this.purchase_month = purchase_month;
+    }
+
+    public int getPurchase_day() {
+        return purchase_day;
+    }
+
+    public void setPurchase_day(int purchase_day) {
+        this.purchase_day = purchase_day;
     }
 
     public int getPurchase_year() {
@@ -261,19 +272,29 @@ public class Item implements Serializable {
         }
     };
 
-//    public static Comparator<Item> tagAscending = new Comparator<Item>()
-//    {
-//        @Override
-//        public int compare(Item item1, Item item2)
-//        {
-//            String make1 = item1.getTag_list();
-//            String make2 = item2.getMake();
-//
-//            make1 = make1.toLowerCase();
-//            make2 = make2.toLowerCase();
-//
-//            return make1.compareTo(make2);
-//        }
-//    };
+    public static Comparator<Item> tagAscending = new Comparator<Item>()
+    {
+        @Override
+        public int compare(Item item1, Item item2)
+        {
+            List<Tag> tags1 = item1.getTag_list();
+            List<Tag> tags2 = item2.getTag_list();
+
+            String tag1 = tags1.get(0).getTag_name();
+            String tag2 = tags2.get(0).getTag_name();
+
+            // Compare the first tags
+            int result = tag1.compareToIgnoreCase(tag2);
+
+            // If the first tags are equal, compare the next tags
+            if (result == 0 && tags1.size() > 1 && tags2.size() > 1) {
+                tag1 = tags1.get(1).getTag_name();
+                tag2 = tags2.get(1).getTag_name();
+                result = tag1.compareToIgnoreCase(tag2);
+            }
+
+            return result;
+        }
+    };
 
 }

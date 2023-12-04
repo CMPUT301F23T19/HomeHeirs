@@ -205,6 +205,10 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
             // Set Values for each EditText
             nameTextView.setText(item.getName());
             monthTextView.setText(String.valueOf(item.getPurchase_month()));
+            EditText dayTextView = findViewById(R.id.show_purchase_day);
+            dayTextView.setText(String.valueOf(item.getPurchase_day()));
+
+            EditText yearTextView = findViewById(R.id.show_purchase_year);
             yearTextView.setText(String.valueOf(item.getPurchase_year()));
             descriptionTextView.setText(item.getDescription());makeTextView.setText(item.getMake());
             modelTextView.setText(item.getModel());
@@ -262,6 +266,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                     // Get the edited values from the EditText fields
                     EditText nameTextView = findViewById(R.id.show_item_name);
                     EditText monthTextView = findViewById(R.id.show_purchase_month);
+                    EditText dayTextView = findViewById(R.id.show_purchase_day);
                     EditText yearTextView = findViewById(R.id.show_purchase_year);
                     EditText descriptionTextView = findViewById(R.id.show_description);
                     EditText makeTextView = findViewById(R.id.show_make);
@@ -272,6 +277,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
                     String name = nameTextView.getText().toString();
                     String month = monthTextView.getText().toString();
+                    String day = dayTextView.getText().toString();
                     String year = yearTextView.getText().toString();
                     String description = descriptionTextView.getText().toString();
                     String make = makeTextView.getText().toString();
@@ -280,7 +286,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                     String value = valueTextView.getText().toString();
                     String detail = commentTextView.getText().toString();
 
-                    Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), detail);
+                    Item newItem = new Item(name, Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year), description, make, model, Integer.parseInt(serialNumber), Double.parseDouble(value), detail);
                     newItem.setDate_identifier(item.getDate_identifier());
                     /**
                      * Updates the item details in Firestore with the updated values
@@ -294,6 +300,7 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
                             //double check this otherwise .set(newItem)
                             .update("name", name,
                                     "purchase_month", Integer.parseInt(month),
+                                    "purchase_day", Integer.parseInt(day),
                                     "purchase_year", Integer.parseInt(year),
                                     "description", description,
                                     "make", make,
@@ -451,8 +458,5 @@ public class ShowItemActivity extends AppCompatActivity implements ChoosePhotoOp
 
             }
         });
-
-
-
     }
 }

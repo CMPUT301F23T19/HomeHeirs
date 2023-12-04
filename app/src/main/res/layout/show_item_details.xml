@@ -113,6 +113,26 @@
                 android:inputType="number"
                 android:maxLength="2"></EditText>
 
+            <!-- Day Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="Day:"
+                android:textSize="16sp" />
+
+            <!-- Month EditText -->
+            <EditText
+                android:id="@+id/show_purchase_day"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:ems="2"
+                android:hint="DD"
+                android:inputType="number"
+                android:maxLength="2">
+
+            </EditText>
+
         </LinearLayout>
 
         <LinearLayout
