@@ -25,6 +25,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
+/**
+ * Class Responsible for UI testing the add fragment
+ * @author : Arsalan
+ * Source : https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
+ * In Order for proper fuctionality, the database must be empty vefore initiating tests
+ *
+ * WARNING: FOR THESE TESTS TO WORK, PLEASE LOG INTO THE ACCOUNT, MAKE SURE ALL ITEMS ARE DELETED, AND STAY LOGGED IN
+ *
+ * Method fuctionality is indicated by thier name
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AddTagFragmentTest {
