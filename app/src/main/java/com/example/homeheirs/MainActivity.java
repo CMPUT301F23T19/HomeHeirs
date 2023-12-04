@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     // Filter buttons
     private LinearLayout filterLayout;
     private boolean filterHidden = true;
+    private boolean isDateFilterActive = false;
     private boolean isDescFilterActive = false;
     private boolean isMakeFilterActive = false;
     private boolean isTagsFilterActive = false;
@@ -216,7 +219,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             }
         });
 
-        // Filter button "DESCR." functionality
+        // Filter button "ALL" functionality
+        Button allFilterButton = findViewById(R.id.allFilterButton);
+        allFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetRecyclerView();
+            }
+        });
+
+        // Filter button "DATE" functionality
+        Button dateFilterButton = findViewById(R.id.dateFilterButton);
+        dateFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isDateFilterActive = !isDescFilterActive;
+
+                // Show date dialog when button is clicked
+                if (isDateFilterActive) {
+                    showDateFilterDialog();
+                }
+            }
+        });
+
+        // Filter button "DESCR" functionality
         Button descFilterButton = findViewById(R.id.descFilterButton);
         descFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -515,6 +541,99 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         recycleAdapter = new RecyclerViewAdapter(getApplicationContext(), itemList, dataList);
         recycleAdapter.setClickListener(this);
         itemList.setAdapter(recycleAdapter);
+    }
+
+    /**
+     * Resets the RecyclerView to display the original list of items.
+     */
+    private void resetRecyclerView() {
+        dataList.clear();
+        dataList.addAll(dataCopyList);
+        recycleAdapter.notifyDataSetChanged();
+        updateFullCost();
+    }
+
+    /**
+     * Displays an AlertDialog with a date range filter. The user is able to select a
+     * start and end date to filter the items based on their purchase dates. If the
+     * user applies the filter, items within the date range will be displayed.
+     */
+    private void showDateFilterDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_date_range_filter, null);
+        DatePicker startDatePicker = view.findViewById(R.id.startDatePicker);
+        DatePicker endDatePicker = view.findViewById(R.id.endDatePicker);
+
+        // Create the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setView(view)
+                .setTitle("Select Date Range")
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    isDateFilterActive = false;
+                });
+
+        builder.setPositiveButton("Apply", (dialog, which) -> {
+            // Get selected start and end dates
+            int startYear = startDatePicker.getYear();
+            int startMonth = startDatePicker.getMonth() + 1;
+            int startDay = startDatePicker.getDayOfMonth();
+
+            int endYear = endDatePicker.getYear();
+            int endMonth = endDatePicker.getMonth() + 1;
+            int endDay = endDatePicker.getDayOfMonth();
+
+            // Handle date range selection and apply filter
+            filterListByDate(startYear, startMonth, startDay, endYear, endMonth, endDay);
+            isDateFilterActive = false;
+        });
+
+        builder.create().show();
+    }
+
+    /**
+     * Filters the list of items by their purchase dates based on user's selected
+     * date range.
+     *
+     * @param startYear - start year of date range
+     * @param startMonth - start month of date range
+     * @param startDay - start day of date range
+     * @param endYear - end year of date range
+     * @param endMonth - end month of date range
+     * @param endDay - end day of date range
+     */
+    private void filterListByDate(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay) {
+        // Create Calendar instance for start and end date
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(startYear, startMonth - 1, startDay, 0, 0, 0);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(endYear, endMonth - 1, endDay, 23, 59, 59);
+
+        // Create new list to store filtered items
+        filteredList = new ArrayList<>();
+
+        // Iterate through each item in original list
+        for (Item item : dataCopyList) {
+            // Create Calendar instance for item purchase date
+            Calendar itemDate = Calendar.getInstance();
+            itemDate.set(item.getPurchase_year(), item.getPurchase_month() - 1, item.getPurchase_day(), 0, 0, 0);
+
+            // Check if items fall within start and end date
+            if (itemDate.compareTo(startDate) >= 0 && itemDate.compareTo(endDate) <= 0) {
+                filteredList.add(item);
+            }
+        }
+
+        // Check if no items are filtered
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this,"No data available.", Toast.LENGTH_SHORT).show();
+        }
+
+        // Otherwise, update RecyclerViewAdapter
+        dataList.clear();
+        dataList.addAll(filteredList);
+        recycleAdapter.notifyDataSetChanged();
+        updateFullCost();
     }
 
     /**

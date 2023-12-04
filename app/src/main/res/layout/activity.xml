@@ -240,6 +240,16 @@
         app:layout_constraintTop_toBottomOf="@id/sortLayoutDes">
 
         <Button
+            android:id="@+id/allFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/darkerGray"
+            android:onClick="allFilterTapped"
+            android:text="All"
+            android:textColor="@color/black" />
+
+        <Button
             android:id="@+id/dateFilterButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -256,7 +266,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/darkerGray"
             android:onClick="descFilterTapped"
-            android:text="Descr."
+            android:text="Descr"
             android:textColor="@color/black" />
 
         <Button
