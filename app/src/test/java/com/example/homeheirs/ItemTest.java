@@ -9,7 +9,7 @@ public class ItemTest {
 
     @Test
     public void testAddAndRemoveTag() {
-        Item item = new Item("Computer", 1, 2023, "Lenovo", "5i", "367", 123, 500, "it sucks");
+        Item item = new Item("Computer", 1,2, 2023, "Lenovo", "5i", "367", 123, 500, "it sucks");
 
         Tag tag1 = new Tag("Tag1");
         Tag tag2 = new Tag("Tag2");
@@ -38,11 +38,12 @@ public class ItemTest {
      */
     @Test
     public void testUniqueIdentifier() throws InterruptedException {
-        Item item = new Item("Computer", 1, 2023, "Lenovo", "5i", "367", 123, 500, "it sucks");
+        Item item = new Item("Computer", 1,2, 2023, "Lenovo", "5i", "367", 123, 500, "it sucks");
+
 
         Thread.sleep(2000);
 
-        Item item2 = new Item("TestItem", 1, 2023, "TestDescription", "TestMake", "TestModel", 123, 100.0, "TestComment");
+        Item item2 = new Item("TestItem", 1,3, 2023, "TestDescription", "TestMake", "TestModel", 123, 100.0, "TestComment");
 
         assertNotEquals(item2.getDate_identifier(),item.getDate_identifier());
     }
@@ -50,7 +51,7 @@ public class ItemTest {
 
     @Test
     public void testImageUriOperations() {
-        Item item = new Item("TestItem", 1, 2023, "TestDescription", "TestMake", "TestModel", 123, 100.0, "TestComment");
+        Item item = new Item("TestItem", 1,1, 2023, "TestDescription", "TestMake", "TestModel", 123, 100.0, "TestComment");
 
         String imageUri1 = "uri1";
         String imageUri2 = "uri2";
@@ -75,8 +76,8 @@ public class ItemTest {
 
     @Test
     public void testComparators() {
-        Item item1 = new Item("Item1", 1, 2023, "Description1", "Make1", "Model1", 123, 100.0, "Comment1");
-        Item item2 = new Item("Item2", 2, 2022, "Description2", "Make2", "Model2", 456, 50.0, "Comment2");
+        Item item1 = new Item("Item1", 1,3, 2023, "Description1", "Make1", "Model1", 123, 100.0, "Comment1");
+        Item item2 = new Item("Item2", 2,4, 2022, "Description2", "Make2", "Model2", 456, 50.0, "Comment2");
 
         // Test description comparator
         List<Item> itemList = new ArrayList<>();

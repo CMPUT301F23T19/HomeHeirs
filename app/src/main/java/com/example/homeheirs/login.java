@@ -106,8 +106,10 @@ public class login extends AppCompatActivity {
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     editText_username.requestFocus();
                                     editText_username.setError("Wrong username or Password");
-                                    editText_username.requestFocus();
-                                    editText_username.setError("Wrong username or Password");
+                                  
+                                    editText_password.requestFocus();
+                                    editText_password.setError("Wrong username or Password");
+
                                 }
                             }
                         });
@@ -122,18 +124,20 @@ public class login extends AppCompatActivity {
      * @param username:String- contains username to validate not empty
      * @param password:String - contains password to validate not empty
      */
-    private boolean validate(String username, String password){
+    public boolean validate(String username, String password){
         // error check function
+         boolean check = true;
         if (username.isEmpty()){
             editText_username.requestFocus();
             editText_username.setError("Field Can't be Empty");
-            return false;
+            check = false;
         }
         if (password.isEmpty()){
-            editText_username.requestFocus();
-            editText_username.setError("Field Can't be Empty");
-            return false;
+            editText_password.requestFocus();
+            editText_password.setError("Field Can't be Empty");
+            check=false;
         }
-        return true;
+
+        return  check;
     }
 }
