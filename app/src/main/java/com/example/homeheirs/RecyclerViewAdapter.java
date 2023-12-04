@@ -36,7 +36,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Boolean is_long_clicked = false;
     // Required for resetting selected items
     private RecyclerView recyclerView;
-    private boolean isMakeFilterActive = false;
 
     /**
      * Construcor of RecyclerView Adapter
@@ -290,41 +289,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // resets longClickState to avoid bugs - needed after deletion of an item
     public void resetLongClickState(){ is_long_clicked = false; }
-
-    // Set "MAKE" filter flag
-    public void setMakeFilterActive(boolean active) {
-        isMakeFilterActive = active;
-    }
-
-    /**
-     * Filters items in RecyclerView based on provided keyword and the "MAKE" filter flag.
-     *
-     * If the "MAKE" flag is active, and keyword is not empty, this method filters items
-     * whose make contains given keyword. Otherwise, it uses original list of items.
-     *
-     * @param keyword - The keyword entered by user to filter items
-     */
-    public void filterItemsByMake(String keyword) {
-        // Create new list to store filtered items
-        ArrayList<Item> filteredList = new ArrayList<>();
-
-        // Only perform filter if "MAKE" filter flag is set
-        if (isMakeFilterActive && keyword != null && !keyword.isEmpty()) {
-            // Iterate through each item in original list
-            for (Item item : item_data) {
-                // Check if description contains keyword
-                if (item.getMake().toLowerCase().contains(keyword.toLowerCase())) {
-                    filteredList.add(item);
-                }
-            }
-        }
-
-        // Otherwise, just use original list
-        else {
-            filteredList.addAll(item_data);
-        }
-
-        item_data.clear();
-        item_data.addAll(filteredList);
-    }
 }

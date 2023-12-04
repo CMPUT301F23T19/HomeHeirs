@@ -1,8 +1,7 @@
 package com.example.homeheirs;
 
-
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +25,16 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
-
 
 /**
  * MainActivity serves as the main entry point for the Home Heirs apps.
@@ -40,7 +42,6 @@ import java.util.Locale;
  * haven't implemented the onclick filter
  */
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, AddItemFragment.OnFragmentInteractionListener {
-
     private ArrayList<Item> dataList;
     private ArrayList<Item> dataCopyList;
     private ArrayList<Item> filteredList = new ArrayList<>();
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private FirebaseFirestore db;
     private CollectionReference itemsRef;
     // will use to have a conditional button listener
-
 
     // Class through which database interactions should be handled
     private FirebaseOperations firebaseOperations;
@@ -148,12 +148,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         Button delSelButton = findViewById(R.id.delete_button);
         delSelButton.setOnClickListener(v -> {
-
-            //recycleAdapter.deleteSelectedItems();
-
-            //fixed bug for delte fuctionality
             firebaseOperations.deleteData(recycleAdapter.getSelected_items());
-
             recycleAdapter.resetSelected_items();
         });
 
@@ -290,7 +285,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             public void onClick(View v) {
                 isTagsFilterActive = !isTagsFilterActive;
 
-                if (!isTagsFilterActive) {
+                // Show tags filter dialog when button is clicked
+                if (isTagsFilterActive) {
+                    showTagsFilterDialog();
+                }
+
+                // Set list of items back to original
+                else {
                     dataList = firebaseOperations.get_dataList();
                 }
             }
@@ -331,26 +332,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         return true;
     }
 
-    /*public void delSelectedItems(ArrayList<Item> dataList){
-
-
-        ArrayList<Item> selectedItems = recycleAdapter.getSelected_items();
-        for (int i=0;i<selectedItems.size();i++){
-
-            dataList.remove(selectedItems.get(i));
-            recycleAdapter.notifyDataSetChanged();
-        }
-
-        firebaseOperations.deleteData(selectedItems);
-
-        // Unselect everything once we press ok
-        recycleAdapter.resetSelected_items();
-
-        recycleAdapter.resetLongClickState();
-        recycleAdapter.notifyDataSetChanged();
-        //recycleAdapter.notifyDataSetChanged();
-    }*/
-
     /**
      * Called when the "OK" button is pressed in the AddItemFragment.
      *
@@ -379,12 +360,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             selectedItems.get(i).add_tag(tag);
             // Also want to update the database
 
-
         }
         firebaseOperations.addtag(selectedItems);
         // Unselect everything once we press ok
         recycleAdapter.resetSelected_items();
-
 
         // Also need to reset the selected items
 
@@ -395,7 +374,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
      */
     private void updateFullCost(){
         double total_estimated_value = 0;
-
 
         for (int i = 0; i < dataList.size(); i++) {
             total_estimated_value += dataList.get(i).getEstimated_value();
@@ -411,20 +389,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
      * @param replace True to show the custom toolbox, false to revert to the original toolbox.
      */
     public void showcustomtool(boolean replace) {
-
-
-
         if(replace){
-
-           //
             //if item is long clicked, we set the make our custom bar visible to show the delete and add multiple tags
             original_bar.setVisibility(View.INVISIBLE);
-
             custom_bar.setVisibility(View.VISIBLE);
-
-        }
-        else{
-           // multiple_selection=false;
+        } else{
             // When we are done with selecting, we revert to original settings
             original_bar.setVisibility(View.VISIBLE);
             custom_bar.setVisibility(View.INVISIBLE);
@@ -567,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Check if no items are filtered
         if (filteredList.isEmpty()) {
-            Toast.makeText(this,"No data available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No data available.", Toast.LENGTH_SHORT).show();
         }
 
         // Otherwise, update RecyclerViewAdapter
@@ -596,7 +565,117 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         // Check if no items are filtered
         if (filteredList.isEmpty()) {
-            Toast.makeText(this,"No data available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No data available.", Toast.LENGTH_SHORT).show();
+        }
+
+        // Otherwise, update RecyclerViewAdapter
+        dataList.clear();
+        dataList.addAll(filteredList);
+        recycleAdapter.notifyDataSetChanged();
+        updateFullCost();
+    }
+
+    /**
+     * Displays an AlertDialog with a list of all unique tags for filtering. The user is
+     * able to choose one or multiple tags, and when they apply the filter, the items
+     * with the selected tags will be displayed.
+     */
+    private void showTagsFilterDialog() {
+        // Get a list of all unique tags
+        List<String> allTags = getAllUniqueTags();
+
+        // Create a boolean array to track selected state
+        boolean[] checkedTags = new boolean[allTags.size()];
+        for (int i = 0; i < checkedTags.length; i++) {
+            checkedTags[i] = false;
+        }
+
+        // Create the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setTitle("Select Tags")
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    isTagsFilterActive = false;
+                });
+
+        // Update state of selected tags when user checks/unchecks it
+        builder.setMultiChoiceItems(allTags.toArray(new String[0]), checkedTags, (dialog, which, isChecked) -> {
+            checkedTags[which] = isChecked;
+        });
+        builder.setPositiveButton("Apply", (dialog, which) -> {
+            filterListByTags(allTags, checkedTags);
+            isTagsFilterActive = false;
+        });
+
+        builder.create().show();
+    }
+
+    /**
+     * Retrieves a list of all unique tags from original item list.
+     *
+     * @return - list of all unique tags
+     */
+    private List<String> getAllUniqueTags() {
+        // Create a list to store all unique tags
+        List<String> allTags = new ArrayList<>();
+
+        // Iterate through each item in the original list
+        for (Item item : dataCopyList) {
+            // Iterate through each tag in the item's tag list
+            for (Tag tag : item.getTag_list()) {
+                // Add tag to list if not already in list
+                if (!allTags.contains(tag.getTag_name())) {
+                    allTags.add(tag.getTag_name());
+                }
+            }
+        }
+
+        return allTags;
+    }
+
+    /**
+     * Filters the list of items by their tags based on user selected tags.
+     * If no tags are selected, display original list.
+     *
+     * @param allTags - list of all unique tags
+     * @param checkedTags - array indicating which tags are selected
+     */
+    private void filterListByTags(List<String> allTags, boolean[] checkedTags) {
+        // Create new list to store filtered items
+        filteredList = new ArrayList<>();
+
+        // Check if any tags are selected
+        boolean tagSelected = false;
+        for (boolean isChecked : checkedTags) {
+            if (isChecked) {
+                tagSelected = true;
+                break;
+            }
+        }
+
+        // If no tags are selected, display original list
+        if (!tagSelected) {
+            dataList.clear();
+            dataList.addAll(dataCopyList);
+            recycleAdapter.notifyDataSetChanged();
+            updateFullCost();
+            return;
+        }
+
+        // Iterate through each item in original list
+        for (Item item : dataCopyList) {
+            // Iterate through each tag in item's tag list
+            for (Tag tag : item.getTag_list()) {
+                // Check if tag is selected and item not already in filtered list
+                if (checkedTags[allTags.indexOf(tag.getTag_name())] && !filteredList.contains(item)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+
+        // Check if no items are filtered
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this,"No data available.", Toast.LENGTH_SHORT).show();
         }
 
         // Otherwise, update RecyclerViewAdapter
